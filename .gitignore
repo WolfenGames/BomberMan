@@ -1,0 +1,18 @@
+#Directories
+.vs/
+bin/
+bin-int/
+!vendor/bin/
+
+#vscode garbage
+
+
+# Files
+*.user
+*.vcxproj*
+Makefile
+*.sln
+assets/
+Run.sh
+imgui.ini
+.vscode
