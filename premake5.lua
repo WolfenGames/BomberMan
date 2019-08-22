@@ -1,22 +1,12 @@
-workspace "Swallow"
+workspace "Bomberman"
 
-	startproject "Bomberman"
-	architecture "x64"
+startproject "Bomberman"
 
-	configurations
-	{
-		"Debug",
-		"Release",
-		"Dist"
-	}
+enginedir = "SwallowEngine/Swallow/"
 
-	outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
+include "SwallowEngine/Swallow"
 
-	-- Include directoies relative to root folder (solution directory)
-
-	group "Dependencies"
-		include "SwallowEngine"
-	group ""
+outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 project "Bomberman"
 	location "Bomberman"
@@ -36,12 +26,12 @@ project "Bomberman"
 
 	includedirs
 	{
-		"SwallowEngine/Swallow/vendor/spdlog/include",
-		"SwallowEngine/Swallow/src",
-		"SwallowEngine/%{IncludeDir.GLFW}",
-		"SwallowEngine/%{IncludeDir.Glad}",
-		"SwallowEngine/%{IncludeDir.glm}",
-		"SwallowEngine/%{IncludeDir.ImGui}"
+		enginedir .. "vendor/spdlog/include",
+		enginedir .. "src",
+		enginedir .. "%{IncludeDir.GLFW}",
+		enginedir .. "%{IncludeDir.Glad}",
+		enginedir .. "%{IncludeDir.glm}",
+		enginedir .. "%{IncludeDir.ImGui}"
 	}
 
 	links

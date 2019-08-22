@@ -1,13 +1,12 @@
 #include "GameLayer.hpp"
 #include "imgui.h"
-#include "gtx/transform.hpp"
 #include <gtc/type_ptr.hpp>
 #include "Platform/OpenGL/OpenGLShader.hpp"
 
 GameLayer::GameLayer()
-	:m_Camera(glm::radians(60.0f), Swallow::Application::Get().GetWindow().GetWidth() / (float)Swallow::Application::Get().GetWindow().GetHeight(), 0.0001f, 100000.0f)
+	:m_Camera(glm::radians(60.0f), Swallow::Application::Get().GetWindow().GetWidth() / (float)Swallow::Application::Get().GetWindow().GetHeight(), 0.01f, 100.0f)
 {
-	m_Camera.SetPosition(glm::vec3(5, 50, 50));
+	m_Camera.SetPosition(glm::vec3(0, 50, 50));
 	m_Camera.SetRotation(glm::vec3(glm::radians(-45.0f), glm::radians(0.0f), 0));
 	m_Camera.Recalculate();
 	m_Cube = Swallow::VertexArray::Create();
@@ -63,14 +62,10 @@ GameLayer::GameLayer()
 
 		layout(location = 0) in vec3 a_Position;
 
-		out vec3 v_Normal;
-
 		uniform mat4 u_ViewProjection;
 		uniform mat4 u_Model;
-		uniform mat4 u_Rot;
 
 		void main() {
-			v_Normal = normalize(u_Rot * vec4(a_Position, 0.0)).xyz;
 			gl_Position = (u_ViewProjection * u_Model) * vec4(a_Position, 1.0);
 		}
 	)";
@@ -81,17 +76,17 @@ GameLayer::GameLayer()
 		layout(location = 0) out vec4 color;
 
 		uniform vec3 u_Color;
-		in vec3 v_Normal;
-		uniform vec3 u_LightDirection = vec3(0, -1, 0);
 
 		void main() {
-			float Light = max(0.0, dot(v_Normal, -normalize(u_LightDirection))) * 0.95 + 0.05;
-			color = vec4(u_Color * Light, 1);
+			color = vec4(u_Color, 1);
 		}
 	)";
 
 	m_Shader = Swallow::Shader::Create(sVertexSrc, sFragmentSrc);
 	Swallow::RenderCommand::SetDepthTest(true);
+
+	m_Level = std::make_shared<Level>(3, 3);
+	m_Level->SetModels(m_Cube, m_Shader);
 }
 
 void GameLayer::OnEvent(Swallow::Event &e) {
@@ -136,25 +131,7 @@ void GameLayer::OnUpdate(Swallow::Timestep ts)
 
 	m_Shader->Bind();
 
-	static float rot = 0.0f;
-	static float axis = 0.0f;
-	rot += ts.GetSeconds() * 25;
-	axis += ts.GetSeconds() * 2.5;
-	if (axis > 10)
-		axis = -10;
-	for (float z = -19; z < 20; z += 2)
-		for (float y = -19; y < 20; y += 2)
-			for (float x = -19; x < 20; x += 2)
-			{
-				std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->Bind();
-				std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformMat4("u_Rot", glm::rotate(glm::radians(rot), glm::vec3((axis - x) / 10.0, (axis - y) / 10.0, (axis - z) / 10.0)) * glm::rotate(glm::radians(rot), glm::vec3(x / 10.0, y / 10.0, z / 10.0)));
-				std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(x / 10.0, y / 10.0, z / 10.0));
-				Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
-				glm::rotate(glm::radians(rot), glm::vec3((axis - x) / 10.0, (axis - y) / 10.0, (axis - z) / 10.0)) *
-				glm::translate(glm::normalize(glm::vec3(x, y, z)) * glm::max<float>(glm::max<float>(glm::abs(x), glm::abs(y)), glm::abs(z))) *
-				glm::rotate(glm::radians(rot), glm::vec3(x / 10.0, y / 10.0, z / 10.0)) *
-				glm::scale(glm::vec3(0.18)));
-			}
+	m_Level->Draw();
 
 	Swallow::Renderer::EndScene();
 }
