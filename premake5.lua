@@ -2,6 +2,8 @@ workspace "Bomberman"
 
 startproject "Bomberman"
 
+architecture "x64"
+
 enginedir = "SwallowEngine/Swallow/"
 
 include "SwallowEngine/Swallow"
