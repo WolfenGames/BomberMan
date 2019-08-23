@@ -1,22 +1,18 @@
 #pragma once
 
 #include <Swallow.hpp>
-#include "Level.hpp"
 
-class GameLayer : public Swallow::Layer {
+class MenuLayer : public Swallow::Layer {
 private:
-	Swallow::Ref<Swallow::VertexArray> m_Cube;
+	Swallow::Ref<Swallow::VertexArray> m_Square;
 	Swallow::Ref<Swallow::Shader> m_Shader;
 
-	Swallow::Ref<Level> m_Level;
-
-	Swallow::PerspectiveCamera m_Camera;
-	glm::vec3	m_Position;
+	Swallow::OrthographicCamera m_Camera;
 public:
-	GameLayer();
-	GameLayer(const GameLayer &s) = default;
-	GameLayer &operator=(const GameLayer &s) = default;
-	virtual ~GameLayer() = default;
+	MenuLayer();
+	MenuLayer(const MenuLayer &s) = default;
+	MenuLayer &operator=(const MenuLayer &s) = default;
+	virtual ~MenuLayer() = default;
 
 	bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);
 	bool OnMouseMovedEvent(Swallow::MouseMovedEvent &e);
@@ -25,8 +21,6 @@ public:
 
 
 	virtual void OnEvent(Swallow::Event &e) override;
-	virtual void OnAttach() override;
-	virtual void OnDetach() override;
 	virtual void OnImGuiRender() override;
 	virtual void OnUpdate(Swallow::Timestep ts) override;
 };

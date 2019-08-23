@@ -83,9 +83,17 @@ GameLayer::GameLayer()
 
 	m_Shader = Swallow::Shader::Create(sVertexSrc, sFragmentSrc);
 	Swallow::RenderCommand::SetDepthTest(true);
+}
 
+void GameLayer::OnAttach()
+{
 	m_Level = std::make_shared<Level>(3, 3);
 	m_Level->SetModels(m_Cube, m_Shader);
+}
+
+void GameLayer::OnDetach()
+{
+	m_Level.reset();
 }
 
 void GameLayer::OnEvent(Swallow::Event &e) {

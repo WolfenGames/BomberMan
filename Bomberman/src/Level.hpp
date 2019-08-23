@@ -12,6 +12,9 @@ class Level
 		~Level();
 
 		inline Player &GetPlayer() { return m_Player; }
+		inline uint32_t GetWidth() { return m_Width; }
+		inline uint32_t GetHeight() { return m_Height; }
+		inline char** GetMap() { return m_Map; }
 
 		void SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swallow::Shader> &Shader);
 

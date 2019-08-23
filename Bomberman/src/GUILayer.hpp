@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Swallow.hpp>
-#include "Level.hpp"
 
 class GUILayer : public Swallow::Layer {
 private:
