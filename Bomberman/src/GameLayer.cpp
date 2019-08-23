@@ -104,7 +104,7 @@ bool GameLayer::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 
 bool GameLayer::OnWindowResize(Swallow::WindowResizeEvent &e)
 {
-	m_Camera.SetProjectionMatrix(glm::radians(60.0f), Swallow::Application::Get().GetWindow().GetWidth() / (float)Swallow::Application::Get().GetWindow().GetHeight(), 0.0001f, 100000.0f);
+	m_Camera.SetProjectionMatrix(glm::radians(60.0f), Swallow::Application::Get().GetWindow().GetWidth() / (float)Swallow::Application::Get().GetWindow().GetHeight(), 0.01f, 100.0f);
 	m_Camera.Recalculate();
 	return true;
 }

@@ -52,7 +52,9 @@ void Level::SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swall
 
 void Level::Draw()
 {
-	static glm::vec3 origin(0, 0, 5);
+	static float angle = 0.0f;
+	angle += 0.001;
+	glm::vec3 origin(10 + glm::sin(angle) * 10, 0, 10 + glm::cos(angle) * 10);
 	for (uint32_t x = 0; x < m_Width; x++)
 	{
 		for (uint32_t y = 0; y < m_Height; y++)
@@ -76,9 +78,8 @@ void Level::Draw()
 				default:
 				break;
 			}
-			glm::mat4 look = glm::lookAt(position, origin, glm::vec3(0, 1, 0));
 			Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
-			look);//glm::translate(position));
+			glm::translate(position));
 		}
 	}
 }
