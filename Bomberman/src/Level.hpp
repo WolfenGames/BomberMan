@@ -1,5 +1,6 @@
 #pragma once
 #include <Swallow.hpp>
+#include "Player.hpp"
 
 class Level
 {
@@ -10,8 +11,11 @@ class Level
 		Level &operator=(const Level &rhs) = default;
 		~Level();
 
+		inline Player &GetPlayer() { return m_Player; }
+
 		void SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swallow::Shader> &Shader);
 
+		void Update(Swallow::Timestep ts);
 		void Draw();
 
 	private:
@@ -19,5 +23,8 @@ class Level
 
 		Swallow::Ref<Swallow::VertexArray> m_Cube;
 		Swallow::Ref<Swallow::Shader> m_Shader;
+		
+		Player m_Player;
+
 		char **m_Map;
 };

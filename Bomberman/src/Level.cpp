@@ -24,7 +24,8 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed)
 	}
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
 	playerstart *= 2;
-	m_Map[playerstart.x][playerstart.y] = 'P';
+	m_Map[playerstart.x][playerstart.y] = '.';
+	m_Player = Player(glm::vec3(playerstart.x, 0, playerstart.y));
 	if (playerstart.y != m_Height - 1)
 		m_Map[playerstart.x][playerstart.y + 1] = '.';
 	if (playerstart.y != 0)
@@ -48,18 +49,24 @@ void Level::SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swall
 {
 	m_Cube = VA;
 	m_Shader = Shader;
+	m_Player.SetModels(VA, Shader);
+}
+
+void Level::Update(Swallow::Timestep ts)
+{
+	m_Player.Update(ts);
 }
 
 void Level::Draw()
 {
 	static float angle = 0.0f;
 	angle += 0.001;
-	glm::vec3 origin(10 + glm::sin(angle) * 10, 0, 10 + glm::cos(angle) * 10);
+	glm::mat4 scale = glm::scale(glm::vec3(0.9));
 	for (uint32_t x = 0; x < m_Width; x++)
 	{
 		for (uint32_t y = 0; y < m_Height; y++)
 		{
-			glm::vec3 position = glm::vec3(x * 3, 0, y * 3);
+			glm::vec3 position = glm::vec3(x, 0, y);
 			std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->Bind();
 			switch(m_Map[x][y])
 			{
@@ -69,9 +76,6 @@ void Level::Draw()
 				case '@':
 					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.5, 0.5, 0.5));
 				break;
-				case 'P':
-					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.2, 0.5, 0.9));
-				break;
 				case '.':
 					continue;
 				break;
@@ -79,7 +83,9 @@ void Level::Draw()
 				break;
 			}
 			Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
-			glm::translate(position));
+				glm::translate(position) * scale);
 		}
 	}
+
+	m_Player.Draw();
 }
