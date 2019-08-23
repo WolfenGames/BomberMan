@@ -52,35 +52,33 @@ void Level::SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swall
 
 void Level::Draw()
 {
+	static glm::vec3 origin(0, 0, 5);
 	for (uint32_t x = 0; x < m_Width; x++)
 	{
 		for (uint32_t y = 0; y < m_Height; y++)
 		{
+			glm::vec3 position = glm::vec3(x * 3, 0, y * 3);
+			std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->Bind();
 			switch(m_Map[x][y])
 			{
 				case '#':
-				std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->Bind();
-				std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.9, 0.5, 0.2));
-				Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
-				glm::translate(glm::vec3(x * 3, 0, y * 3)));
+					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.9, 0.5, 0.2));
 				break;
 				case '@':
-				std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->Bind();
-				std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.5, 0.5, 0.5));
-				Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
-				glm::translate(glm::vec3(x * 3, 0, y * 3)));
+					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.5, 0.5, 0.5));
 				break;
 				case 'P':
-				std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->Bind();
-				std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.2, 0.5, 0.9));
-				Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
-				glm::translate(glm::vec3(x * 3, 0, y * 3)));
+					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.2, 0.5, 0.9));
 				break;
 				case '.':
+					continue;
 				break;
 				default:
 				break;
 			}
+			glm::mat4 look = glm::lookAt(position, origin, glm::vec3(0, 1, 0));
+			Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
+			look);//glm::translate(position));
 		}
 	}
 }

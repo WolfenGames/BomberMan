@@ -99,7 +99,6 @@ void GameLayer::OnEvent(Swallow::Event &e) {
 
 bool GameLayer::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 {
-	SW_INFO("Click {}", e);
 	return true;
 }
 
