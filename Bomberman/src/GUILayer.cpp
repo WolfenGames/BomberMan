@@ -113,7 +113,7 @@ void GUILayer::OnUpdate(Swallow::Timestep ts)
 	std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->Bind();
 	std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.2, 0.5, 0.9));
 	Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Square,
-		glm::translate(pos) * glm::scale(glm::vec3(1)));
+		glm::translate(pos) * glm::scale(glm::vec3(5)));
 
 	Swallow::Renderer::EndScene();
 }

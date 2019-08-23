@@ -11,6 +11,7 @@ private:
 	Swallow::Ref<Level> m_Level;
 
 	Swallow::PerspectiveCamera m_Camera;
+	glm::vec3	m_Position;
 public:
 	GameLayer();
 	GameLayer(const GameLayer &s) = default;

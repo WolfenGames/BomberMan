@@ -6,7 +6,8 @@
 GameLayer::GameLayer()
 	:m_Camera(glm::radians(60.0f), Swallow::Application::Get().GetWindow().GetWidth() / (float)Swallow::Application::Get().GetWindow().GetHeight(), 0.01f, 100.0f)
 {
-	m_Camera.SetPosition(glm::vec3(0, 50, 50));
+	m_Position = glm::vec3(0, 25, 25);
+	m_Camera.SetPosition(m_Position);
 	m_Camera.SetRotation(glm::vec3(glm::radians(-45.0f), glm::radians(0.0f), 0));
 	m_Camera.Recalculate();
 	m_Cube = Swallow::VertexArray::Create();
@@ -127,6 +128,18 @@ void GameLayer::OnImGuiRender() {
 
 void GameLayer::OnUpdate(Swallow::Timestep ts)
 {
+
+	if (Swallow::Input::IsKeyPressed(SW_KEY_W))
+		m_Position.z -= ts.GetSeconds() * 5.0f;
+	if (Swallow::Input::IsKeyPressed(SW_KEY_S))
+		m_Position.z += ts.GetSeconds() * 5.0f;
+	if (Swallow::Input::IsKeyPressed(SW_KEY_A))
+		m_Position.x -= ts.GetSeconds() * 5.0f;
+	if (Swallow::Input::IsKeyPressed(SW_KEY_D))
+		m_Position.x += ts.GetSeconds() * 5.0f;
+
+	m_Camera.SetPosition(m_Position);
+	m_Camera.Recalculate();
 	Swallow::Renderer::BeginScene(m_Camera);
 
 	m_Shader->Bind();
