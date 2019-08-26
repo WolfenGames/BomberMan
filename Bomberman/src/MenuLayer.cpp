@@ -65,7 +65,8 @@ MenuLayer::MenuLayer()
 	)";
 
 	m_Shader = Swallow::Shader::Create(sVertexSrc, sFragmentSrc);
-	Swallow::RenderCommand::SetDepthTest(true);
+	//Swallow::RenderCommand::SetDepthTest(true);
+	Swallow::RenderCommand::ClearDepth();
 }
 
 void MenuLayer::OnEvent(Swallow::Event &e) {

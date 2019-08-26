@@ -82,7 +82,8 @@ GameLayer::GameLayer()
 	)";
 
 	m_Shader = Swallow::Shader::Create(sVertexSrc, sFragmentSrc);
-	Swallow::RenderCommand::SetDepthTest(true);
+	//Swallow::RenderCommand::SetDepthTest(true);
+	Swallow::RenderCommand::ClearDepth();
 }
 
 void GameLayer::OnAttach()

@@ -65,7 +65,8 @@ GUILayer::GUILayer()
 	)";
 
 	m_Shader = Swallow::Shader::Create(sVertexSrc, sFragmentSrc);
-	Swallow::RenderCommand::SetDepthTest(true);
+	//Swallow::RenderCommand::SetDepthTest(true);
+	Swallow::RenderCommand::ClearDepth();
 }
 
 void GUILayer::OnEvent(Swallow::Event &e) {
