@@ -4,6 +4,12 @@
 
 class Level
 {
+	struct Timer
+	{
+		float fuse;
+		int x, y;
+	};
+
 	public:
 		Level(uint32_t Width, uint32_t Height);
 		Level(uint32_t Width, uint32_t Height, uint32_t Seed);
@@ -18,6 +24,8 @@ class Level
 
 		bool IsEmpty(glm::vec3 check) const;
 
+		void DropBomb(glm::vec3 pos);
+
 		void SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swallow::Shader> &Shader);
 
 		void Update(Swallow::Timestep ts);
@@ -30,6 +38,9 @@ class Level
 		Swallow::Ref<Swallow::Shader> m_Shader;
 		
 		Swallow::Ref<Player> m_Player;
+
+		std::vector<Timer> m_BombTimers;
+		Timer *m_TempTimer = nullptr;
 
 		char **m_Map;
 };

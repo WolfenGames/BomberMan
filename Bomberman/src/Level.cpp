@@ -54,6 +54,27 @@ bool Level::IsEmpty(glm::vec3 check) const
 	return true;
 }
 
+void Level::DropBomb(glm::vec3 pos)
+{
+	if (m_TempTimer)
+	{
+		delete m_TempTimer;
+		m_TempTimer = nullptr;
+	}
+	Level::Timer timer;
+	timer.fuse = 3.0f;
+	timer.x = pos.x;
+	timer.y = pos.z;
+	if (IsEmpty(pos))
+	{
+		m_TempTimer = new Level::Timer;
+		m_TempTimer->fuse = timer.fuse;
+		m_TempTimer->x = timer.x;
+		m_TempTimer->y = timer.y;
+		m_Map[static_cast<uint32_t>(pos.x)][static_cast<uint32_t>(pos.z)] = 'B';
+	}
+}
+
 void Level::SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swallow::Shader> &Shader)
 {
 	m_Cube = VA;
@@ -63,6 +84,24 @@ void Level::SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swall
 
 void Level::Update(Swallow::Timestep ts)
 {
+	if (m_TempTimer)
+	{
+		m_BombTimers.push_back(*m_TempTimer);
+		delete m_TempTimer;
+		m_TempTimer = nullptr;
+	}
+	int i = 0;
+	for (auto &timer : m_BombTimers)
+	{
+		SW_INFO("{}: {}", i++, timer.fuse);
+		timer.fuse -= ts.GetSeconds();
+	}
+	std::sort(m_BombTimers.begin(), m_BombTimers.end(), [](Level::Timer a, Level::Timer b) -> int { return a.fuse > b.fuse; });
+	while (m_BombTimers.size() && m_BombTimers.back().fuse < 0.0)
+	{
+		m_Map[m_BombTimers.back().x][m_BombTimers.back().y] = '.';
+		m_BombTimers.pop_back();
+	}
 	m_Player->Update(ts);
 }
 
@@ -80,11 +119,14 @@ void Level::Draw()
 			switch(m_Map[x][y])
 			{
 				case '#':
-					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.9, 0.5, 0.2));
+					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.9f, 0.5f, 0.2f));
 				break;
 				case '@':
-					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.5, 0.5, 0.5));
+					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.5f, 0.5f, 0.5f));
 				break;
+				case 'B':
+					std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.0f, 0.0f, 0.0f));
+					break;
 				case '.':
 					continue;
 				break;
@@ -92,7 +134,7 @@ void Level::Draw()
 				break;
 			}
 			Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
-				glm::translate(position + glm::vec3(0.5f)) * scale);
+				glm::translate(position + glm::vec3(0.5f, 0.0f, 0.5f)) * scale);
 		}
 	}
 
