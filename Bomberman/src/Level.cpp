@@ -99,6 +99,14 @@ void Level::Update(Swallow::Timestep ts)
 	std::sort(m_BombTimers.begin(), m_BombTimers.end(), [](Level::Timer a, Level::Timer b) -> int { return a.fuse > b.fuse; });
 	while (m_BombTimers.size() && m_BombTimers.back().fuse < 0.0)
 	{
+		if (m_BombTimers.back().y != m_Height - 1 && m_Map[m_BombTimers.back().x][m_BombTimers.back().y + 1] != '@')
+			m_Map[m_BombTimers.back().x][m_BombTimers.back().y + 1] = '.';
+		if (m_BombTimers.back().y != 0 && m_Map[m_BombTimers.back().x][m_BombTimers.back().y - 1] != '@')
+			m_Map[m_BombTimers.back().x][m_BombTimers.back().y - 1] = '.';
+		if (m_BombTimers.back().x != m_Width - 1 && m_Map[m_BombTimers.back().x + 1][m_BombTimers.back().y] != '@')
+			m_Map[m_BombTimers.back().x + 1][m_BombTimers.back().y] = '.';
+		if (m_BombTimers.back().x != 0 && m_Map[m_BombTimers.back().x - 1][m_BombTimers.back().y] != '@')
+			m_Map[m_BombTimers.back().x - 1][m_BombTimers.back().y] = '.';
 		m_Map[m_BombTimers.back().x][m_BombTimers.back().y] = '.';
 		m_BombTimers.pop_back();
 	}
