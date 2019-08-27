@@ -2,15 +2,17 @@
 
 #include <Swallow.hpp>
 
+class Level;
+
 class Player
 {
 public:
-	Player(const glm::vec3 &Pos = glm::vec3(0, 0, 0));
+	Player(const glm::vec3 &Pos, const Level &l);
 	Player(const Player &rhs) = default;
 	Player &operator=(const Player &rhs) = default;
 	~Player();
 
-	inline glm::vec3 &Position() { return m_Positition; }
+	inline glm::vec3 &Position() { return m_Position; }
 
 	void Update(Swallow::Timestep ts);
 	void Draw();
@@ -18,8 +20,10 @@ public:
 	void SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swallow::Shader> &Shader);
 
 private:
-	glm::vec3 m_Positition;
+	glm::vec3 m_Position;
 
 	Swallow::Ref<Swallow::Shader> m_Shader;
 	Swallow::Ref<Swallow::VertexArray> m_Cube;
+	const Level &m_Level;
+	glm::vec3 m_Destination;
 };

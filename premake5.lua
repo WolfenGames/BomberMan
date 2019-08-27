@@ -44,6 +44,8 @@ project "Bomberman"
 	filter "system:macosx"
         systemversion "latest"
 
+	buildoptions { "-Wall", "-Wextra", "-Werror"}
+
         defines
         {
             "SW_PLATFORM_MACOSX"

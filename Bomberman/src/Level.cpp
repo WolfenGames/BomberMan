@@ -4,7 +4,7 @@
 #include <chrono>
 
 Level::Level(uint32_t Width, uint32_t Height)
-	:Level(Width, Height, std::chrono::system_clock::now().time_since_epoch().count())
+	:Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()))
 {
 }
 
@@ -25,7 +25,7 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed)
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
 	playerstart *= 2;
 	m_Map[playerstart.x][playerstart.y] = '.';
-	m_Player = Player(glm::vec3(playerstart.x, 0, playerstart.y));
+	m_Player = std::make_shared<Player>(glm::vec3(playerstart.x + 0.5, 0, playerstart.y + 0.5), *this);
 	if (playerstart.y != m_Height - 1)
 		m_Map[playerstart.x][playerstart.y + 1] = '.';
 	if (playerstart.y != 0)
@@ -45,23 +45,32 @@ Level::~Level()
 	delete[] m_Map;
 }
 
+bool Level::IsEmpty(glm::vec3 check) const
+{
+	check.x = glm::floor(check.x);
+	check.z = glm::floor(check.z);
+	if (check.x < 0 || check.z < 0 || check.x > m_Width - 1 || check.z > m_Height - 1 || m_Map[static_cast<int>(check.x)][static_cast<int>(check.z)] != '.')
+		return false;
+	return true;
+}
+
 void Level::SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swallow::Shader> &Shader)
 {
 	m_Cube = VA;
 	m_Shader = Shader;
-	m_Player.SetModels(VA, Shader);
+	m_Player->SetModels(VA, Shader);
 }
 
 void Level::Update(Swallow::Timestep ts)
 {
-	m_Player.Update(ts);
+	m_Player->Update(ts);
 }
 
 void Level::Draw()
 {
 	static float angle = 0.0f;
-	angle += 0.001;
-	glm::mat4 scale = glm::scale(glm::vec3(0.9));
+	angle += 0.001f;
+	glm::mat4 scale = glm::scale(glm::vec3(0.9f));
 	for (uint32_t x = 0; x < m_Width; x++)
 	{
 		for (uint32_t y = 0; y < m_Height; y++)
@@ -83,9 +92,9 @@ void Level::Draw()
 				break;
 			}
 			Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
-				glm::translate(position) * scale);
+				glm::translate(position + glm::vec3(0.5f)) * scale);
 		}
 	}
 
-	m_Player.Draw();
+	m_Player->Draw();
 }

@@ -11,10 +11,12 @@ class Level
 		Level &operator=(const Level &rhs) = default;
 		~Level();
 
-		inline Player &GetPlayer() { return m_Player; }
-		inline uint32_t GetWidth() { return m_Width; }
-		inline uint32_t GetHeight() { return m_Height; }
-		inline char** GetMap() { return m_Map; }
+		inline Swallow::Ref<Player> GetPlayer() { return m_Player; }
+		inline uint32_t GetWidth() const { return m_Width; }
+		inline uint32_t GetHeight() const { return m_Height; }
+		inline char** GetMap() const { return m_Map; }
+
+		bool IsEmpty(glm::vec3 check) const;
 
 		void SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swallow::Shader> &Shader);
 
@@ -27,7 +29,7 @@ class Level
 		Swallow::Ref<Swallow::VertexArray> m_Cube;
 		Swallow::Ref<Swallow::Shader> m_Shader;
 		
-		Player m_Player;
+		Swallow::Ref<Player> m_Player;
 
 		char **m_Map;
 };

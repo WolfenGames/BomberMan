@@ -6,7 +6,7 @@
 GameLayer::GameLayer()
 	:m_Camera(glm::radians(60.0f), Swallow::Application::Get().GetWindow().GetWidth() / (float)Swallow::Application::Get().GetWindow().GetHeight(), 0.01f, 100.0f)
 {
-	m_Camera.SetRotation(glm::vec3(glm::radians(-45.0f), glm::radians(0.0f), 0));
+	m_Camera.SetRotation(glm::vec3(glm::radians(-90.0f), glm::radians(0.0f), 0));
 	m_Camera.Recalculate();
 	m_Cube = Swallow::VertexArray::Create();
 	
@@ -82,7 +82,6 @@ GameLayer::GameLayer()
 	)";
 
 	m_Shader = Swallow::Shader::Create(sVertexSrc, sFragmentSrc);
-	//Swallow::RenderCommand::SetDepthTest(true);
 	Swallow::RenderCommand::ClearDepth();
 }
 
@@ -113,7 +112,6 @@ bool GameLayer::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 bool GameLayer::OnWindowResize(Swallow::WindowResizeEvent &e)
 {
 	m_Camera.SetProjectionMatrix(glm::radians(60.0f), Swallow::Application::Get().GetWindow().GetWidth() / (float)Swallow::Application::Get().GetWindow().GetHeight(), 0.01f, 100.0f);
-	SW_INFO("{} x {} : {} x {}", e.GetWidth(), e.GetHeight(), Swallow::Application::Get().GetWindow().GetWidth(), (float)Swallow::Application::Get().GetWindow().GetHeight());
 	m_Camera.Recalculate();
 	return false;
 }
@@ -136,7 +134,7 @@ void GameLayer::OnImGuiRender() {
 
 void GameLayer::OnUpdate(Swallow::Timestep ts)
 {
-	m_Position = m_Level->GetPlayer().Position() + glm::vec3(0, 10, 10);
+	m_Position = m_Level->GetPlayer()->Position() + glm::vec3(0, 10, 0);
 	m_Camera.SetPosition(m_Position);
 	m_Camera.Recalculate();
 	m_Level->Update(ts);

@@ -1,8 +1,9 @@
 #include "Player.hpp"
+#include "Level.hpp"
 #include "gtx/transform.hpp"
 
-Player::Player(const glm::vec3 &Pos)
-	:m_Positition(Pos)
+Player::Player(const glm::vec3 &Pos, const Level &l)
+	:m_Position(Pos), m_Level(l), m_Destination(m_Position)
 {
 }
 
@@ -12,14 +13,21 @@ Player::~Player()
 
 void Player::Update(Swallow::Timestep ts)
 {
-	if (Swallow::Input::IsKeyPressed(SW_KEY_W))
-		m_Positition.z += ts.GetSeconds() * -5;
-	if (Swallow::Input::IsKeyPressed(SW_KEY_A))
-		m_Positition.x += ts.GetSeconds() * -5;
-	if (Swallow::Input::IsKeyPressed(SW_KEY_S))
-		m_Positition.z += ts.GetSeconds() * 5;
-	if (Swallow::Input::IsKeyPressed(SW_KEY_D))
-		m_Positition.x += ts.GetSeconds() * 5;
+	static float threshold = 0.1f;
+	if (Swallow::Input::IsKeyPressed(SW_KEY_W)
+		&& glm::abs(m_Destination.x - m_Position.x) < threshold && m_Level.IsEmpty(m_Position + glm::vec3(0.0f, 0.0f, -1.0f)))
+		m_Destination.z = glm::floor(m_Position.z) - 0.5f;
+	if (Swallow::Input::IsKeyPressed(SW_KEY_S)
+		&& glm::abs(m_Destination.x - m_Position.x) < threshold && m_Level.IsEmpty(m_Position + glm::vec3(0.0f, 0.0f, 1.0f)))
+		m_Destination.z = glm::floor(m_Position.z) + 1.5f;
+	if (Swallow::Input::IsKeyPressed(SW_KEY_A)
+		&& glm::abs(m_Destination.z - m_Position.z) < threshold && m_Level.IsEmpty(m_Position + glm::vec3(-1.0f, 0.0f, 0.0f)))
+		m_Destination.x = glm::floor(m_Position.x) - 0.5f;
+	if (Swallow::Input::IsKeyPressed(SW_KEY_D)
+		&& glm::abs(m_Destination.z - m_Position.z) < threshold && m_Level.IsEmpty(m_Position + glm::vec3(1.0f, 0.0f, 0.0f)))
+		m_Destination.x = glm::floor(m_Position.x) + 1.5f;
+	if (glm::length(m_Destination - m_Position) > 0.01f)
+		m_Position += glm::normalize(m_Destination - m_Position) * ts.GetSeconds() * 2.0f;
 }
 
 void Player::Draw()
@@ -27,7 +35,10 @@ void Player::Draw()
 	std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->Bind();
 	std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(0.2, 0.5, 0.9));
 	Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
-		glm::translate(m_Positition) * glm::scale(glm::vec3(0.8)));
+		glm::translate(m_Position) * glm::scale(glm::vec3(0.8f)));
+	std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader)->UploadUniformFloat3("u_Color", glm::vec3(1, 1, 1));
+	Swallow::Renderer::Submit(std::dynamic_pointer_cast<Swallow::OpenGLShader>(m_Shader), m_Cube,
+		glm::translate(m_Destination) * glm::scale(glm::vec3(0.2f)));
 }
 
 void Player::SetModels(Swallow::Ref<Swallow::VertexArray>& VA, Swallow::Ref<Swallow::Shader>& Shader)
