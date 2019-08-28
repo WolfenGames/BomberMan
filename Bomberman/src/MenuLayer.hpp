@@ -20,6 +20,7 @@ public:
 	bool OnKeyPressed(Swallow::KeyPressedEvent &e);
 	bool OnWindowResize(Swallow::WindowResizeEvent &e);
 
+	inline const glm::ivec2 &GetMapSize() { return map_size; }
 
 	virtual void OnEvent(Swallow::Event &e) override;
 	virtual void OnImGuiRender() override;

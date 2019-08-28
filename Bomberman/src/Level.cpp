@@ -71,7 +71,7 @@ void Level::DropBomb(glm::vec3 pos)
 		m_TempTimer = nullptr;
 	}
 	Level::Timer timer;
-	timer.fuse = 3.0f;
+	timer.fuse = 1.5f;
 	timer.x = pos.x;
 	timer.y = pos.z;
 	if (IsEmpty(pos))

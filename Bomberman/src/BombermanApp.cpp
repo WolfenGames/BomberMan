@@ -33,6 +33,7 @@ void BombermanApp::UnloadGame()
 
 void BombermanApp::LoadGame()
 {
+	m_GameLayer->SetMapSize(m_MenuLayer->GetMapSize());
 	PushLayer(m_GameLayer);
 	PushOverlay(m_GUILayer);
 }

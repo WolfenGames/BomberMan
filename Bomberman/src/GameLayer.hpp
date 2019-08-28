@@ -9,6 +9,7 @@ private:
 
 	Swallow::PerspectiveCamera m_Camera;
 	glm::vec3	m_Position;
+	glm::ivec2  map_size;
 public:
 	GameLayer();
 	GameLayer(const GameLayer &s) = default;
@@ -19,6 +20,8 @@ public:
 	bool OnMouseMovedEvent(Swallow::MouseMovedEvent &e);
 	bool OnKeyPressed(Swallow::KeyPressedEvent &e);
 	bool OnWindowResize(Swallow::WindowResizeEvent &e);
+
+	inline void SetMapSize(const glm::ivec2 &v) {map_size = v;}
 
 
 	virtual void OnEvent(Swallow::Event &e) override;

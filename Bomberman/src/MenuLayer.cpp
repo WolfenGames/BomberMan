@@ -8,7 +8,7 @@
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 
 MenuLayer::MenuLayer()
-	:m_Camera(-10, 10, -10, 10, 10, -10)
+	:m_Camera(-10, 10, -10, 10, 10, -10), map_size(1.0f)
 {
 	m_Camera.SetPosition(glm::vec3(0, 0, 0));
 	m_Camera.SetRotation(glm::vec3(0, 0, 0));
@@ -68,7 +68,7 @@ bool MenuLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 
 void MenuLayer::OnImGuiRender() {
 	ImGui::Begin("Menu");
-	ImGui::SliderInt2("Level Size", glm::value_ptr(map_size), 0, 50);
+	ImGui::SliderInt2("Level Size", glm::value_ptr(map_size), 1, 50);
 	ImGui::End();
 }
 

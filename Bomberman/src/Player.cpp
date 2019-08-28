@@ -28,7 +28,8 @@ void Player::Update(Swallow::Timestep ts)
 	if (Swallow::Input::IsKeyPressed(SW_KEY_D)
 		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f)))
 		m_Destination.x = glm::floor(GetTransform()->GetPosition().x - 0.5f + threshold) + 1.5f;
-	if (glm::length(m_Destination - GetTransform()->GetPosition()) > 0.01f)
-		GetTransform()->GetPosition() += glm::normalize(m_Destination - GetTransform()->GetPosition()) * ts.GetSeconds() * 2.0f;
+	float len = glm::length(m_Destination - GetTransform()->GetPosition());
+	if (len > 0.01f)
+		GetTransform()->GetPosition() += glm::normalize(m_Destination - GetTransform()->GetPosition()) * glm::min(ts.GetSeconds() * 2.0f, len);
 	GetTransform()->Recalculate();
 }
