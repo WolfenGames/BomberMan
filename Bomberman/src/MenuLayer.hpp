@@ -4,10 +4,11 @@
 
 class MenuLayer : public Swallow::Layer {
 private:
-	Swallow::Ref<Swallow::VertexArray> m_Square;
-	Swallow::Ref<Swallow::Shader> m_Shader;
+	Swallow::Ref<Swallow::GameObject> m_Square;
 
 	Swallow::OrthographicCamera m_Camera;
+
+	glm::ivec2 map_size;
 public:
 	MenuLayer();
 	MenuLayer(const MenuLayer &s) = default;

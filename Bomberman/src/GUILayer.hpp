@@ -4,10 +4,10 @@
 
 class GUILayer : public Swallow::Layer {
 private:
-	Swallow::Ref<Swallow::VertexArray> m_Square;
-	Swallow::Ref<Swallow::Shader> m_Shader;
+	Swallow::Ref<Swallow::GameObject> m_PinkThing;
 
 	Swallow::OrthographicCamera m_Camera;
+
 public:
 	GUILayer();
 	GUILayer(const GUILayer &s) = default;

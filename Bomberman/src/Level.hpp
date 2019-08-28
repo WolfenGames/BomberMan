@@ -26,18 +26,14 @@ class Level
 
 		void DropBomb(glm::vec3 pos);
 
-		void SetModels(Swallow::Ref<Swallow::VertexArray> &VA, Swallow::Ref<Swallow::Shader> &Shader);
-
 		void Update(Swallow::Timestep ts);
 		void Draw();
 
 	private:
 		uint32_t m_Width, m_Height, m_Seed;
 
-		Swallow::Ref<Swallow::VertexArray> m_Cube;
-		Swallow::Ref<Swallow::Shader> m_Shader;
-		
 		Swallow::Ref<Player> m_Player;
+		Swallow::Ref<Swallow::GameObject> m_Cube;
 
 		std::vector<Timer> m_BombTimers;
 		Timer *m_TempTimer = nullptr;
