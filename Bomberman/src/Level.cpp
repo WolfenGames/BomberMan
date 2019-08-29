@@ -22,7 +22,7 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed)
 
 		for (uint32_t y = 0; y < m_Height; y++)
 		{
-			m_Map[x][y] = (x % 2 && y % 2) ? '@' : '#';
+			m_Map[x][y] = (x % 2 && y % 2) ? '@' : (rand() % 10 > 6.f) ? '#' : '.';
 		}
 	}
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
