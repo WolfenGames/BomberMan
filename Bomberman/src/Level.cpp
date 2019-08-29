@@ -18,6 +18,7 @@ Level::Level(uint32_t Width, uint32_t Height, float chance)
 Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	:m_Width(Width * 2 + 1), m_Height(Height * 2 + 1), m_Seed(Seed)
 {
+	m_CurrentEnemies = 0;
 	m_Cube = Swallow::Primatives::Cube();
 	srand(m_Seed);
 	m_Map = new char*[m_Width];
@@ -118,6 +119,10 @@ void Level::Update(Swallow::Timestep ts)
 		m_BombTimers.pop_back();
 	}
 	m_Player->Update(ts);
+	for (int i = 0; i < m_CurrentEnemies; i++)
+	{
+		//m_Enemies[i]->Update(ts);
+	}
 }
 
 void Level::Draw()

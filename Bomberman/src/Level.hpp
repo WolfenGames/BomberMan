@@ -1,6 +1,7 @@
 #pragma once
 #include <Swallow.hpp>
 #include "Player.hpp"
+#include "Enemy.hpp"
 
 class Level
 {
@@ -32,7 +33,7 @@ class Level
 
 	private:
 		uint32_t m_Width, m_Height, m_Seed;
-
+		uint32_t m_CurrentEnemies;
 		Swallow::Ref<Player> m_Player;
 		Swallow::Ref<Swallow::GameObject> m_Cube;
 

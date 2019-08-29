@@ -26,21 +26,24 @@ void Enemy::Update(Swallow::Timestep ts)
 {
 	static float threshold = 0.1f;
 
+	m_MaxMoves--;
 	if (m_MaxMoves <= 0)
 		this->makeDecision();
 
 	if ((m_MoveDir.x == 1 && m_MoveDir.y == 1) || (m_MoveDir.x == 0 && m_MoveDir.y == 0))
 		m_MaxMoves = 0;
-	if (m_MoveDir.x == 1 && m_MoveDir.y == 0)
-		m_Pos.z = glm::floor(GetTransform()->GetPosition().z + 1.f - threshold) - 1.f;
-	if (m_MoveDir.x == -1 && m_MoveDir.y == 0)
-		m_Pos.z = glm::floor(GetTransform()->GetPosition().z -1.f - threshold) - 1.f;
-	if (m_MoveDir.x == -1 && m_MoveDir.y == 0)
-		m_Pos.x = glm::floor(GetTransform()->GetPosition().x + 1.f - threshold) - 1.f;
-	if (m_MoveDir.x == 0 && m_MoveDir.y == -1)
-		m_Pos.x = glm::floor(GetTransform()->GetPosition().x - 1.f - threshold) - 1.f;
-
-
+	if (m_MoveDir.x == 1 && m_MoveDir.y == 0
+		&& glm::abs(m_Pos.x - GetTransform()->GetPosition().x) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f)))
+		m_Pos.z = glm::floor(GetTransform()->GetPosition().z + 0.5f - threshold) - 0.5f;
+	if (m_MoveDir.x == -1 && m_MoveDir.y == 0
+		&& glm::abs(m_Pos.x - GetTransform()->GetPosition().x) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, 1.0f)))
+		m_Pos.z = glm::floor(GetTransform()->GetPosition().z - 0.5f + threshold) + 1.5f;
+	if (m_MoveDir.x == 0 && m_MoveDir.y == 1
+		&& glm::abs(m_Pos.z - GetTransform()->GetPosition().z) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(-1.0f, 0.0f, 0.0f)))
+		m_Pos.x = glm::floor(GetTransform()->GetPosition().x + 0.5f - threshold) - 0.5f;
+	if (m_MoveDir.x == 0 && m_MoveDir.y == -1
+		&& glm::abs(m_Pos.z - GetTransform()->GetPosition().z) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f)))
+		m_Pos.x = glm::floor(GetTransform()->GetPosition().x - 0.5f + threshold) + 1.5f;
 	if (m_MaxMoves > 0)
 	{
 		float len = glm::length(m_Pos - GetTransform()->GetPosition());
