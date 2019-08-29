@@ -28,9 +28,9 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 		for (uint32_t y = 0; y < m_Height; y++)
 		{
 			m_Map[x][y] = (x % 2 && y % 2) ? '@' : 
-				(((rand() % 10)/10.f) > chance) ? '#' : '.';
+				(((rand() % 10)/10.f) > chance) ? 
+				(((rand() % 100/100.f) > 0.8f) ? 'X' : '#') : '.';
 		}
-		SW_CORE_INFO("{}", chance);
 	}
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
 	playerstart *= 2;
@@ -139,6 +139,9 @@ void Level::Draw()
 				break;
 				case 'B':
 					mat->SetColour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+					break;
+				case 'X':
+					mat->SetColour(glm::vec4(0.9f, 0.1f, 0.1f, 1.0f));
 					break;
 				case '.':
 					continue;
