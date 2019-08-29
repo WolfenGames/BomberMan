@@ -6,11 +6,16 @@
 #include <chrono>
 
 Level::Level(uint32_t Width, uint32_t Height)
-	:Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()))
+	:Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()), 0.6f)
 {
 }
 
-Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed)
+Level::Level(uint32_t Width, uint32_t Height, float chance)
+	: Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()), chance)
+{
+}
+
+Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	:m_Width(Width * 2 + 1), m_Height(Height * 2 + 1), m_Seed(Seed)
 {
 	m_Cube = Swallow::Primatives::Cube();
@@ -22,8 +27,10 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed)
 
 		for (uint32_t y = 0; y < m_Height; y++)
 		{
-			m_Map[x][y] = (x % 2 && y % 2) ? '@' : (rand() % 10 > 6.f) ? '#' : '.';
+			m_Map[x][y] = (x % 2 && y % 2) ? '@' : 
+				(((rand() % 10)/10.f) > chance) ? '#' : '.';
 		}
+		SW_CORE_INFO("{}", chance);
 	}
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
 	playerstart *= 2;

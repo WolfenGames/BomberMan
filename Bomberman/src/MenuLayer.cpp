@@ -20,6 +20,7 @@ MenuLayer::MenuLayer()
 	m_Square->SetMaterial(mat);
 	m_Square->GetTransform()->SetPosition(glm::vec3(0.0f, 9.0f, 0.0f));
 	m_Square->GetTransform()->Recalculate();
+	chance = 0.6f;
 }
 
 void MenuLayer::OnEvent(Swallow::Event &e) {
@@ -69,6 +70,7 @@ bool MenuLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 void MenuLayer::OnImGuiRender() {
 	ImGui::Begin("Menu");
 	ImGui::SliderInt2("Level Size", glm::value_ptr(map_size), 1, 50);
+	ImGui::SliderFloat("GenPercent", &chance, 0.1, 1, "%.1f", 1.0f);
 	ImGui::End();
 }
 

@@ -12,7 +12,8 @@ class Level
 
 	public:
 		Level(uint32_t Width, uint32_t Height);
-		Level(uint32_t Width, uint32_t Height, uint32_t Seed);
+		Level(uint32_t Width, uint32_t Height, float chance);
+		Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance);
 		Level(const Level &rhs) = default;
 		Level &operator=(const Level &rhs) = default;
 		~Level();
