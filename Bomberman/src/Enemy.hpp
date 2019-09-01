@@ -1,7 +1,8 @@
 #pragma once
 
 #include <Swallow.hpp>
-#include "Level.hpp"
+
+class Level;
 
 class Enemy : public Swallow::GameObject
 {
@@ -19,7 +20,7 @@ public:
 private:
 	glm::vec3							m_Pos;
 	Level								&m_Level;
-	UINT								m_MaxMoves;
+	int								m_MaxMoves;
 	Swallow::Ref<Swallow::GameObject>	m_Cube;
 	glm::vec2							m_MoveDir;
 

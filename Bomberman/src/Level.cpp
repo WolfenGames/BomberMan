@@ -30,7 +30,7 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 		{
 			m_Map[x][y] = (x % 2 && y % 2) ? '@' : 
 				(((rand() % 10)/10.f) > chance) ? 
-				(((rand() % 100/100.f) > 0.8f) ? 'X' : '#') : '.';
+				(((rand() % 100/100.f) > 0.8f) ?  MakeEnemy(x, y) : '#') : '.';
 		}
 	}
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
@@ -51,6 +51,18 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	mat->SetColour(glm::vec4(0.2f, 0.5f, 1.0f, 1.0f));
 	m_Player->SetMaterial(mat);
 	m_Player->GetTransform()->SetScale(glm::vec3(0.5f));
+	for (auto x : m_Enemies)
+	{
+		x->SetMaterial(Swallow::FlatColourMaterial::Create());
+		x->SetVertexArray(m_Cube->GetVertexArray());
+		x->SetMaterial(mat);
+		x->GetTransform()->SetScale(glm::vec3(0.4f));
+	}
+}
+
+char Level::MakeEnemy(int x, int y)
+{
+	return 'X';
 }
 
 Level::~Level()
@@ -119,10 +131,8 @@ void Level::Update(Swallow::Timestep ts)
 		m_BombTimers.pop_back();
 	}
 	m_Player->Update(ts);
-	for (int i = 0; i < m_CurrentEnemies; i++)
-	{
-		//m_Enemies[i]->Update(ts);
-	}
+	//for (auto enemy : m_Enemies)
+	//	((Enemy*)enemy)->Update(ts);
 }
 
 void Level::Draw()
@@ -159,6 +169,7 @@ void Level::Draw()
 			Swallow::Renderer::Submit(m_Cube);
 		}
 	}
-
+	//for (auto x : m_Enemies)
+	//	Swallow::Renderer::Submit((Swallow::Ref<Enemy>(x)));
 	Swallow::Renderer::Submit(m_Player);
 }

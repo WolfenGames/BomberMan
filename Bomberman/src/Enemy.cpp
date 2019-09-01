@@ -1,10 +1,15 @@
 #include "Enemy.hpp"
+#include "Level.hpp"
+#include "gtx/transform.hpp"
 
-Enemy::Enemy(const glm::vec3& pos, Level& level): m_Level(level)
+Enemy::Enemy(const glm::vec3& pos, Level& level): m_Level(level), m_MaxMoves(0)
 {
+	SW_CORE_INFO("{}", m_MaxMoves);
 	GetTransform()->SetPosition(pos);
 	m_Pos = GetTransform()->GetPosition();
 	m_MoveDir = { 0, 0 };
+	m_MaxMoves = 1;
+	makeDecision();
 }
 
 void Enemy::makeDecision()
@@ -25,10 +30,9 @@ glm::vec3& Enemy::Destination()
 void Enemy::Update(Swallow::Timestep ts)
 {
 	static float threshold = 0.1f;
-
-	m_MaxMoves--;
 	if (m_MaxMoves <= 0)
 		this->makeDecision();
+	m_MaxMoves--;
 
 	if ((m_MoveDir.x == 1 && m_MoveDir.y == 1) || (m_MoveDir.x == 0 && m_MoveDir.y == 0))
 		m_MaxMoves = 0;
