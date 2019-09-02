@@ -4,7 +4,6 @@
 #include "Swallow/Renderer/Primatives.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 #include <chrono>
-#include <unistd.h>
 
 Level::Level(uint32_t Width, uint32_t Height)
 	:Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()), 0.6f)
@@ -39,7 +38,6 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 		pos *= 2;
 		SW_INFO("{}, {}", pos.x, pos.y);
 		MakeEnemy(pos.x, pos.y);
-		usleep(1000);
 	}
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
 	playerstart *= 2;
