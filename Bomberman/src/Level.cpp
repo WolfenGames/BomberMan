@@ -51,11 +51,13 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	mat->SetColour(glm::vec4(0.2f, 0.5f, 1.0f, 1.0f));
 	m_Player->SetMaterial(mat);
 	m_Player->GetTransform()->SetScale(glm::vec3(0.5f));
+	Swallow::Ref<Swallow::FlatColourMaterialInstance> mat2 = Swallow::FlatColourMaterial::Create();
+	mat2->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
 	for (auto x : m_Enemies)
 	{
 		x->SetMaterial(Swallow::FlatColourMaterial::Create());
 		x->SetVertexArray(m_Cube->GetVertexArray());
-		x->SetMaterial(mat);
+		x->SetMaterial(mat2);
 		x->GetTransform()->SetScale(glm::vec3(0.4f));
 	}
 }
