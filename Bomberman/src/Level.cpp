@@ -62,6 +62,7 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 
 char Level::MakeEnemy(int x, int y)
 {
+	x+=y;
 	return 'X';
 }
 
