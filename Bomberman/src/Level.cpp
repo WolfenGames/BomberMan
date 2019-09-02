@@ -62,11 +62,11 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 
 char Level::MakeEnemy(int x, int y)
 {
-	Enemy* newEnemy = new Enemy(glm::vec3(x, 0, y), *this);
+	Enemy* newEnemy = new Enemy(glm::vec3(x + 0.5f, 0, y + 0.5f), *this, m_Seed);
 	Swallow::Ref<Enemy> newRef = static_cast<Swallow::Ref<Enemy>>(newEnemy);
 	m_Enemies.push_back(newRef);
 	x+=y;
-	return 'X';
+	return '.';
 }
 
 Level::~Level()
@@ -158,9 +158,6 @@ void Level::Draw()
 				break;
 				case 'B':
 					mat->SetColour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-					break;
-				// case 'X':
-				// 	mat->SetColour(glm::vec4(0.9f, 0.1f, 0.1f, 1.0f));
 					break;
 				case '.':
 					continue;
