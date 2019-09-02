@@ -30,7 +30,7 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 		{
 			m_Map[x][y] = (x % 2 && y % 2) ? '@' : 
 				(((rand() % 10)/10.f) > chance) ? 
-				(((rand() % 100/100.f) > 0.8f) ?  MakeEnemy(x, y) : '#') : '.';
+				(((rand() % 100/100.f) > 0.9f) ?  MakeEnemy(x, y) : '#') : '.';
 		}
 	}
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
