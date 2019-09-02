@@ -28,6 +28,8 @@ class Level
 
 		void DropBomb(glm::vec3 pos);
 
+		char MakeEnemy(int x, int y);
+
 		void Update(Swallow::Timestep ts);
 		void Draw();
 
@@ -35,6 +37,7 @@ class Level
 		uint32_t m_Width, m_Height, m_Seed;
 		uint32_t m_CurrentEnemies;
 		Swallow::Ref<Player> m_Player;
+		std::vector<Swallow::Ref<Enemy>> m_Enemies;
 		Swallow::Ref<Swallow::GameObject> m_Cube;
 
 		std::vector<Timer> m_BombTimers;
