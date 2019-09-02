@@ -22,7 +22,7 @@ public:
 	bool OnWindowResize(Swallow::WindowResizeEvent &e);
 
 	inline const glm::ivec2 &GetMapSize() { return map_size; }
-	inline const float GetChance() { return this->chance; }
+	inline float GetChance() { return this->chance; }
 
 	virtual void OnEvent(Swallow::Event &e) override;
 	virtual void OnImGuiRender() override;

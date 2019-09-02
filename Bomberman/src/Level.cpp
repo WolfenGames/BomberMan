@@ -119,10 +119,6 @@ void Level::Update(Swallow::Timestep ts)
 		m_BombTimers.pop_back();
 	}
 	m_Player->Update(ts);
-	for (int i = 0; i < m_CurrentEnemies; i++)
-	{
-		//m_Enemies[i]->Update(ts);
-	}
 }
 
 void Level::Draw()

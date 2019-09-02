@@ -19,7 +19,7 @@ public:
 private:
 	glm::vec3							m_Pos;
 	Level								&m_Level;
-	UINT								m_MaxMoves;
+	uint32_t							m_MaxMoves;
 	Swallow::Ref<Swallow::GameObject>	m_Cube;
 	glm::vec2							m_MoveDir;
 
