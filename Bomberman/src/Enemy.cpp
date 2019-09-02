@@ -4,7 +4,6 @@
 
 Enemy::Enemy(const glm::vec3& pos, Level& level): m_Level(level), m_MaxMoves(0)
 {
-	SW_CORE_INFO("{}", m_MaxMoves);
 	GetTransform()->SetPosition(pos);
 	m_Pos = GetTransform()->GetPosition();
 	m_MoveDir = { 0, 0 };
