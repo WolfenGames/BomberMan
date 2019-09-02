@@ -2,14 +2,13 @@
 #include "Level.hpp"
 #include "gtx/transform.hpp"
 
-Enemy::Enemy(const glm::vec3& pos, Level& level, uint64_t seed): m_Level(level), m_MaxMoves(0), m_Seed(seed)
+Enemy::Enemy(const glm::vec3& pos, Level& level): m_Level(level), m_MaxMoves(0)
 {
 	GetTransform()->SetPosition(pos);
 	m_Pos = GetTransform()->GetPosition();
 	m_MoveDir = { 0, 0 };
 	m_MaxMoves = 1;
 	makeDecision();
-	srand(m_Seed);
 }
 
 void Enemy::makeDecision()

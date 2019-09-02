@@ -4,23 +4,22 @@
 #include "Swallow/Renderer/Primatives.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 #include <chrono>
+#include <unistd.h>
 
 Level::Level(uint32_t Width, uint32_t Height)
 	:Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()), 0.6f)
-{
-}
+{}
 
 Level::Level(uint32_t Width, uint32_t Height, float chance)
 	: Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()), chance)
-{
-}
+{}
 
 Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	:m_Width(Width * 2 + 1), m_Height(Height * 2 + 1), m_Seed(Seed)
 {
-	m_CurrentEnemies = 0;
+	int desiredEnemies = ((m_Width + m_Height) / 2.0f) * chance;
 	m_Cube = Swallow::Primatives::Cube();
-	srand(m_Seed);
+	std::srand(m_Seed);
 	m_Map = new char*[m_Width];
 	for (uint32_t x = 0; x < m_Width; x++)
 	{
@@ -28,10 +27,19 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 
 		for (uint32_t y = 0; y < m_Height; y++)
 		{
-			m_Map[x][y] = (x % 2 && y % 2) ? '@' : 
-				(((rand() % 10)/10.f) > chance) ? 
-				(((rand() % 100/100.f) > 0.9f) ?  MakeEnemy(x, y) : '#') : '.';
+			m_Map[x][y] = (x % 2 && y % 2) ? '@' :
+				(((std::rand() % 10)/10.f) > chance) ?  '#': '.';
 		}
+	}
+	m_Enemies.reserve(desiredEnemies);
+	glm::ivec2 pos;
+	for (int i = 0; i < desiredEnemies; i++)
+	{
+		pos = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
+		pos *= 2;
+		SW_INFO("{}, {}", pos.x, pos.y);
+		MakeEnemy(pos.x, pos.y);
+		usleep(1000);
 	}
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
 	playerstart *= 2;
@@ -64,10 +72,8 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 
 char Level::MakeEnemy(int x, int y)
 {
-	Enemy* newEnemy = new Enemy(glm::vec3(x + 0.5f, 0, y + 0.5f), *this, m_Seed);
-	Swallow::Ref<Enemy> newRef = static_cast<Swallow::Ref<Enemy>>(newEnemy);
+	Swallow::Ref<Enemy> newRef = std::make_shared<Enemy>(glm::vec3(x + 0.5f, 0, y + 0.5f), *this);
 	m_Enemies.push_back(newRef);
-	x+=y;
 	return '.';
 }
 
