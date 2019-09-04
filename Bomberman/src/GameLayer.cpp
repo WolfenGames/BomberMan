@@ -63,6 +63,7 @@ void GameLayer::OnImGuiRender() {
 
 void GameLayer::OnUpdate(Swallow::Timestep ts)
 {
+	static_cast<void>(ts);
 	m_Position = m_Level->GetPlayer()->GetTransform()->GetPosition() + glm::vec3(0, 10, 6);
 	m_Camera.SetPosition(m_Position);
 	m_Camera.Recalculate();

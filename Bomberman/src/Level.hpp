@@ -1,6 +1,7 @@
 #pragma once
 #include <Swallow.hpp>
 #include "Player.hpp"
+#include "Wall.hpp"
 
 class Level
 {
@@ -20,7 +21,7 @@ class Level
 		inline Swallow::Ref<Player> GetPlayer() { return m_Player; }
 		inline uint32_t GetWidth() const { return m_Width; }
 		inline uint32_t GetHeight() const { return m_Height; }
-		inline char** GetMap() const { return m_Map; }
+		inline const std::vector<Swallow::Ref<Wall>> &GetMap() const { return m_Map; }
 
 		bool IsEmpty(glm::vec3 check) const;
 
@@ -38,5 +39,5 @@ class Level
 		std::vector<Timer> m_BombTimers;
 		Timer *m_TempTimer = nullptr;
 
-		char **m_Map;
+		std::vector<Swallow::Ref<Wall>> m_Map;
 };
