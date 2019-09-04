@@ -6,13 +6,17 @@
 #include <chrono>
 
 Level::Level(uint32_t Width, uint32_t Height)
-	:Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()))
-{
-}
+	:Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()), 0.6f)
+{}
 
-Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed)
+Level::Level(uint32_t Width, uint32_t Height, float chance)
+	: Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()), chance)
+{}
+
+Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	:m_Width(Width * 2 + 1), m_Height(Height * 2 + 1), m_Seed(Seed)
 {
+	int desiredEnemies = ((m_Width + m_Height) / 2.0f) * chance;
 	m_Cube = Swallow::Primatives::Cube();
 	srand(m_Seed);
 	m_Map.reserve(m_Width * m_Height);
@@ -30,6 +34,15 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed)
 			m_Map[x * m_Height + y]->SetMaterial((x % 2 && y % 2) ? Pillar : Brick);
 			m_Map[(x) * m_Height + (y)]->GetTransform()->Recalculate();
 		}
+	}
+	m_Enemies.reserve(desiredEnemies);
+	glm::ivec2 pos;
+	for (int i = 0; i < desiredEnemies; i++)
+	{
+		pos = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
+		pos *= 2;
+		SW_INFO("{}, {}", pos.x, pos.y);
+		MakeEnemy(pos.x, pos.y);
 	}
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
 	playerstart *= 2;
@@ -49,6 +62,22 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed)
 	mat->SetColour(glm::vec4(0.2f, 0.5f, 1.0f, 1.0f));
 	m_Player->SetMaterial(mat);
 	m_Player->GetTransform()->SetScale(glm::vec3(0.5f));
+	Swallow::Ref<Swallow::FlatColourMaterialInstance> mat2 = Swallow::FlatColourMaterial::Create();
+	mat2->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
+	for (auto x : m_Enemies)
+	{
+		x->SetMaterial(Swallow::FlatColourMaterial::Create());
+		x->SetVertexArray(m_Cube->GetVertexArray());
+		x->SetMaterial(mat2);
+		x->GetTransform()->SetScale(glm::vec3(0.4f));
+	}
+}
+
+char Level::MakeEnemy(int x, int y)
+{
+	Swallow::Ref<Enemy> newRef = std::make_shared<Enemy>(glm::vec3(x + 0.5f, 0, y + 0.5f), *this);
+	m_Enemies.push_back(newRef);
+	return '.';
 }
 
 Level::~Level()
@@ -119,6 +148,8 @@ void Level::Update(Swallow::Timestep ts)
 		m_BombTimers.pop_back();
 	}
 	m_Player->Update(ts);
+	for (auto enemy : m_Enemies)
+		enemy->Update(ts);
 }
 
 void Level::Draw()
@@ -136,5 +167,7 @@ void Level::Draw()
 			}
 		}
 	}
+	for (auto x : m_Enemies)
+		Swallow::Renderer::Submit((Swallow::Ref<Enemy>(x)));
 	Swallow::Renderer::Submit(m_Player);
 }

@@ -10,6 +10,7 @@ private:
 	Swallow::PerspectiveCamera m_Camera;
 	glm::vec3	m_Position;
 	glm::ivec2  map_size;
+	float		chance;
 public:
 	GameLayer();
 	GameLayer(const GameLayer &s) = default;
@@ -22,7 +23,7 @@ public:
 	bool OnWindowResize(Swallow::WindowResizeEvent &e);
 
 	inline void SetMapSize(const glm::ivec2 &v) {map_size = v;}
-
+	inline void SetSpawnChance(const float chance) { this->chance = chance; }
 
 	virtual void OnEvent(Swallow::Event &e) override;
 	virtual void OnAttach() override;

@@ -8,7 +8,8 @@ private:
 
 	Swallow::OrthographicCamera m_Camera;
 
-	glm::ivec2 map_size;
+	glm::ivec2	map_size;
+	float		chance;
 public:
 	MenuLayer();
 	MenuLayer(const MenuLayer &s) = default;
@@ -21,6 +22,7 @@ public:
 	bool OnWindowResize(Swallow::WindowResizeEvent &e);
 
 	inline const glm::ivec2 &GetMapSize() { return map_size; }
+	inline float GetChance() { return this->chance; }
 
 	virtual void OnEvent(Swallow::Event &e) override;
 	virtual void OnImGuiRender() override;

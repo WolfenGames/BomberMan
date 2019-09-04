@@ -12,7 +12,7 @@ GameLayer::GameLayer()
 
 void GameLayer::OnAttach()
 {
-	m_Level = std::make_shared<Level>(map_size.x, map_size.y);
+	m_Level = std::make_shared<Level>(map_size.x, map_size.y, chance);
 }
 
 void GameLayer::OnDetach()
