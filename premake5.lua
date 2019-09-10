@@ -33,7 +33,11 @@ project "Bomberman"
 		enginedir .. "%{IncludeDir.GLFW}",
 		enginedir .. "%{IncludeDir.Glad}",
 		enginedir .. "%{IncludeDir.glm}",
-		enginedir .. "%{IncludeDir.ImGui}"
+		enginedir .. "%{IncludeDir.freetype}",
+		enginedir .. "%{IncludeDir.ImGui}",
+		enginedir .. "%{IncludeDir.AssImp}",
+		enginedir .. "%{IncludeDir.AssImpBuild}",
+		enginedir .. "%{IncludeDir.OpenAL}"
 	}
 
 	links
@@ -58,9 +62,16 @@ project "Bomberman"
 			"OpenGL.framework",
 			"GLUT.framework",
 			"CoreVideo.framework",
+			"OpenAL.framework",
+			"AudioUnit.framework",
+			"AudioToolbox.framework",
+			"CoreAudio.framework",
 			"GLFW",
 			"Glad",
-			"ImGui"
+			"ImGui",
+			"OpenAL",
+			"freetype",
+			"AssImp"
 		}
 
 		postbuildcommands { "echo \"cd %{prj.name} && ../bin/" .. outputdir .. "/%{prj.name}/%{prj.name}\" > ../Run.sh" }

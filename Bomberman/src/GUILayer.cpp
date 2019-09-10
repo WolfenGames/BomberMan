@@ -4,7 +4,7 @@
 #include "gtx/transform.hpp"
 #include "Platform/OpenGL/OpenGLShader.hpp"
 #include "BombermanApp.hpp"
-#include "Swallow/Renderer/Primatives.hpp"
+#include "Swallow/AssetManager/Primatives.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 
 GUILayer::GUILayer()

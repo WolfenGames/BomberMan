@@ -1,7 +1,7 @@
 #include "Level.hpp"
 #include "gtc/random.hpp"
 #include "gtx/transform.hpp"
-#include "Swallow/Renderer/Primatives.hpp"
+#include "Swallow/AssetManager/Primatives.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 #include <chrono>
 
@@ -57,19 +57,19 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	if (playerstart.x != 0)
 		m_Map[(playerstart.x - 1) * m_Height + (playerstart.y)].reset();
 	m_Cube->SetMaterial(Swallow::FlatColourMaterial::Create());
-	m_Player->SetVertexArray(m_Cube->GetVertexArray());
+	m_Player->SetVertexArray(Swallow::AssetManager::FetchObject("Bomberman", "Bomberman"));
 	Swallow::Ref<Swallow::FlatColourMaterialInstance> mat = Swallow::FlatColourMaterial::Create();
 	mat->SetColour(glm::vec4(0.2f, 0.5f, 1.0f, 1.0f));
 	m_Player->SetMaterial(mat);
-	m_Player->GetTransform()->SetScale(glm::vec3(0.5f));
+	m_Player->GetTransform()->SetScale(glm::vec3(0.20f));
 	Swallow::Ref<Swallow::FlatColourMaterialInstance> mat2 = Swallow::FlatColourMaterial::Create();
 	mat2->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
 	for (auto x : m_Enemies)
 	{
 		x->SetMaterial(Swallow::FlatColourMaterial::Create());
-		x->SetVertexArray(m_Cube->GetVertexArray());
+		x->SetVertexArray(Swallow::AssetManager::FetchObject("Bomberman", "Bomberman"));
 		x->SetMaterial(mat2);
-		x->GetTransform()->SetScale(glm::vec3(0.4f));
+		x->GetTransform()->SetScale(glm::vec3(0.18f));
 	}
 }
 
@@ -114,9 +114,10 @@ void Level::DropBomb(glm::vec3 pos)
 		m_TempTimer->x = timer.x;
 		m_TempTimer->y = timer.y;
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))] = std::make_shared<Wall>();
-		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->SetVertexArray(m_Cube->GetVertexArray());
+		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->SetVertexArray(Swallow::AssetManager::FetchObject("Bomb", "Bomb"));
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->SetMaterial(Bomb);
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->GetTransform()->SetPosition(pos);
+		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->GetTransform()->SetScale(glm::vec3(0.5f));
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->GetTransform()->Recalculate();
 	}
 }

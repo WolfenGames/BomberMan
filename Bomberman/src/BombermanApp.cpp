@@ -1,9 +1,13 @@
 #include "BombermanApp.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
+#include "Swallow/Renderer/material/CharMaterial.hpp"
 
 BombermanApp::BombermanApp()
 {
 	Swallow::FlatColourMaterial::Init();
+	Swallow::CharMaterial::Init();
+	Swallow::AssetManager::LoadObject("Bomb", "assets/Models/Bomb.obj");
+	Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/Bomberman.obj");
 	m_GameLayer = std::make_shared<GameLayer>();
 	m_GUILayer = std::make_shared<GUILayer>();
 	m_MenuLayer = std::make_shared<MenuLayer>();

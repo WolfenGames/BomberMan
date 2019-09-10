@@ -4,7 +4,7 @@
 #include "gtx/transform.hpp"
 #include "Platform/OpenGL/OpenGLShader.hpp"
 #include "BombermanApp.hpp"
-#include "Swallow/Renderer/Primatives.hpp"
+#include "Swallow/AssetManager/Primatives.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 
 MenuLayer::MenuLayer()
@@ -21,6 +21,10 @@ MenuLayer::MenuLayer()
 	m_Square->GetTransform()->SetPosition(glm::vec3(0.0f, 9.0f, 0.0f));
 	m_Square->GetTransform()->Recalculate();
 	chance = 0.6f;
+	m_Text = Swallow::Text::Create();
+	m_Text->SetColour({1.0f, 1.0f, 1.0f, 1.0f});
+	m_Text->SetText("Welcome\nFriend");
+	m_Text->Recalculate();
 }
 
 void MenuLayer::OnEvent(Swallow::Event &e) {
@@ -81,6 +85,7 @@ void MenuLayer::OnUpdate(Swallow::Timestep ts)
 	Swallow::Renderer::BeginScene(m_Camera);
 
 	Swallow::Renderer::Submit(m_Square);
+	Swallow::Renderer::Submit(m_Text);
 
 	Swallow::Renderer::EndScene();
 }

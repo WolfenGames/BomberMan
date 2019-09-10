@@ -5,6 +5,7 @@
 class MenuLayer : public Swallow::Layer {
 private:
 	Swallow::Ref<Swallow::GameObject> m_Square;
+	Swallow::Ref<Swallow::Text> m_Text;
 
 	Swallow::OrthographicCamera m_Camera;
 
