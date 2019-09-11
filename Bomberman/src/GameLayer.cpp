@@ -1,5 +1,6 @@
 #include "GameLayer.hpp"
 #include "imgui.h"
+#include "BombermanApp.hpp"
 #include <gtc/type_ptr.hpp>
 #include "Platform/OpenGL/OpenGLShader.hpp"
 
@@ -72,6 +73,12 @@ void GameLayer::OnUpdate(Swallow::Timestep ts)
 	Swallow::Renderer::BeginScene(m_Camera);
 
 	m_Level->Draw();
+	
 
 	Swallow::Renderer::EndScene();
+	if (m_Level->GetDeadStatus())
+	{
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
+	};
 }

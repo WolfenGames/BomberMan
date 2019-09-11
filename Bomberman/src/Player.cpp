@@ -1,10 +1,16 @@
 #include "Player.hpp"
 #include "Level.hpp"
 #include "gtx/transform.hpp"
+#include <Swallow/Renderer/material/FlatColourMaterial.hpp>
 
 Player::Player(const glm::vec3 &Pos, Level &l)
 	:m_Level(l)
 {
+	static Swallow::Ref<Swallow::FlatColourMaterialInstance> mat = Swallow::FlatColourMaterial::Create();
+	mat->SetColour(glm::vec4(0.2f, 0.5f, 1.0f, 1.0f));
+	SetMaterial(mat);
+	SetVertexArray(Swallow::AssetManager::FetchObject("Bomberman", "Bomberman"));
+	GetTransform()->SetScale(glm::vec3(0.20f));
 	GetTransform()->SetPosition(Pos);
 	m_Destination = GetTransform()->GetPosition();
 }

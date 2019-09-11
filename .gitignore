@@ -10,6 +10,7 @@ bin-int/
 # Files
 *.user
 *.vcxproj*
+.DS_Store
 Makefile
 *.sln
 assets

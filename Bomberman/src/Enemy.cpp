@@ -1,13 +1,19 @@
 #include "Enemy.hpp"
 #include "Level.hpp"
 #include "gtx/transform.hpp"
+#include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 
 Enemy::Enemy(const glm::vec3& pos, Level& level): m_Level(level), m_MaxMoves(0)
 {
+	static Swallow::Ref<Swallow::FlatColourMaterialInstance> mat2 = Swallow::FlatColourMaterial::Create();
+	mat2->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
 	GetTransform()->SetPosition(pos);
 	m_Pos = GetTransform()->GetPosition();
 	m_MoveDir = { 0, 0 };
 	m_MaxMoves = 1;
+	SetVertexArray(Swallow::AssetManager::FetchObject("Bomberman", "Bomberman"));
+	SetMaterial(mat2);
+	GetTransform()->SetScale(glm::vec3(0.18f));
 	makeDecision();
 }
 
