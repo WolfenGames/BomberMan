@@ -16,13 +16,15 @@ MenuLayer::MenuLayer()
 
 	m_Square = Swallow::Primatives::Quad();
 	Swallow::Ref<Swallow::FlatColourMaterialInstance> mat = Swallow::FlatColourMaterial::Create();
-	mat->SetColour(glm::vec4(0.2, 0.5, 0.9, 1.0));
+	mat->SetColour(glm::vec4(1.0, 0.5, 0.9, 0.5));
 	m_Square->SetMaterial(mat);
-	m_Square->GetTransform()->SetPosition(glm::vec3(0.0f, 9.0f, 0.0f));
+	m_Square->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
+	m_Square->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
 	m_Square->GetTransform()->Recalculate();
 	chance = 0.6f;
 	m_Text = Swallow::Text::Create();
-	m_Text->SetColour({1.0f, 1.0f, 1.0f, 1.0f});
+	m_Text->SetColour({1.0f, 1.0f, 1.0f, 0.5f});
+	m_Text->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 0.9f));
 	m_Text->SetText("Welcome\nFriend");
 	m_Text->Recalculate();
 }
@@ -38,6 +40,11 @@ void MenuLayer::OnEvent(Swallow::Event &e) {
 bool MenuLayer::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 {
 	static_cast<void>(e);
+	float x = Swallow::Input::GetMouseX();
+	float y = Swallow::Input::GetMouseY();
+	SW_CORE_INFO("Mouse click X: {}", x);
+	SW_CORE_INFO("Mouse click Y: {}", y);
+
 	return false;
 }
 

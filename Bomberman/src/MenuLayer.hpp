@@ -1,11 +1,13 @@
 #pragma once
 
 #include <Swallow.hpp>
+#include "Bomberman/src/menus/Menu.hpp"
 
 class MenuLayer : public Swallow::Layer {
 private:
 	Swallow::Ref<Swallow::GameObject> m_Square;
 	Swallow::Ref<Swallow::Text> m_Text;
+	Swallow::Ref<Menu> m_Menu;
 
 	Swallow::OrthographicCamera m_Camera;
 
