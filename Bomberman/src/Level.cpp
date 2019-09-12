@@ -311,7 +311,7 @@ void Level::DropBomb(glm::vec3 pos)
 	timer.fuse = 1.5f;
 	timer.x = pos.x;
 	timer.y = pos.z;
-	timer.power = 10;
+	timer.power = 5;
 	if (IsEmpty(pos))
 	{
 		m_TempTimer = new Level::Timer;
@@ -379,9 +379,7 @@ void Level::Draw()
 	for (auto x : m_Enemies)
 		Swallow::Renderer::Submit((Swallow::Ref<Enemy>(x)));
 	for (auto &f : m_Flames)
-	{
 		Swallow::Renderer::Submit(f);
-	}
 	Swallow::Renderer::Submit(m_Player);
 	Swallow::Renderer::Submit(m_Floor);
 }
