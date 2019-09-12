@@ -1,5 +1,6 @@
 #include "BombermanApp.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
+#include "Swallow/AssetManager/AssetManager.hpp"
 
 BombermanApp::BombermanApp()
 {
@@ -37,6 +38,19 @@ void BombermanApp::LoadGame()
 	m_GameLayer->SetSpawnChance(m_MenuLayer->GetChance());
 	PushLayer(m_GameLayer);
 	PushOverlay(m_GUILayer);
+}
+
+void BombermanApp::LoadModelAsset(std::string &path)
+{
+	Swallow::AssetManager::LoadObject(path);
+}
+
+void BombermanApp::LoadModels(const std::vector<std::string> &assetPaths)
+{
+	for (auto path: assetsPaths)
+	{
+		Swallow::AssetManager::LoadObject(path);
+	}
 }
 
 Swallow::Application* Swallow::CreateApplication()

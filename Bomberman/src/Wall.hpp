@@ -1,8 +1,10 @@
+#pragma once
 #include <Swallow.hpp>
+#include "ModelInfo.hpp"
 
-class Wall : public Swallow::GameObject
+class Wall : public Swallow::GameObject, public ModelInfo
 {
-	public:
+public:
 	Wall() = default;
 	Wall(const Wall &s) = default;
 	Wall &operator=(const Wall &s) = default;

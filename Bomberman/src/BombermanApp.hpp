@@ -14,6 +14,8 @@ public:
 	void UnloadMenu();
 	void UnloadGame();
 	void LoadGame();
+	void LoadModels(const std::vector<std::string> &assetPaths)
+	void LoadModelAsset(const std::string &path)
 
 private:
 	BombermanApp(const BombermanApp &s) = default;

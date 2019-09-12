@@ -1,10 +1,11 @@
 #pragma once
 
 #include <Swallow.hpp>
+#include "ModelInfo.hpp"
 
 class Level;
 
-class Player: public Swallow::GameObject
+class Player: public Swallow::GameObject, public ModelInfo
 {
 public:
 	Player(const glm::vec3 &Pos, Level &l);
@@ -18,7 +19,7 @@ public:
 
 private:
 
-	Swallow::Ref<Swallow::GameObject> m_Cube;
+	//Swallow::Ref<Swallow::GameObject> m_Cube;
 	Level &m_Level;
 	glm::vec3 m_Destination;
 };

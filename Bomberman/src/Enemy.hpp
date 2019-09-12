@@ -1,10 +1,11 @@
 #pragma once
 
 #include <Swallow.hpp>
+#include "ModelInfo.hpp"
 
 class Level;
 
-class Enemy : public Swallow::GameObject
+class Enemy : public Swallow::GameObject, public ModelInfo
 {
 public:
 	Enemy(const glm::vec3&, Level&);
