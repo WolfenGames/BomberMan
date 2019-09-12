@@ -20,7 +20,13 @@ GameLayer::GameLayer()
 void GameLayer::OnAttach()
 {
 	s->Play();
-	m_Level = std::make_shared<Level>(map_size.x, map_size.y, chance);
+	std::string path = "Saves/";
+	std::ifstream in;
+	in.open(path + m_Save + ".sav", std::ios::binary);
+	if (m_Save.empty() || !in.good())
+		m_Level = std::make_shared<Level>(map_size.x, map_size.y, chance);
+	else
+		m_Level = std::make_shared<Level>(m_Save);
 }
 
 void GameLayer::OnDetach()
@@ -61,6 +67,8 @@ bool GameLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
 	if (e.GetKeyCode() == SW_KEY_SPACE)
 		m_Level->DropBomb(m_Level->GetPlayer()->Destination());
+	else if (e.GetKeyCode() == SW_KEY_S && Swallow::Input::IsKeyPressed(SW_KEY_LEFT_SUPER))
+		m_Level->Save(m_Save);
 	else
 		return false;
 	return true;

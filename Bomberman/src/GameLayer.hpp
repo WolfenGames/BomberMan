@@ -10,6 +10,7 @@ private:
 	Swallow::PerspectiveCamera m_Camera;
 	glm::vec3	m_Position;
 	glm::ivec2  map_size;
+	std::string m_Save;
 	float		chance;
 
 	Swallow::Ref<Swallow::AudioBuffer> x;
@@ -28,6 +29,7 @@ public:
 
 	inline void SetMapSize(const glm::ivec2 &v) {map_size = v;}
 	inline void SetSpawnChance(const float chance) { this->chance = chance; }
+	inline void SetSave(const std::string &save) { this->m_Save = save; }
 
 	virtual void OnEvent(Swallow::Event &e) override;
 	virtual void OnAttach() override;
