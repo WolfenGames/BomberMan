@@ -9,15 +9,23 @@ GameLayer::GameLayer()
 {
 	m_Camera.SetRotation(glm::vec3(glm::radians(-60.0f), glm::radians(0.0f), 0));
 	m_Camera.Recalculate();
+	x = Swallow::AudioBuffer::Create("assets/Sounds/Background.wav");
+	s = Swallow::AudioSource::Create();
+	s->SetPosition({0.0f, 0.0f, 0.0f});
+	s->SetVelocity({0.f, 0.f, 0.f});
+	s->SetLooping(true);
+	s->SetBuffer(x);
 }
 
 void GameLayer::OnAttach()
 {
+	s->Play();
 	m_Level = std::make_shared<Level>(map_size.x, map_size.y, chance);
 }
 
 void GameLayer::OnDetach()
 {
+	s->Stop();
 	m_Level.reset();
 }
 
