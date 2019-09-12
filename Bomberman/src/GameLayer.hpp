@@ -11,6 +11,10 @@ private:
 	glm::vec3	m_Position;
 	glm::ivec2  map_size;
 	float		chance;
+
+	Swallow::Ref<Swallow::AudioBuffer> x;
+	Swallow::Ref<Swallow::AudioSource> s;
+
 public:
 	GameLayer();
 	GameLayer(const GameLayer &s) = default;

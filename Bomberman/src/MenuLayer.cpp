@@ -25,13 +25,6 @@ MenuLayer::MenuLayer()
 	m_Text->SetColour({1.0f, 1.0f, 1.0f, 1.0f});
 	m_Text->SetText("Welcome\nFriend");
 	m_Text->Recalculate();
-
-	x = Swallow::AudioBuffer::Create("assets/Sounds/Background.wav");
-	s = Swallow::AudioSource::Create();
-	s->SetPosition({0.0f, 0.0f, 0.0f});
-	s->SetVelocity({0.f, 0.f, 0.f});
-	s->SetLooping(true);
-	s->Play(x);
 }
 
 void MenuLayer::OnEvent(Swallow::Event &e) {
