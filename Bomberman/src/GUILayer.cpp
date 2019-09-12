@@ -20,6 +20,11 @@ GUILayer::GUILayer()
 	m_PinkThing->SetMaterial(mat);
 	m_PinkThing->GetTransform()->SetPosition(glm::vec3(0.0f, 9.0f, 0.0f));
 	m_PinkThing->GetTransform()->Recalculate();
+	m_Info = Swallow::Text::Create();
+	m_Info->SetColour({1.0f, 1.0f, 1.0f, 1.0f});
+	m_Info->SetText(m_InfoVal);
+	m_Info->Recalculate();
+	m_Info->GetTransform()->SetPosition({-10, 9, 0});
 }
 
 void GUILayer::OnEvent(Swallow::Event &e) {
@@ -72,6 +77,8 @@ void GUILayer::OnUpdate(Swallow::Timestep ts)
 	Swallow::Renderer::BeginScene(m_Camera);
 
 	Swallow::Renderer::Submit(m_PinkThing);
-
+	m_Info->SetText(m_InfoVal);
+	m_Info->Recalculate();
+	Swallow::Renderer::Submit(m_Info);
 	Swallow::Renderer::EndScene();
 }
