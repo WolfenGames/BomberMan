@@ -89,6 +89,7 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	m_Floor->SetMaterial(Swallow::FlatColourMaterial::Create());
 	m_Floor->GetTransform()->SetPosition(glm::vec3(m_Width / 2.0, -1, m_Height / 2.0));
 	m_Floor->GetTransform()->Recalculate();
+	std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(m_Floor->GetMaterial())->SetColour(glm::vec4(1, 1, 1, 1));
 	m_Map.reserve(m_Width * m_Height);
 	for (uint32_t x = 0; x < m_Width; x++)
 	{
