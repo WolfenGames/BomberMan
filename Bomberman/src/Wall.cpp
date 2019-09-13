@@ -10,6 +10,7 @@ Wall::Wall()
 
 	m_isDestructable = true;
 	m_isFilled = true;
+	m_isExit = false;
 }
 
 Pillar::Pillar()
@@ -21,4 +22,5 @@ Pillar::Pillar()
 
 	m_isDestructable = false;
 	m_isFilled = true;
+	m_isExit = false;
 }

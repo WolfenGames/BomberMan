@@ -11,4 +11,5 @@ Bomb::Bomb()
 	GetTransform()->SetScale(glm::vec3(0.5f));
 	GetTransform()->Recalculate();
 	m_isFilled = true;
+	m_isExit = false;
 }

@@ -6,7 +6,11 @@
 #include "BombermanApp.hpp"
 #include "Wall.hpp"
 #include "Bomb.hpp"
+#include "Exit.hpp"
 #include <chrono>
+
+static bool	dieded = false;
+static bool hasExit = false;
 
 Level::Level(uint32_t Width, uint32_t Height)
 	:Level(Width, Height, static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()), 0.6f)
@@ -19,9 +23,12 @@ Level::Level(uint32_t Width, uint32_t Height, float chance)
 Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	:m_Width(Width * 2 + 1), m_Height(Height * 2 + 1), m_Seed(Seed)
 {
+	dieded = false;
 	int desiredEnemies = ((m_Width + m_Height) / 2.0f) * chance;
 	srand(m_Seed);
 	m_Map.reserve(m_Width * m_Height);
+	hasExit = false;
+	uint source = glm::linearRand(static_cast<unsigned int>(0), m_Width * m_Height);
 	for (uint32_t x = 0; x < m_Width; x++)
 	{
 		for (uint32_t y = 0; y < m_Height; y++)
@@ -32,7 +39,21 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 				if (ispillar)
 					m_Map.push_back(std::make_shared<Pillar>());
 				else
-					m_Map.push_back(std::make_shared<Wall>());
+				{
+					bool possim;
+					if (!hasExit)
+					{
+						uint target = (x * m_Height + y);
+						possim = (source < target);
+					}
+					auto newWall = std::make_shared<Wall>();
+					if (!hasExit && possim)
+					{
+						hasExit = true;
+						newWall->SetExit(true);
+					}
+					m_Map.push_back(newWall);
+				}
 				m_Map[(x) * m_Height + (y)]->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
 				m_Map[(x) * m_Height + (y)]->GetTransform()->Recalculate();
 			}
@@ -136,7 +157,11 @@ void Level::Explode(Timer &t)
 		if (!tile->isFilled())
 			continue;
 		if (tile->isDestructable())
-			tile = std::make_shared<Tile>();
+		{
+			if (!tile->IsExit())
+				tile = std::make_shared<Tile>();
+			break;
+		}
 		else
 		{
 			for (auto &timer : m_BombTimers)
@@ -162,7 +187,11 @@ void Level::Explode(Timer &t)
 		if (!tile->isFilled())
 			continue;
 		if (tile->isDestructable())
-			tile = std::make_shared<Tile>();
+		{
+			if (!tile->IsExit())
+				tile = std::make_shared<Tile>();
+			break;
+		}
 		else
 		{
 			for (auto &timer : m_BombTimers)
@@ -188,7 +217,11 @@ void Level::Explode(Timer &t)
 		if (!tile->isFilled())
 			continue;
 		if (tile->isDestructable())
+		{
+			if (!tile->IsExit())
 			tile = std::make_shared<Tile>();
+			break;
+		}
 		else
 		{
 			for (auto &timer : m_BombTimers)
@@ -214,7 +247,11 @@ void Level::Explode(Timer &t)
 		if (!tile->isFilled())
 			continue;
 		if (tile->isDestructable())
+		{
+			if (!tile->IsExit())
 			tile = std::make_shared<Tile>();
+			break;
+		}
 		else
 		{
 			for (auto &timer : m_BombTimers)
@@ -238,10 +275,10 @@ void Level::DropBomb(glm::vec3 pos)
 		m_TempTimer = nullptr;
 	}
 	Level::Timer timer;
-	timer.fuse = 1.5f;
+	timer.fuse = 3.f;
 	timer.x = pos.x;
 	timer.y = pos.z;
-	timer.power = 5;
+	timer.power = 3;
 	if (IsEmpty(pos))
 	{
 		m_TempTimer = new Level::Timer;
@@ -271,7 +308,11 @@ void Level::Update(Swallow::Timestep ts)
 	while (m_BombTimers.size() && m_BombTimers.back().fuse < 0.0)
 	{
 		Explode (m_BombTimers.back());
-		m_Map[(m_BombTimers.back().x) * m_Height + (m_BombTimers.back().y)] = std::make_shared<Tile>();
+		auto tileCheck = m_Map[(m_BombTimers.back().x) * m_Height + (m_BombTimers.back().y)];
+		if (tileCheck->IsExit())
+			 m_Map[(m_BombTimers.back().x) * m_Height + (m_BombTimers.back().y)] = std::make_shared<Exit>(glm::vec3({(m_BombTimers.back().x), 0, (m_BombTimers.back().y)}));
+		else
+		 	 m_Map[(m_BombTimers.back().x) * m_Height + (m_BombTimers.back().y)] = std::make_shared<Tile>();
 		m_BombTimers.pop_back();
 	}
 	m_Player->Update(ts);
@@ -290,6 +331,13 @@ void Level::Update(Swallow::Timestep ts)
 		f->Advance(ts);
 	}
 	m_Flames.remove_if([](Swallow::Ref<Flame> a) -> bool { return a->Out(); });
+
+	if (m_Enemies.size() == 0 && !dieded)
+	{
+		dieded = true;
+		SW_CORE_INFO("EMEINES DIEDED");
+		//Some CanExit thing...
+	}
 }
 
 void Level::Draw()

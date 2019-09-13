@@ -8,8 +8,6 @@ class Wall : public Tile
 	Wall(const Wall &s) = default;
 	Wall &operator=(const Wall &s) = default;
 	virtual ~Wall() = default;
-
-	private:
 };
 
 class Pillar : public Tile
