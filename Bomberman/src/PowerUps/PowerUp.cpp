@@ -22,8 +22,8 @@ void	Speed::OnRemove()
 
 }
 
-void	Speed::OnUpate()
+void	Speed::OnUpdate(Swallow::Timestep& t)
 {
-
+	static_cast<void>(t);
 }
 

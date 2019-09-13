@@ -10,7 +10,7 @@ class Speed: public IPowerup
 		Speed &operator=(const Speed&) = default;
 		~Speed();
 
-		virtual void OnUpate();
-		virtual void OnAdd();
-		virtual void OnRemove();
+		virtual void OnUpdate(Swallow::Timestep&) override;
+		virtual void OnAdd() override;
+		virtual void OnRemove() override;
 };

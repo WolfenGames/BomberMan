@@ -1,9 +1,11 @@
 #pragma once
 
+#include <Swallow/Core/Timestep.hpp>
+
 class IPowerup
 {
 	public:
-		virtual void	onUpdate()	= 0;
-		virtual void	onRemove()	= 0;
-		virtual void	onAdd() 	= 0;
+		virtual void	OnUpdate(Swallow::Timestep&)	= 0;
+		virtual void	OnRemove()						= 0;
+		virtual void	OnAdd() 						= 0;
 };
