@@ -6,16 +6,16 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:37 by ppreez            #+#    #+#             */
-/*   Updated: 2019/09/12 16:17:38 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/09/13 12:30:15 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Button.hpp"
 
 Button::Button(std::string text)
-:Menu(MenuMaterial::Create()), m_Text(text)
+:m_Pressed(false)
 {
-
+    m_Text->SetText(text);
 }
 
 Button::Button(Button const &rhs)
@@ -35,4 +35,9 @@ Button &Button::operator=(Button const &rhs)
 Button::~Button()
 {
 
+}
+
+bool Button::Press()
+{
+    return true;
 }

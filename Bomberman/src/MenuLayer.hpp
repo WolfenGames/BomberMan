@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Swallow.hpp>
-#include "Bomberman/src/menus/Menu.hpp"
+#include "menus/Menu.hpp"
 
 class MenuLayer : public Swallow::Layer {
 private:

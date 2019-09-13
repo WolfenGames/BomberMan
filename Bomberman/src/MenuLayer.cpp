@@ -27,6 +27,8 @@ MenuLayer::MenuLayer()
 	m_Text->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 0.9f));
 	m_Text->SetText("Welcome\nFriend");
 	m_Text->Recalculate();
+
+	m_Menu = Menu::Create();
 }
 
 void MenuLayer::OnEvent(Swallow::Event &e) {

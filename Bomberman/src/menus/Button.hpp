@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:53 by ppreez            #+#    #+#             */
-/*   Updated: 2019/09/12 16:22:20 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/09/13 15:36:07 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ class Button: public Menu
         ~Button();
 
         bool Press();
+        inline Swallow::Ref<Swallow::Text> GetText() { return m_Text; }
+        void SetText(std::string text);
     private:
         Button();
         bool m_Pressed;
