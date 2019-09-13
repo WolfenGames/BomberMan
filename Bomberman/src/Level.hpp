@@ -15,6 +15,7 @@ class Level
 	};
 
 	public:
+		Level(const std::string &path);
 		Level(uint32_t Width, uint32_t Height);
 		Level(uint32_t Width, uint32_t Height, float chance);
 		Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance);
@@ -32,6 +33,7 @@ class Level
 		bool IsEmpty(glm::vec3 check) const;
 		int Burn(int x, int y);
 		int InBlock(Swallow::Ref<Swallow::GameObject> o, int x, int y);
+		void Save(const std::string &name);
 
 		void DropBomb(glm::vec3 pos);
 		void Explode(Timer &t);
@@ -45,6 +47,7 @@ class Level
 		bool	m_DEAD;
 		uint32_t m_Width, m_Height, m_Seed;
 		Swallow::Ref<Player> m_Player;
+		Swallow::Ref<Swallow::GameObject> m_Floor;
 		std::vector<Swallow::Ref<Enemy>> m_Enemies;
 		std::list<Swallow::Ref<Flame>> m_Flames;
 

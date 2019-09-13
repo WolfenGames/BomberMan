@@ -8,6 +8,7 @@ BombermanApp::BombermanApp()
 	Swallow::CharMaterial::Init();
 	Swallow::AssetManager::LoadObject("Bomb", "assets/Models/Bomb.obj");
 	Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/Bomberman.obj");
+	Swallow::AssetManager::LoadObject("Cube", "assets/Models/Cube.obj");
 	Swallow::AssetManager::LoadObject("EmptyQuad", "assets/Models/EmptyQuad.obj");
 
 	m_GameLayer = std::make_shared<GameLayer>();
@@ -43,6 +44,7 @@ void BombermanApp::LoadGame()
 {
 	m_GameLayer->SetMapSize(m_MenuLayer->GetMapSize());
 	m_GameLayer->SetSpawnChance(m_MenuLayer->GetChance());
+	m_GameLayer->SetSave(m_MenuLayer->GetSave());
 	PushLayer(m_BackgroundLayer);
 	PushLayer(m_GameLayer);
 	PushOverlay(m_GUILayer);

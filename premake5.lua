@@ -38,6 +38,7 @@ project "Bomberman"
 		enginedir .. "%{IncludeDir.glm}",
 		enginedir .. "%{IncludeDir.freetype}",
 		enginedir .. "%{IncludeDir.ImGui}",
+		enginedir .. "vendor/imgui/misc",
 		enginedir .. "%{IncludeDir.AssImp}",
 		enginedir .. "%{IncludeDir.AssImpBuild}",
 		enginedir .. "%{IncludeDir.OpenAL}"

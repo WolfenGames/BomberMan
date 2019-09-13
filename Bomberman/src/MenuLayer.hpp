@@ -6,6 +6,7 @@ class MenuLayer : public Swallow::Layer {
 private:
 	Swallow::Ref<Swallow::GameObject> m_Square;
 	Swallow::Ref<Swallow::Text> m_Text;
+	std::string save;
 
 	Swallow::OrthographicCamera m_Camera;
 
@@ -24,6 +25,7 @@ public:
 
 	inline const glm::ivec2 &GetMapSize() { return map_size; }
 	inline float GetChance() { return this->chance; }
+	inline std::string GetSave() { return this->save; }
 
 	virtual void OnEvent(Swallow::Event &e) override;
 	virtual void OnImGuiRender() override;

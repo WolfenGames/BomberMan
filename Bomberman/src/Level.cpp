@@ -8,6 +8,68 @@
 #include "Bomb.hpp"
 #include "Exit.hpp"
 #include <chrono>
+#ifdef SW_MACOSX
+	#include <sys/stat.h>
+#endif
+
+Level::Level(const std::string &name)
+{
+	std::string path = "Saves/";
+	std::ifstream in;
+	in.open(path + name + ".sav", std::ios::binary);
+	in.read(reinterpret_cast<char *>(&m_Width), 4);
+	in.read(reinterpret_cast<char *>(&m_Height), 4);
+	m_Floor = std::make_shared<Swallow::GameObject>();
+	m_Floor->SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	m_Floor->GetTransform()->SetScale(glm::vec3(m_Width, 1, m_Height));
+	m_Floor->SetMaterial(Swallow::FlatColourMaterial::Create());
+	m_Floor->GetTransform()->SetPosition(glm::vec3(m_Width / 2.0, -1, m_Height / 2.0));
+	m_Floor->GetTransform()->Recalculate();
+	std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(m_Floor->GetMaterial())->SetColour(glm::vec4(1, 1, 1, 1));
+	m_Map.reserve(m_Width * m_Height);
+	for (uint i = 0; i < (m_Width * m_Height); i++)
+	{
+		char what;
+		in.read(&what, 1);
+		switch (what)
+		{
+		case 0:
+			m_Map.push_back(std::make_shared<Tile>());
+			break;
+		case 1:
+			m_Map.push_back(std::make_shared<Wall>());
+			break;
+		case 2:
+			if((i / m_Height) % 2 && (i % m_Height) % 2)
+				m_Map.push_back(std::make_shared<Pillar>());
+			else
+				m_Map.push_back(std::make_shared<Tile>());
+			break;
+		default:
+			break;
+		}
+		m_Map[i]->GetTransform()->SetPosition(glm::vec3(i / m_Height + 0.5f, 0, i % m_Height + 0.5f));
+		m_Map[i]->GetTransform()->Recalculate();
+	}
+	int count;
+	in.read(reinterpret_cast<char *>(&count), 4);
+	SW_INFO("Enemy Count: {}", count);
+	float x, y;
+	for (int i = 0; i < count; i++)
+	{
+		in.read(reinterpret_cast<char *>(&x), sizeof(float));
+		in.read(reinterpret_cast<char *>(&y), sizeof(float));
+		SW_INFO("Enemy at: {} x {}", x, y);
+		m_Enemies.push_back(std::make_shared<Enemy>(glm::vec3(x, 0, y), *this));
+		// m_Enemies.back()->GetTransform()->Recalculate();
+	}
+	SW_INFO("Enemies In");
+	in.read(reinterpret_cast<char *>(&x), sizeof(float));
+	in.read(reinterpret_cast<char *>(&y), sizeof(float));
+	m_Player = std::make_shared<Player>(glm::vec3(static_cast<int>(x) + 0.5f, 0, static_cast<int>(y) + 0.5f), *this);
+	in.close();
+	SW_INFO("Done");
+}
 
 static bool	dieded = false;
 static bool hasExit = false;
@@ -26,6 +88,13 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	dieded = false;
 	int desiredEnemies = ((m_Width + m_Height) / 2.0f) * chance;
 	srand(m_Seed);
+	m_Floor = std::make_shared<Swallow::GameObject>();
+	m_Floor->SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	m_Floor->GetTransform()->SetScale(glm::vec3(m_Width, 1, m_Height));
+	m_Floor->SetMaterial(Swallow::FlatColourMaterial::Create());
+	m_Floor->GetTransform()->SetPosition(glm::vec3(m_Width / 2.0, -1, m_Height / 2.0));
+	m_Floor->GetTransform()->Recalculate();
+	std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(m_Floor->GetMaterial())->SetColour(glm::vec4(1, 1, 1, 1));
 	m_Map.reserve(m_Width * m_Height);
 	hasExit = false;
 	uint source = glm::linearRand(static_cast<unsigned int>(0), m_Width * m_Height);
@@ -34,7 +103,7 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 		for (uint32_t y = 0; y < m_Height; y++)
 		{
 			int	ispillar = (x % 2 && y % 2);
-			if (ispillar || (glm::linearRand(0.0f, 1.0f) > chance))//glm::linearRand(0, 10) > 1)
+			if (ispillar || (glm::linearRand(0.0f, 1.0f) > chance))
 			{
 				if (ispillar)
 					m_Map.push_back(std::make_shared<Pillar>());
@@ -85,6 +154,7 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 		pos *= 2;
 		MakeEnemy(pos.x, pos.y);
 	}
+
 }
 
 void Level::MakeEnemy(int x, int y)
@@ -359,4 +429,43 @@ void Level::Draw()
 	for (auto &f : m_Flames)
 		Swallow::Renderer::Submit(f);
 	Swallow::Renderer::Submit(m_Player);
+	Swallow::Renderer::Submit(m_Floor);
+}
+
+void Level::Save(const std::string &name)
+{
+	#ifdef SW_MACOSX
+		mkdir("Saves", S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
+	#endif
+	std::string path = "Saves/";
+	std::ofstream f(path + name + ".sav", std::ios::binary);
+	f.write(reinterpret_cast<char *>(&m_Width), 4);
+	f.write(reinterpret_cast<char *>(&m_Height), 4);
+	for (uint i = 0; i < (m_Width * m_Height); i++)
+	{
+		char v = 0;
+		if (m_Map[i]->isFilled())
+		{
+			if (m_Map[i]->isDestructable())
+			{
+				v = 1;
+			}
+			else
+			{
+				v = 2;
+			}
+			
+		}
+		f.write(&v, 1);
+	}
+	int count = m_Enemies.size();
+	f.write(reinterpret_cast<char *>(&count), 4);
+	for (auto &e : m_Enemies)
+	{
+		f.write(reinterpret_cast<char *>(&e->GetTransform()->GetPosition().x), sizeof(float));
+		f.write(reinterpret_cast<char *>(&e->GetTransform()->GetPosition().z), sizeof(float));
+	}
+	f.write(reinterpret_cast<char *>(&m_Player->GetTransform()->GetPosition().x), sizeof(float));
+	f.write(reinterpret_cast<char *>(&m_Player->GetTransform()->GetPosition().z), sizeof(float));
+	f.close();
 }
