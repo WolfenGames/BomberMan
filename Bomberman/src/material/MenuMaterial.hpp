@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:58:45 by ppreez            #+#    #+#             */
-/*   Updated: 2019/09/13 12:30:45 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/09/16 12:46:03 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,14 @@
 #include <Swallow.hpp>
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 
-class MenuMaterial
+namespace Swallow
 {
-    public:
-        static void Init();
-        static Swallow::Ref<Swallow::FlatColourMaterialInstance> Create();
-    private:
-        static Swallow::Ref<Swallow::Shader> m_Shader;
-};
+    class MenuMaterial
+    {
+        public:
+            static void Init();
+            static Ref<FlatColourMaterialInstance> Create();
+        private:
+            static Ref<Shader> m_Shader;
+    };
+}

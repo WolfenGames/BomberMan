@@ -14,21 +14,14 @@ MenuLayer::MenuLayer()
 	m_Camera.SetRotation(glm::vec3(0, 0, 0));
 	m_Camera.Recalculate();
 
-	m_Square = Swallow::Primatives::Quad();
-	Swallow::Ref<Swallow::FlatColourMaterialInstance> mat = Swallow::FlatColourMaterial::Create();
-	mat->SetColour(glm::vec4(1.0, 0.5, 0.9, 0.5));
-	m_Square->SetMaterial(mat);
-	m_Square->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
-	m_Square->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
-	m_Square->GetTransform()->Recalculate();
-	chance = 0.6f;
-	m_Text = Swallow::Text::Create();
-	m_Text->SetColour({1.0f, 1.0f, 1.0f, 0.5f});
-	m_Text->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 0.9f));
-	m_Text->SetText("Welcome\nFriend");
-	m_Text->Recalculate();
-
 	m_Menu = Menu::Create();
+	m_Menu->GetBackground()->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
+	m_Menu->GetBackground()->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
+	m_Menu->AddButton("Quit", 1.0f, 4.0f);
+	m_Menu->AddButton("Play", 1.0f, 7.1f);
+
+	m_Menu->Recalculate();
+	m_Menu->RecalculateButtons();
 }
 
 void MenuLayer::OnEvent(Swallow::Event &e) {
@@ -44,8 +37,10 @@ bool MenuLayer::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	static_cast<void>(e);
 	float x = Swallow::Input::GetMouseX();
 	float y = Swallow::Input::GetMouseY();
+	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
+	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	SW_CORE_INFO("Mouse click X: {}", x);
-	SW_CORE_INFO("Mouse click Y: {}", y);
+	SW_CORE_INFO("Mouse click Y: {}\n", y);
 
 	return false;
 }
@@ -93,8 +88,12 @@ void MenuLayer::OnUpdate(Swallow::Timestep ts)
 	static_cast<void>(ts);
 	Swallow::Renderer::BeginScene(m_Camera);
 
-	Swallow::Renderer::Submit(m_Square);
-	Swallow::Renderer::Submit(m_Text);
-
+	Swallow::Renderer::Submit(m_Menu->GetBackground());
+	Swallow::Renderer::Submit(m_Menu->GetText());
+	for (auto a : m_Menu->GetButtons())
+	{
+		Swallow::Renderer::Submit(a->GetBackground());
+		Swallow::Renderer::Submit(a->GetText());
+	}
 	Swallow::Renderer::EndScene();
 }

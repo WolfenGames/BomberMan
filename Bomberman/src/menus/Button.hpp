@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:53 by ppreez            #+#    #+#             */
-/*   Updated: 2019/09/13 15:36:07 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/09/16 13:39:22 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,16 @@
 class Button: public Menu
 {
     public:
+        Button();
         Button(std::string text);
         Button(Button const &rhs);
         Button &operator=(Button const &rhs);
         ~Button();
 
+        inline static Swallow::Ref<Button> Create() { return std::make_shared<Button>(); }
         bool Press();
-        inline Swallow::Ref<Swallow::Text> GetText() { return m_Text; }
         void SetText(std::string text);
+        void Recalculate();
     private:
-        Button();
         bool m_Pressed;
-        Swallow::Ref<Swallow::Text> m_Text;
-        
 };

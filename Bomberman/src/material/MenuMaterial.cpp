@@ -6,20 +6,20 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 15:00:05 by ppreez            #+#    #+#             */
-/*   Updated: 2019/09/13 12:32:52 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/09/16 12:53:34 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Swallow/swpch.hpp"
+#include "swpch.hpp"
 #include "MenuMaterial.hpp"
 
 namespace Swallow
 {
-    Ref<Shader> m_Shader;
+    Ref<Shader> MenuMaterial::m_Shader;
 
     void MenuMaterial::Init()
     {
-        m_Shader = Swallow::Shader::Create("assets/shaders/MenuColour.glsl");
+        m_Shader = Shader::Create("assets/shaders/MenuColour.glsl");
     }
 
     Ref<FlatColourMaterialInstance> MenuMaterial::Create()

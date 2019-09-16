@@ -6,6 +6,7 @@ BombermanApp::BombermanApp()
 {
 	Swallow::FlatColourMaterial::Init();
 	Swallow::CharMaterial::Init();
+	Swallow::MenuMaterial::Init();
 	Swallow::AssetManager::LoadObject("Bomb", "assets/Models/Bomb.obj");
 	Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/Bomberman.obj");
 	m_GameLayer = std::make_shared<GameLayer>();
