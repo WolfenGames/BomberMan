@@ -4,7 +4,7 @@
 #include <Swallow/Renderer/material/FlatColourMaterial.hpp>
 
 Player::Player(const glm::vec3 &Pos, Level &l)
-	:m_Level(l)
+	:m_Level(l), m_FireDistance(4), m_BombCount(3)
 {
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> mat = Swallow::FlatColourMaterial::Create();
 	mat->SetColour(glm::vec4(0.2f, 0.5f, 1.0f, 1.0f));
@@ -13,14 +13,22 @@ Player::Player(const glm::vec3 &Pos, Level &l)
 	GetTransform()->SetScale(glm::vec3(0.20f));
 	GetTransform()->SetPosition(Pos);
 	m_Destination = GetTransform()->GetPosition();
+	AddPower(std::make_shared<FireIncrease>());
 }
 
 Player::~Player()
 {
 }
 
+void Player::AddPower(Swallow::Ref<PowerUp> power)
+{
+	power->OnAdd(this);
+	m_PowerUps.push_back(power);
+}
+
 void Player::Update(Swallow::Timestep ts)
 {
+	// std::cout << m_BombCount << "::" << m_FireDistance << std::endl;
 	static float threshold = 0.1f;
 	if (Swallow::Input::IsKeyPressed(SW_KEY_W)
 		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f)))
@@ -38,4 +46,12 @@ void Player::Update(Swallow::Timestep ts)
 	if (len > 0.01f)
 		GetTransform()->GetPosition() += glm::normalize(m_Destination - GetTransform()->GetPosition()) * glm::min(ts.GetSeconds() * 2.0f, len);
 	GetTransform()->Recalculate();
+
+	for(auto p: m_PowerUps)
+	{
+		p->OnUpdate(ts);
+		if (p->CanDelete())
+			p->OnRemove(this);
+	}
+	m_PowerUps.remove_if([](Swallow::Ref<PowerUp> p){ return p->CanDelete(); });
 }

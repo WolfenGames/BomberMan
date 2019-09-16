@@ -16,6 +16,8 @@ public:
 	void UnloadGame();
 	void LoadGame();
 
+	inline Swallow::Ref<GameLayer> GetGameLayer() { return m_GameLayer; }
+
 private:
 	BombermanApp(const BombermanApp &s) = default;
 	BombermanApp &operator=(const BombermanApp &s) = default;

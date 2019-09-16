@@ -8,6 +8,7 @@
 #include "Bomb.hpp"
 #include "Exit.hpp"
 #include <chrono>
+#include "PowerUp.hpp"
 #ifdef SW_MACOSX
 	#include <sys/stat.h>
 #endif
@@ -154,7 +155,6 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 		pos *= 2;
 		MakeEnemy(pos.x, pos.y);
 	}
-
 }
 
 void Level::MakeEnemy(int x, int y)
@@ -338,6 +338,8 @@ void Level::Explode(Timer &t)
 
 void Level::DropBomb(glm::vec3 pos)
 {
+	if (m_BombTimers.size() == static_cast<unsigned long>(m_Player->GetBombCount()))
+		return;
 	static_cast<void>(pos);
 	if (m_TempTimer)
 	{
@@ -348,7 +350,7 @@ void Level::DropBomb(glm::vec3 pos)
 	timer.fuse = 3.f;
 	timer.x = pos.x;
 	timer.y = pos.z;
-	timer.power = 3;
+	timer.power = m_Player->GetFireDistance();
 	if (IsEmpty(pos))
 	{
 		m_TempTimer = new Level::Timer;

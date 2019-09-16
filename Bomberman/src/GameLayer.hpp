@@ -36,4 +36,6 @@ public:
 	virtual void OnDetach() override;
 	virtual void OnImGuiRender() override;
 	virtual void OnUpdate(Swallow::Timestep ts) override;
+
+	inline Swallow::Ref<Level> GetLevel() { return m_Level; }
 };
