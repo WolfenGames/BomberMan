@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:48:54 by ppreez            #+#    #+#             */
-/*   Updated: 2019/09/16 16:51:58 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/09/17 07:47:17 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ Menu::Menu()
     m_Text = Swallow::Text::Create();
     m_Text->SetColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     m_Text->GetTransform()->SetScale(glm::vec3{1.0f, 2.0f, 1.0f});
-    m_Text->GetTransform()->SetPosition(glm::vec3{0.0f, 0.0f, 0.9f});
-    // m_Text->SetText("Bomberman");
+    m_Text->GetTransform()->SetPosition(glm::vec3{-9.0f, -9.0f, 0.9f});
+    m_Text->SetText("Bomberman");
     Recalculate();
 }
 
@@ -63,10 +63,5 @@ void Menu::RecalculateButtons()
 
 void Menu::AddButton(const char *text, float x, float y)
 {
-    m_Buttons.push_back(Button::Create());
-    m_Buttons.back()->GetText()->SetText(text);
-    m_Buttons.back()->GetText()->SetColour(glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
-    m_Buttons.back()->GetText()->GetTransform()->SetPosition(glm::vec3{x, y, 0.8f});
-    m_Buttons.back()->GetBackground()->GetTransform()->SetPosition(glm::vec3{x + 1.0f, y + 0.5f, 0.9f});
-    m_Buttons.back()->GetBackground()->GetTransform()->SetScale(glm::vec3{1.0f, 1.5f, 1.0f});
+    m_Buttons.push_back(Button::Create(text, x, y));
 }

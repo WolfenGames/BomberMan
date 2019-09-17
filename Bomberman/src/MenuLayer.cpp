@@ -17,9 +17,11 @@ MenuLayer::MenuLayer()
 	m_Menu = Menu::Create();
 	m_Menu->GetBackground()->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_Menu->GetBackground()->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
-	m_Menu->AddButton("Quit", 1.0f, 4.0f);
-	m_Menu->AddButton("Play", 1.0f, 7.1f);
-
+	m_Menu->AddButton("Quit", 7.0f, 4.0f);
+	m_Menu->AddButton("Play", 7.0f, 7.1f);
+	m_Menu->AddButton("Click here to get fucked", -4.0f, 1.0f);
+	m_Menu->GetButtons().back()->GetBackground()->GetTransform()->SetScale(glm::vec3(6.0f, 1.5f, 1.0f));
+	m_Menu->GetButtons().back()->GetBackground()->GetTransform()->SetPosition(glm::vec3(-4.0f + 5.8f, 1.0f + 0.5f, 0.9f));
 	m_Menu->Recalculate();
 	m_Menu->RecalculateButtons();
 }
@@ -41,6 +43,9 @@ bool MenuLayer::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	SW_CORE_INFO("Mouse click X: {}", x);
 	SW_CORE_INFO("Mouse click Y: {}\n", y);
+	if (x > 0.7f && x < 1.0f)
+		Swallow::Application::Get().End();
+
 
 	return false;
 }
