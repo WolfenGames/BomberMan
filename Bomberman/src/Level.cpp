@@ -178,7 +178,9 @@ bool Level::IsEmpty(glm::vec3 check) const
 {
 	check.x = glm::floor(check.x);
 	check.z = glm::floor(check.z);
-	if (check.x < 0 || check.z < 0 || check.x > m_Width - 1 || check.z > m_Height - 1 || m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->isFilled())
+	if (check.x < 0 || check.z < 0 || check.x > m_Width - 1 || check.z > m_Height - 1 ||
+		(m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->isFilled() &&
+		 !m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->IsExit()))
 		return false;
 	return true;
 }
@@ -230,7 +232,15 @@ void Level::Explode(Timer &t)
 		{
 			if (!tile->IsExit())
 				tile = std::make_shared<Tile>();
-			break;
+			else
+			{
+				tile = std::make_shared<LevelExit>();
+				tile->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
+				tile->GetTransform()->Recalculate();
+			}
+			
+			if (!m_Player->GetBombsCanBypassWalls())
+				break;
 		}
 		else
 		{
@@ -260,7 +270,14 @@ void Level::Explode(Timer &t)
 		{
 			if (!tile->IsExit())
 				tile = std::make_shared<Tile>();
-			break;
+			else
+			{
+				tile = std::make_shared<LevelExit>();
+				tile->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
+				tile->GetTransform()->Recalculate();
+			}
+			if (!m_Player->GetBombsCanBypassWalls())
+				break;
 		}
 		else
 		{
@@ -289,8 +306,15 @@ void Level::Explode(Timer &t)
 		if (tile->isDestructable())
 		{
 			if (!tile->IsExit())
-			tile = std::make_shared<Tile>();
-			break;
+				tile = std::make_shared<Tile>();
+			else if (tile->IsExit())
+			{
+				tile = std::make_shared<LevelExit>();
+				tile->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
+				tile->GetTransform()->Recalculate();
+			}
+			if (!m_Player->GetBombsCanBypassWalls())
+				break;
 		}
 		else
 		{
@@ -319,8 +343,15 @@ void Level::Explode(Timer &t)
 		if (tile->isDestructable())
 		{
 			if (!tile->IsExit())
-			tile = std::make_shared<Tile>();
-			break;
+				tile = std::make_shared<Tile>();
+			else
+			{
+				tile = std::make_shared<LevelExit>();
+				tile->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
+				tile->GetTransform()->Recalculate();
+			}
+			if (!m_Player->GetBombsCanBypassWalls())
+				break;
 		}
 		else
 		{

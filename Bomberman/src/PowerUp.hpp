@@ -31,8 +31,8 @@ class FireIncrease: public PowerUp
 
 	private:
 		int		range = 1;
-		float	m_TimeRemaining = 12000.0f;
-		bool	m_Delete;
+		float	m_TimeRemaining = 1200000000.0f;
+		bool	m_Delete = false;
 };
 
 class FireDecrease: public PowerUp
@@ -50,6 +50,8 @@ class FireDecrease: public PowerUp
 
 	private:
 		int		range = 1;
+		float	m_TimeRemaining = 12000.0f;
+		bool	m_Delete = false;
 };
 
 class BombUp: public PowerUp
@@ -67,6 +69,8 @@ class BombUp: public PowerUp
 
 	private:
 		int		increase = 1;
+		float	m_TimeRemaining = 12000.0f;
+		bool	m_Delete = false;
 };
 
 
@@ -85,4 +89,42 @@ class BombDown: public PowerUp
 
 	private:
 		int		decrease = 1;
+		float	m_TimeRemaining = 12000.0f;
+		bool	m_Delete = false;
+};
+
+class BombsCanBypassWalls: public PowerUp
+{
+	public:
+		BombsCanBypassWalls();
+		BombsCanBypassWalls(const BombsCanBypassWalls&) = default;
+		BombsCanBypassWalls &operator=(const BombsCanBypassWalls&) = default;
+		~BombsCanBypassWalls() = default;
+
+		void 	OnAdd(Player*) override;
+		void 	OnUpdate(Swallow::Timestep&) override;
+		void	OnRemove(Player*) override;
+		bool	CanDelete() override;
+
+	private:
+		float	m_TimeRemaining = 1200000.0f;
+		bool	m_Delete = false;
+};
+
+class SoftBlockPass: public PowerUp
+{
+	public:
+		SoftBlockPass();
+		SoftBlockPass(const SoftBlockPass&) = default;
+		SoftBlockPass &operator=(const SoftBlockPass&) = default;
+		~SoftBlockPass() = default;
+
+		void 	OnAdd(Player*) override;
+		void 	OnUpdate(Swallow::Timestep&) override;
+		void	OnRemove(Player*) override;
+		bool	CanDelete() override;
+
+	private:
+		float	m_TimeRemaining = 1200000000.0f;
+		bool	m_Delete = false;
 };

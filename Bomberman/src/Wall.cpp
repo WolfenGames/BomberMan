@@ -12,6 +12,7 @@ Wall::Wall()
 	m_isDestructable = true;
 	m_isFilled = true;
 	m_isExit = false;
+	m_canPassThrough = true;
 }
 
 Pillar::Pillar()
@@ -25,4 +26,18 @@ Pillar::Pillar()
 	m_isDestructable = false;
 	m_isFilled = true;
 	m_isExit = false;
+	m_canPassThrough = false;
+}
+
+LevelExit::LevelExit()
+{
+	static Swallow::Ref<Swallow::FlatColourMaterialInstance> LevelExit = Swallow::FlatColourMaterial::Create();
+	LevelExit->SetColour(glm::vec4(0.f, 0.f, 1.f, 1.f));
+	SetMaterial(LevelExit);
+	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	GetTransform()->SetScale(glm::vec3(1.f));
+
+	m_isDestructable = false;
+	m_isFilled = true;
+	m_isExit = true;
 }

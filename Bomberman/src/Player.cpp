@@ -13,7 +13,10 @@ Player::Player(const glm::vec3 &Pos, Level &l)
 	GetTransform()->SetScale(glm::vec3(0.20f));
 	GetTransform()->SetPosition(Pos);
 	m_Destination = GetTransform()->GetPosition();
-	AddPower(std::make_shared<FireIncrease>());
+	for(int i = 0; i < 12; i++)
+		AddPower(std::make_shared<FireIncrease>());
+	AddPower(std::make_shared<BombsCanBypassWalls>());
+	AddPower(std::make_shared<SoftBlockPass>());
 }
 
 Player::~Player()

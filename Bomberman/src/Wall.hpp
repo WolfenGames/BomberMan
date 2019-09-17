@@ -20,3 +20,12 @@ class Pillar : public Tile
 
 	private:
 };
+
+class LevelExit: public Tile
+{
+	public:
+		LevelExit();
+		LevelExit(const LevelExit&) = default;
+		LevelExit &operator=(const LevelExit&) = default;
+		virtual ~LevelExit() = default;
+};

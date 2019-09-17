@@ -13,7 +13,6 @@ void	FireIncrease::OnAdd(Player* player)
 
 void	FireIncrease::OnUpdate(Swallow::Timestep& time)
 {
-	static_cast<void>(time);
 	this->m_TimeRemaining -= time.GetMiliseconds();
 	if (m_TimeRemaining <= 0)
 		m_Delete = true;
@@ -22,7 +21,6 @@ void	FireIncrease::OnUpdate(Swallow::Timestep& time)
 void	FireIncrease::OnRemove(Player* player)
 {
 	player->SetDecreaseFireDistance(this->range);
-	std::cout << "Reset PowerUp" << std::endl;
 }
 
 bool	FireIncrease::CanDelete()
@@ -39,7 +37,9 @@ void	FireDecrease::OnAdd(Player* player)
 
 void	FireDecrease::OnUpdate(Swallow::Timestep& time)
 {
-	static_cast<void>(time);
+	this->m_TimeRemaining -= time.GetMiliseconds();
+	if (m_TimeRemaining <= 0)
+		m_Delete = true;
 }
 
 void	FireDecrease::OnRemove(Player* player)
@@ -49,7 +49,7 @@ void	FireDecrease::OnRemove(Player* player)
 
 bool FireDecrease::CanDelete()
 {
-	return false;
+	return m_Delete;
 }
 
 BombUp::BombUp(){}
@@ -61,7 +61,9 @@ void	BombUp::OnAdd(Player* player)
 
 void	BombUp::OnUpdate(Swallow::Timestep& time)
 {
-	static_cast<void>(time);
+	this->m_TimeRemaining -= time.GetMiliseconds();
+	if (m_TimeRemaining <= 0)
+		m_Delete = true;
 }
 
 void	BombUp::OnRemove(Player* player)
@@ -71,7 +73,7 @@ void	BombUp::OnRemove(Player* player)
 
 bool	BombUp::CanDelete()
 {
-	return false;
+	return m_Delete;
 }
 
 BombDown::BombDown(){}
@@ -83,7 +85,9 @@ void	BombDown::OnAdd(Player* player)
 
 void BombDown::OnUpdate(Swallow::Timestep& time)
 {
-	static_cast<void>(time);
+	this->m_TimeRemaining -= time.GetMiliseconds();
+	if (m_TimeRemaining <= 0)
+		m_Delete = true;
 }
 
 void BombDown::OnRemove(Player* player)
@@ -93,5 +97,53 @@ void BombDown::OnRemove(Player* player)
 
 bool	BombDown::CanDelete()
 {
-	return false;
+	return m_Delete;
+}
+
+BombsCanBypassWalls::BombsCanBypassWalls(){}
+
+void	BombsCanBypassWalls::OnAdd(Player* player)
+{
+	player->SetBombsCanBypassWalls(true);
+}
+
+void BombsCanBypassWalls::OnUpdate(Swallow::Timestep& time)
+{
+	this->m_TimeRemaining -= time.GetMiliseconds();
+	if (m_TimeRemaining <= 0)
+		m_Delete = true;
+}
+
+void BombsCanBypassWalls::OnRemove(Player* player)
+{
+	player->SetBombsCanBypassWalls(false);
+}
+
+bool	BombsCanBypassWalls::CanDelete()
+{
+	return m_Delete;
+}
+
+SoftBlockPass::SoftBlockPass(){}
+
+void	SoftBlockPass::OnAdd(Player* player)
+{
+	player->SetGhost(true);
+}
+
+void SoftBlockPass::OnUpdate(Swallow::Timestep& time)
+{
+	this->m_TimeRemaining -= time.GetMiliseconds();
+	if (m_TimeRemaining <= 0)
+		m_Delete = true;
+}
+
+void SoftBlockPass::OnRemove(Player* player)
+{
+	player->SetGhost(false);
+}
+
+bool	SoftBlockPass::CanDelete()
+{
+	return m_Delete;
 }
