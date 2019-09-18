@@ -14,6 +14,7 @@ bin-int/
 Makefile
 *.sln
 assets
+Saves
 Run.sh
 imgui.ini
 .vscode
