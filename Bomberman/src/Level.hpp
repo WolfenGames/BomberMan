@@ -4,6 +4,7 @@
 #include "Tile.hpp"
 #include "Enemy.hpp"
 #include "Flame.hpp"
+#include "PowerUp.hpp"
 
 class Level
 {
@@ -31,6 +32,7 @@ class Level
 		inline bool	GetDeadStatus() { return m_DEAD; }
 
 		bool IsEmpty(glm::vec3 check) const;
+		bool IsExit(glm::vec3 check) const;
 		int Burn(int x, int y);
 		int InBlock(Swallow::Ref<Swallow::GameObject> o, int x, int y);
 		void Save(const std::string &name);
@@ -39,6 +41,7 @@ class Level
 		void Explode(Timer &t);
 
 		void MakeEnemy(int x, int y);
+		void MakePowerUp(int x, int y);
 
 		void Update(Swallow::Timestep ts);
 		void Draw();
@@ -49,10 +52,13 @@ class Level
 		Swallow::Ref<Player> m_Player;
 		Swallow::Ref<Swallow::GameObject> m_Floor;
 		std::vector<Swallow::Ref<Enemy>> m_Enemies;
+		std::vector<Swallow::Ref<PowerUp>> m_PowerUps;
 		std::list<Swallow::Ref<Flame>> m_Flames;
 
 		std::vector<Timer> m_BombTimers;
 		Timer *m_TempTimer = nullptr;
 
 		std::vector<Swallow::Ref<Tile>> m_Map;
+
+		PowerUpFactory		powerUpFactory;
 };

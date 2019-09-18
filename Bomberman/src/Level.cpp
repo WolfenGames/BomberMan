@@ -117,6 +117,8 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 						possim = (source < target);
 					}
 					auto newWall = std::make_shared<Wall>();
+					bool	PowerUpChance = ((glm::linearRand(0, 10) >= 9));
+					if (PowerUpChance) MakePowerUp(x, y);
 					if (!hasExit && possim)
 					{
 						hasExit = true;
@@ -155,6 +157,22 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 		pos *= 2;
 		MakeEnemy(pos.x, pos.y);
 	}
+	// int	desiredPowerUps = ((m_Width + m_Height) / 2.0f) * (chance);
+	// for(int i = 0; i < desiredPowerUps; i++)
+	// {
+	// 	pos = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
+	// 	pos *= 2;	
+	// }
+}
+
+void Level::MakePowerUp(int x, int y)
+{
+	SW_INFO("I HAVE BEEN MADE");
+	auto newpos = glm::vec3(x + 0.5f, 0, y + 0.5f);
+	int	whichPowerUpToSpawn = glm::linearRand(0, static_cast<int>(PowerUpTypes::TotalPowerUps) - 2);
+	m_PowerUps.push_back(powerUpFactory.newPowerUp(PowerUpTypes(whichPowerUpToSpawn)));
+	m_PowerUps.back()->GetTransform()->SetPosition(newpos);
+	m_PowerUps.back()->GetTransform()->Recalculate();
 }
 
 void Level::MakeEnemy(int x, int y)
@@ -179,8 +197,17 @@ bool Level::IsEmpty(glm::vec3 check) const
 	check.x = glm::floor(check.x);
 	check.z = glm::floor(check.z);
 	if (check.x < 0 || check.z < 0 || check.x > m_Width - 1 || check.z > m_Height - 1 ||
-		(m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->isFilled() &&
-		 !m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->IsExit()))
+		(m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->isFilled()))
+		return false;
+	return true;
+}
+
+bool Level::IsExit(glm::vec3 check) const
+{
+	check.x = glm::floor(check.x);
+	check.z = glm::floor(check.z);
+	if (check.x < 0 || check.z < 0 || check.x > m_Width - 1 || check.z > m_Height - 1 ||
+		!m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->IsExit())
 		return false;
 	return true;
 }
@@ -429,6 +456,24 @@ void Level::Update(Swallow::Timestep ts)
 			m_DEAD = true;
 		}
 	}
+	for (auto powerInACan: m_PowerUps)
+	{
+		glm::vec3 ePos = powerInACan->GetTransform()->GetPosition();
+		glm::vec3 myPos = m_Player->GetTransform()->GetPosition();
+		if (glm::length(ePos - myPos) < 0.5)
+		{
+			std::vector<Swallow::Ref<PowerUp>> newList;
+			m_Player->AddPower(powerInACan);
+			for (auto oldPowerInACan: m_PowerUps)
+			{
+				if (oldPowerInACan != powerInACan)
+				{
+					newList.push_back(oldPowerInACan);
+				}
+			}
+			m_PowerUps = newList;
+		}
+	}
 	for (auto &f : m_Flames)
 	{
 		f->Advance(ts);
@@ -461,6 +506,8 @@ void Level::Draw()
 		Swallow::Renderer::Submit((Swallow::Ref<Enemy>(x)));
 	for (auto &f : m_Flames)
 		Swallow::Renderer::Submit(f);
+	for (auto p: m_PowerUps)
+		Swallow::Renderer::Submit(p);
 	Swallow::Renderer::Submit(m_Player);
 	Swallow::Renderer::Submit(m_Floor);
 }

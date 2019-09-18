@@ -13,10 +13,10 @@ Player::Player(const glm::vec3 &Pos, Level &l)
 	GetTransform()->SetScale(glm::vec3(0.20f));
 	GetTransform()->SetPosition(Pos);
 	m_Destination = GetTransform()->GetPosition();
-	for(int i = 0; i < 12; i++)
-		AddPower(std::make_shared<FireIncrease>());
-	AddPower(std::make_shared<BombsCanBypassWalls>());
-	AddPower(std::make_shared<SoftBlockPass>());
+	// for(int i = 0; i < 12; i++)
+	// 	AddPower(std::make_shared<FireIncrease>());
+	// AddPower(std::make_shared<BombsCanBypassWalls>());
+	// AddPower(std::make_shared<SoftBlockPass>());
 }
 
 Player::~Player()
@@ -31,19 +31,18 @@ void Player::AddPower(Swallow::Ref<PowerUp> power)
 
 void Player::Update(Swallow::Timestep ts)
 {
-	// std::cout << m_BombCount << "::" << m_FireDistance << std::endl;
 	static float threshold = 0.1f;
 	if (Swallow::Input::IsKeyPressed(SW_KEY_W)
-		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f)))
+		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level.IsExit(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f)) || m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f))))
 		m_Destination.z = glm::floor(GetTransform()->GetPosition().z + 0.5f - threshold) - 0.5f;
 	if (Swallow::Input::IsKeyPressed(SW_KEY_S)
-		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, 1.0f)))
+		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level.IsExit(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, 1.0f)) || m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, 1.0f))))
 		m_Destination.z = glm::floor(GetTransform()->GetPosition().z - 0.5f + threshold) + 1.5f;
 	if (Swallow::Input::IsKeyPressed(SW_KEY_A)
-		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(-1.0f, 0.0f, 0.0f)))
+		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level.IsExit(GetTransform()->GetPosition() + glm::vec3(-1.0f, 0.0f, 0.f)) || m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(-1.0f, 0.0f, 0.0f))))
 		m_Destination.x = glm::floor(GetTransform()->GetPosition().x + 0.5f - threshold) - 0.5f;
 	if (Swallow::Input::IsKeyPressed(SW_KEY_D)
-		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f)))
+		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level.IsExit(GetTransform()->GetPosition() + glm::vec3(1.0f, 0.0f, 0.f)) || m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f))))
 		m_Destination.x = glm::floor(GetTransform()->GetPosition().x - 0.5f + threshold) + 1.5f;
 	float len = glm::length(m_Destination - GetTransform()->GetPosition());
 	if (len > 0.01f)

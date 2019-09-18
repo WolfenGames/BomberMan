@@ -6,7 +6,19 @@
 
 class Player;
 
-class PowerUp
+enum PowerUpTypes
+{
+	eFireIncrease,
+	eFireDecrease,
+	eBombUp,
+	eBombDown,
+	eBombsCanBypassWalls,
+	eSoftBlockPass,
+	//Leave this last
+	TotalPowerUps
+};
+
+class PowerUp: public Swallow::GameObject
 {
 	public:
 		virtual void	OnAdd(Player*) = 0;
@@ -127,4 +139,14 @@ class SoftBlockPass: public PowerUp
 	private:
 		float	m_TimeRemaining = 1200000000.0f;
 		bool	m_Delete = false;
+};
+
+class PowerUpFactory
+{
+	public:
+		PowerUpFactory();
+		PowerUpFactory(const PowerUpFactory&) = default;
+		PowerUpFactory &operator=(const PowerUpFactory&) = default;
+		virtual ~PowerUpFactory() = default;
+		Swallow::Ref<PowerUp> newPowerUp(PowerUpTypes type);
 };

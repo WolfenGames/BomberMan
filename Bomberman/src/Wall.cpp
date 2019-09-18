@@ -35,7 +35,7 @@ LevelExit::LevelExit()
 	LevelExit->SetColour(glm::vec4(0.f, 0.f, 1.f, 1.f));
 	SetMaterial(LevelExit);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
-	GetTransform()->SetScale(glm::vec3(1.f));
+	GetTransform()->SetScale(glm::vec3(1.f, 0.5f, .2f));
 
 	m_isDestructable = false;
 	m_isFilled = true;
