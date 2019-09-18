@@ -31,8 +31,9 @@ class Level
 
 		inline bool	GetDeadStatus() { return m_DEAD; }
 
-		bool IsEmpty(glm::vec3 check) const;
+		bool IsEmpty(glm::vec3 check, bool ghost) const;
 		bool IsExit(glm::vec3 check) const;
+		inline bool NoEnemies() { return m_Enemies.size() == 0; }
 		int Burn(int x, int y);
 		int InBlock(Swallow::Ref<Swallow::GameObject> o, int x, int y);
 		void Save(const std::string &name);
@@ -41,18 +42,18 @@ class Level
 		void Explode(Timer &t);
 
 		void MakeEnemy(int x, int y);
-		void MakePowerUp(int x, int y);
+		void MakePowerUp(int x, int y, bool predetermined = false, int type = -1);
 
 		void Update(Swallow::Timestep ts);
 		void Draw();
 
 	private:
-		bool	m_DEAD;
+		bool	m_DEAD = false;
 		uint32_t m_Width, m_Height, m_Seed;
 		Swallow::Ref<Player> m_Player;
 		Swallow::Ref<Swallow::GameObject> m_Floor;
 		std::vector<Swallow::Ref<Enemy>> m_Enemies;
-		std::vector<Swallow::Ref<PowerUp>> m_PowerUps;
+		std::list<Swallow::Ref<PowerUp>> m_PowerUps;
 		std::list<Swallow::Ref<Flame>> m_Flames;
 
 		std::vector<Timer> m_BombTimers;

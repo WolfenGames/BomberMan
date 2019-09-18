@@ -6,7 +6,6 @@
 #include "BombermanApp.hpp"
 #include "Wall.hpp"
 #include "Bomb.hpp"
-#include "Exit.hpp"
 #include <chrono>
 #include "PowerUp.hpp"
 #ifdef SW_MACOSX
@@ -32,6 +31,8 @@ Level::Level(const std::string &name)
 	{
 		char what;
 		in.read(&what, 1);
+		PowerUpTypes type;
+		in.read(reinterpret_cast<char*>(&type), sizeof(type));
 		switch (what)
 		{
 		case 0:
@@ -39,6 +40,8 @@ Level::Level(const std::string &name)
 			break;
 		case 1:
 			m_Map.push_back(std::make_shared<Wall>());
+			if (type != PowerUpTypes::None)
+				m_Map[i]->SetSecret(type);
 			break;
 		case 2:
 			if((i / m_Height) % 2 && (i % m_Height) % 2)
@@ -50,6 +53,8 @@ Level::Level(const std::string &name)
 			break;
 		}
 		m_Map[i]->GetTransform()->SetPosition(glm::vec3(i / m_Height + 0.5f, 0, i % m_Height + 0.5f));
+
+		SW_INFO("HOOOOOO");
 		m_Map[i]->GetTransform()->Recalculate();
 	}
 	int count;
@@ -62,7 +67,7 @@ Level::Level(const std::string &name)
 		in.read(reinterpret_cast<char *>(&y), sizeof(float));
 		SW_INFO("Enemy at: {} x {}", x, y);
 		m_Enemies.push_back(std::make_shared<Enemy>(glm::vec3(x, 0, y), *this));
-		// m_Enemies.back()->GetTransform()->Recalculate();
+		m_Enemies.back()->GetTransform()->Recalculate();
 	}
 	SW_INFO("Enemies In");
 	in.read(reinterpret_cast<char *>(&x), sizeof(float));
@@ -97,8 +102,6 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 	m_Floor->GetTransform()->Recalculate();
 	std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(m_Floor->GetMaterial())->SetColour(glm::vec4(1, 1, 1, 1));
 	m_Map.reserve(m_Width * m_Height);
-	hasExit = false;
-	uint source = glm::linearRand(static_cast<unsigned int>(0), m_Width * m_Height);
 	for (uint32_t x = 0; x < m_Width; x++)
 	{
 		for (uint32_t y = 0; y < m_Height; y++)
@@ -110,20 +113,9 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 					m_Map.push_back(std::make_shared<Pillar>());
 				else
 				{
-					bool possim;
-					if (!hasExit)
-					{
-						uint target = (x * m_Height + y);
-						possim = (source < target);
-					}
 					auto newWall = std::make_shared<Wall>();
-					bool	PowerUpChance = ((glm::linearRand(0, 10) >= 9));
-					if (PowerUpChance) MakePowerUp(x, y);
-					if (!hasExit && possim)
-					{
-						hasExit = true;
-						newWall->SetExit(true);
-					}
+					if ((glm::linearRand(0, 10) >= 9))
+						newWall->SetSecret(PowerUpTypes(glm::linearRand(PowerUpTypes::eFireIncrease + 0, PowerUpTypes::TotalPowerUps - 1)));
 					m_Map.push_back(newWall);
 				}
 				m_Map[(x) * m_Height + (y)]->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
@@ -133,6 +125,26 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 			{
 				m_Map.push_back(std::make_shared<Tile>());
 			}
+		}
+	}
+	hasExit = false;
+	while (!hasExit)
+	{
+		uint source = glm::linearRand(static_cast<unsigned int>(0), m_Width * m_Height - 1);
+		if (m_Map[source]->isDestructable())
+		{
+			hasExit = true;
+			m_Map[source]->SetSecret(PowerUpTypes::eExit);
+		}
+	}
+	hasExit = false;
+	while (!hasExit)
+	{
+		uint source = glm::linearRand(static_cast<unsigned int>(0), m_Width * m_Height - 1);
+		if (m_Map[source]->isDestructable() && m_Map[source]->GetSecret() != PowerUpTypes::eExit)
+		{
+			hasExit = true;
+			m_Map[source]->SetSecret(PowerUpTypes::eKey);
 		}
 	}
 	m_Enemies.reserve(desiredEnemies);
@@ -157,19 +169,13 @@ Level::Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance)
 		pos *= 2;
 		MakeEnemy(pos.x, pos.y);
 	}
-	// int	desiredPowerUps = ((m_Width + m_Height) / 2.0f) * (chance);
-	// for(int i = 0; i < desiredPowerUps; i++)
-	// {
-	// 	pos = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(Width, Height));
-	// 	pos *= 2;	
-	// }
 }
 
-void Level::MakePowerUp(int x, int y)
+void Level::MakePowerUp(int x, int y, bool predetermined, int type)
 {
-	SW_INFO("I HAVE BEEN MADE");
 	auto newpos = glm::vec3(x + 0.5f, 0, y + 0.5f);
-	int	whichPowerUpToSpawn = glm::linearRand(0, static_cast<int>(PowerUpTypes::TotalPowerUps) - 2);
+	int	whichPowerUpToSpawn = (!predetermined) ? glm::linearRand(PowerUpTypes::eFireIncrease + 0, PowerUpTypes::TotalPowerUps - 1) : type;
+	SW_INFO("{}", whichPowerUpToSpawn);
 	m_PowerUps.push_back(powerUpFactory.newPowerUp(PowerUpTypes(whichPowerUpToSpawn)));
 	m_PowerUps.back()->GetTransform()->SetPosition(newpos);
 	m_PowerUps.back()->GetTransform()->Recalculate();
@@ -192,12 +198,13 @@ Level::~Level()
 {
 }
 
-bool Level::IsEmpty(glm::vec3 check) const
+bool Level::IsEmpty(glm::vec3 check, bool ghost) const
 {
 	check.x = glm::floor(check.x);
 	check.z = glm::floor(check.z);
 	if (check.x < 0 || check.z < 0 || check.x > m_Width - 1 || check.z > m_Height - 1 ||
-		(m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->isFilled()))
+		(m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->isFilled() &&
+		(!ghost || !m_Map[(static_cast<int>(check.x)) * m_Height + (static_cast<int>(check.z))]->isDestructable())))
 		return false;
 	return true;
 }
@@ -238,6 +245,7 @@ int Level::Burn(int x, int y)
 
 void Level::Explode(Timer &t)
 {
+	m_Map[t.x * m_Height + t.y] = std::make_shared<Tile>();
 	if (Burn(t.x, t.y))
 	{
 		m_DEAD = true;
@@ -257,14 +265,10 @@ void Level::Explode(Timer &t)
 			continue;
 		if (tile->isDestructable())
 		{
-			if (!tile->IsExit())
-				tile = std::make_shared<Tile>();
-			else
-			{
-				tile = std::make_shared<LevelExit>();
-				tile->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
-				tile->GetTransform()->Recalculate();
-			}
+
+			if (tile->GetSecret() != PowerUpTypes::None)
+				MakePowerUp(x, y, true, tile->GetSecret());
+			tile = std::make_shared<Tile>();
 			
 			if (!m_Player->GetBombsCanBypassWalls())
 				break;
@@ -295,14 +299,9 @@ void Level::Explode(Timer &t)
 			continue;
 		if (tile->isDestructable())
 		{
-			if (!tile->IsExit())
-				tile = std::make_shared<Tile>();
-			else
-			{
-				tile = std::make_shared<LevelExit>();
-				tile->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
-				tile->GetTransform()->Recalculate();
-			}
+			if (tile->GetSecret() != PowerUpTypes::None)
+				MakePowerUp(x, y, true, tile->GetSecret());
+			tile = std::make_shared<Tile>();
 			if (!m_Player->GetBombsCanBypassWalls())
 				break;
 		}
@@ -332,14 +331,9 @@ void Level::Explode(Timer &t)
 			continue;
 		if (tile->isDestructable())
 		{
-			if (!tile->IsExit())
-				tile = std::make_shared<Tile>();
-			else if (tile->IsExit())
-			{
-				tile = std::make_shared<LevelExit>();
-				tile->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
-				tile->GetTransform()->Recalculate();
-			}
+			if (tile->GetSecret() != PowerUpTypes::None)
+				MakePowerUp(x, y, true, tile->GetSecret());
+			tile = std::make_shared<Tile>();
 			if (!m_Player->GetBombsCanBypassWalls())
 				break;
 		}
@@ -369,14 +363,9 @@ void Level::Explode(Timer &t)
 			continue;
 		if (tile->isDestructable())
 		{
-			if (!tile->IsExit())
-				tile = std::make_shared<Tile>();
-			else
-			{
-				tile = std::make_shared<LevelExit>();
-				tile->GetTransform()->SetPosition(glm::vec3(x + 0.5f, 0, y + 0.5f));
-				tile->GetTransform()->Recalculate();
-			}
+			if (tile->GetSecret() != PowerUpTypes::None)
+				MakePowerUp(x, y, true, tile->GetSecret());
+			tile = std::make_shared<Tile>();
 			if (!m_Player->GetBombsCanBypassWalls())
 				break;
 		}
@@ -396,7 +385,7 @@ void Level::Explode(Timer &t)
 
 void Level::DropBomb(glm::vec3 pos)
 {
-	if (m_BombTimers.size() == static_cast<unsigned long>(m_Player->GetBombCount()))
+	if (m_BombTimers.size() == static_cast<unsigned long>(m_Player->GetBombCount()) + 1)
 		return;
 	static_cast<void>(pos);
 	if (m_TempTimer)
@@ -409,7 +398,7 @@ void Level::DropBomb(glm::vec3 pos)
 	timer.x = pos.x;
 	timer.y = pos.z;
 	timer.power = m_Player->GetFireDistance();
-	if (IsEmpty(pos))
+	if (IsEmpty(pos, false))
 	{
 		m_TempTimer = new Level::Timer;
 		m_TempTimer->fuse = timer.fuse;
@@ -438,11 +427,6 @@ void Level::Update(Swallow::Timestep ts)
 	while (m_BombTimers.size() && m_BombTimers.back().fuse < 0.0)
 	{
 		Explode (m_BombTimers.back());
-		auto tileCheck = m_Map[(m_BombTimers.back().x) * m_Height + (m_BombTimers.back().y)];
-		if (tileCheck->IsExit())
-			 m_Map[(m_BombTimers.back().x) * m_Height + (m_BombTimers.back().y)] = std::make_shared<Exit>(glm::vec3({(m_BombTimers.back().x), 0, (m_BombTimers.back().y)}));
-		else
-		 	 m_Map[(m_BombTimers.back().x) * m_Height + (m_BombTimers.back().y)] = std::make_shared<Tile>();
 		m_BombTimers.pop_back();
 	}
 	m_Player->Update(ts);
@@ -456,24 +440,19 @@ void Level::Update(Swallow::Timestep ts)
 			m_DEAD = true;
 		}
 	}
-	for (auto powerInACan: m_PowerUps)
+	for (auto &powerInACan: m_PowerUps)
 	{
+		powerInACan->OnUpdate(ts);
+
 		glm::vec3 ePos = powerInACan->GetTransform()->GetPosition();
 		glm::vec3 myPos = m_Player->GetTransform()->GetPosition();
 		if (glm::length(ePos - myPos) < 0.5)
 		{
-			std::vector<Swallow::Ref<PowerUp>> newList;
-			m_Player->AddPower(powerInACan);
-			for (auto oldPowerInACan: m_PowerUps)
-			{
-				if (oldPowerInACan != powerInACan)
-				{
-					newList.push_back(oldPowerInACan);
-				}
-			}
-			m_PowerUps = newList;
+			if (m_Player->AddPower(powerInACan))
+				powerInACan->SetDelete(true);
 		}
 	}
+	m_PowerUps.remove_if([] (Swallow::Ref<PowerUp> p) -> bool { return p->CanDelete(); });
 	for (auto &f : m_Flames)
 	{
 		f->Advance(ts);
@@ -514,13 +493,19 @@ void Level::Draw()
 
 void Level::Save(const std::string &name)
 {
-	#ifdef SW_MACOSX
+	#ifdef SW_PLATFORM_MACOSX
 		mkdir("Saves", S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
 	#endif
+
+	SW_INFO("Made dir");
 	std::string path = "Saves/";
 	std::ofstream f(path + name + ".sav", std::ios::binary);
+
+	SW_INFO("file open");
 	f.write(reinterpret_cast<char *>(&m_Width), 4);
 	f.write(reinterpret_cast<char *>(&m_Height), 4);
+
+	SW_INFO("WH");
 	for (uint i = 0; i < (m_Width * m_Height); i++)
 	{
 		char v = 0;
@@ -537,15 +522,29 @@ void Level::Save(const std::string &name)
 			
 		}
 		f.write(&v, 1);
+		PowerUpTypes type = m_Map[i]->GetSecret();
+		f.write(reinterpret_cast<char*>(&type), sizeof(type));
 	}
+
+	SW_INFO("MAP_WRITTEN");
 	int count = m_Enemies.size();
 	f.write(reinterpret_cast<char *>(&count), 4);
+
+	SW_INFO("E count");
 	for (auto &e : m_Enemies)
 	{
 		f.write(reinterpret_cast<char *>(&e->GetTransform()->GetPosition().x), sizeof(float));
 		f.write(reinterpret_cast<char *>(&e->GetTransform()->GetPosition().z), sizeof(float));
 	}
+
+	SW_INFO("E Pos");
+	count = m_PowerUps.size();
+	f.write(reinterpret_cast<char *>(&count), 4);
+
+	SW_INFO("P pos");
 	f.write(reinterpret_cast<char *>(&m_Player->GetTransform()->GetPosition().x), sizeof(float));
 	f.write(reinterpret_cast<char *>(&m_Player->GetTransform()->GetPosition().z), sizeof(float));
+
+	SW_INFO("Player");
 	f.close();
 }
