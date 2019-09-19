@@ -76,7 +76,7 @@ void GUILayer::OnUpdate(Swallow::Timestep ts)
 	static_cast<void>(ts);
 	Swallow::Renderer::BeginScene(m_Camera);
 
-	Swallow::Renderer::Submit(m_PinkThing);
+	//Swallow::Renderer::Submit(m_PinkThing);
 	m_Info->SetText(m_InfoVal);
 	m_Info->Recalculate();
 	Swallow::Renderer::Submit(m_Info);

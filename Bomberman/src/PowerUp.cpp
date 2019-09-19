@@ -22,7 +22,7 @@ FireIncrease::FireIncrease(){
 
 void	FireIncrease::OnUpdate(Swallow::Timestep& time)
 {
-	this->m_TimeRemaining -= time.GetMiliseconds();
+	this->m_TimeRemaining -= time.GetSeconds();
 	if (m_TimeRemaining <= 0)
 		m_Delete = true;
 }
@@ -49,7 +49,7 @@ FireDecrease::FireDecrease(){
 
 void	FireDecrease::OnUpdate(Swallow::Timestep& time)
 {
-	this->m_TimeRemaining -= time.GetMiliseconds();
+	this->m_TimeRemaining -= time.GetSeconds();
 	if (m_TimeRemaining <= 0)
 		m_Delete = true;
 }
@@ -75,7 +75,7 @@ BombUp::BombUp(){
 
 void	BombUp::OnUpdate(Swallow::Timestep& time)
 {
-	this->m_TimeRemaining -= time.GetMiliseconds();
+	this->m_TimeRemaining -= time.GetSeconds();
 	if (m_TimeRemaining <= 0)
 		m_Delete = true;
 }
@@ -103,12 +103,67 @@ BombDown::BombDown(){
 
 void BombDown::OnUpdate(Swallow::Timestep& time)
 {
-	this->m_TimeRemaining -= time.GetMiliseconds();
+	this->m_TimeRemaining -= time.GetSeconds();
 	if (m_TimeRemaining <= 0)
 		m_Delete = true;
 }
 
 bool	BombDown::CanDelete()
+{
+	return m_Delete;
+}
+
+#pragma endregion
+#pragma region SpeedUp
+SpeedUp::SpeedUp(){
+	m_Delete = false;
+	static Swallow::Ref<Swallow::FlatColourMaterialInstance> SpeedUpMat = Swallow::FlatColourMaterial::Create();
+	SpeedUpMat->SetColour(glm::vec4(0.5f, 0.5f, 0.5f, 1.f));
+	SetMaterial(SpeedUpMat);
+	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	#ifdef SW_DEBUG
+		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+	#else
+		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+	#endif
+};
+
+void	SpeedUp::OnUpdate(Swallow::Timestep& time)
+{
+	this->m_TimeRemaining -= time.GetSeconds();
+	if (m_TimeRemaining <= 0)
+		m_Delete = true;
+}
+
+bool	SpeedUp::CanDelete()
+{
+	return m_Delete;
+}
+
+#pragma endregion
+#pragma region SpeedDown
+SpeedDown::SpeedDown(){
+	m_Delete = false;
+	static Swallow::Ref<Swallow::FlatColourMaterialInstance> SpeedDownMat = Swallow::FlatColourMaterial::Create();
+	SpeedDownMat->SetColour(glm::vec4(0.5f, 0.5f, 0.5f, 1.f));
+	SetMaterial(SpeedDownMat);
+	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	#ifdef SW_DEBUG
+		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+	#else
+		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+	#endif
+	GetTransform()->SetRotation(glm::vec3(glm::radians(45.0f), 0.0f, 0.0f));
+};
+
+void SpeedDown::OnUpdate(Swallow::Timestep& time)
+{
+	this->m_TimeRemaining -= time.GetSeconds();
+	if (m_TimeRemaining <= 0)
+		m_Delete = true;
+}
+
+bool	SpeedDown::CanDelete()
 {
 	return m_Delete;
 }
@@ -130,7 +185,7 @@ BombsCanBypassWalls::BombsCanBypassWalls(){
 
 void BombsCanBypassWalls::OnUpdate(Swallow::Timestep& time)
 {
-	this->m_TimeRemaining -= time.GetMiliseconds();
+	this->m_TimeRemaining -= time.GetSeconds();
 	if (m_TimeRemaining <= 0)
 		m_Delete = true;
 }
@@ -143,7 +198,6 @@ bool	BombsCanBypassWalls::CanDelete()
 #pragma endregion
 #pragma region SoftBlockPass
 SoftBlockPass::SoftBlockPass(){
-	SW_INFO("I AM FICKING UP THE LOGIS");
 	m_Delete = false;
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> SoftBlockPassMat = Swallow::FlatColourMaterial::Create();
 	SoftBlockPassMat->SetColour(glm::vec4(1.f, 1.f, 1.f, 1.f));
@@ -158,7 +212,7 @@ SoftBlockPass::SoftBlockPass(){
 
 void SoftBlockPass::OnUpdate(Swallow::Timestep& time)
 {
-	this->m_TimeRemaining -= time.GetMiliseconds();
+	this->m_TimeRemaining -= time.GetSeconds();
 	if (m_TimeRemaining <= 0)
 		m_Delete = true;
 }
@@ -171,7 +225,6 @@ bool	SoftBlockPass::CanDelete()
 #pragma region Key
 
 Key::Key(){
-	SW_INFO("I AM FICKING UP THE LOGIS");
 	m_Delete = false;
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> SoftBlockPassMat = Swallow::FlatColourMaterial::Create();
 	SoftBlockPassMat->SetColour(glm::vec4(1.f, 1.f, 0.3f, 1.f));
@@ -186,9 +239,7 @@ Key::Key(){
 
 void Key::OnUpdate(Swallow::Timestep& time)
 {
-	this->m_TimeRemaining -= time.GetMiliseconds();
-	if (m_TimeRemaining <= 0)
-		m_Delete = true;
+	static_cast<void>(time);
 }
 bool	Key::CanDelete()
 {
@@ -214,9 +265,7 @@ Exit::Exit(){
 
 void Exit::OnUpdate(Swallow::Timestep& time)
 {
-	this->m_TimeRemaining -= time.GetMiliseconds();
-	if (m_TimeRemaining <= 0)
-		m_Delete = true;
+	static_cast<void>(time);
 }
 bool	Exit::CanDelete()
 {
@@ -238,6 +287,10 @@ Swallow::Ref<PowerUp>	PowerUpFactory::newPowerUp(PowerUpTypes type)
 		return std::make_shared<BombUp>();
 	case PowerUpTypes::eBombDown:
 		return std::make_shared<BombDown>();
+	case PowerUpTypes::eSpeedUp:
+		return std::make_shared<SpeedUp>();
+	case PowerUpTypes::eSpeedDown:
+		return std::make_shared<SpeedDown>();
 	case PowerUpTypes::eBombsCanBypassWalls:
 		return std::make_shared<BombsCanBypassWalls>();
 	case PowerUpTypes::eSoftBlockPass:

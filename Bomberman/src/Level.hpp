@@ -16,10 +16,7 @@ class Level
 	};
 
 	public:
-		Level(const std::string &path);
-		Level(uint32_t Width, uint32_t Height);
-		Level(uint32_t Width, uint32_t Height, float chance);
-		Level(uint32_t Width, uint32_t Height, uint32_t Seed, float chance);
+		Level() = default;
 		Level(const Level &rhs) = default;
 		Level &operator=(const Level &rhs) = default;
 		~Level();
@@ -31,11 +28,12 @@ class Level
 
 		inline bool	GetDeadStatus() { return m_DEAD; }
 
+		void Generate(float chance = 0.6);
 		bool IsEmpty(glm::vec3 check, bool ghost) const;
-		bool IsExit(glm::vec3 check) const;
 		inline bool NoEnemies() { return m_Enemies.size() == 0; }
-		int Burn(int x, int y);
+		void Burn(int x, int y);
 		int InBlock(Swallow::Ref<Swallow::GameObject> o, int x, int y);
+		void Load(const std::string &name);
 		void Save(const std::string &name);
 
 		void DropBomb(glm::vec3 pos);
@@ -43,16 +41,17 @@ class Level
 
 		void MakeEnemy(int x, int y);
 		void MakePowerUp(int x, int y, bool predetermined = false, int type = -1);
+		inline void SetPlayer(const Swallow::Ref<Player> &p) { m_Player = p; }
 
 		void Update(Swallow::Timestep ts);
 		void Draw();
 
 	private:
 		bool	m_DEAD = false;
-		uint32_t m_Width, m_Height, m_Seed;
+		uint32_t m_Width = 29, m_Height = 11;
 		Swallow::Ref<Player> m_Player;
 		Swallow::Ref<Swallow::GameObject> m_Floor;
-		std::vector<Swallow::Ref<Enemy>> m_Enemies;
+		std::list<Swallow::Ref<Enemy>> m_Enemies;
 		std::list<Swallow::Ref<PowerUp>> m_PowerUps;
 		std::list<Swallow::Ref<Flame>> m_Flames;
 

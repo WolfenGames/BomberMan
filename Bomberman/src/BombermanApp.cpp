@@ -42,7 +42,6 @@ void BombermanApp::UnloadGame()
 
 void BombermanApp::LoadGame()
 {
-	m_GameLayer->SetMapSize(m_MenuLayer->GetMapSize());
 	m_GameLayer->SetSpawnChance(m_MenuLayer->GetChance());
 	m_GameLayer->SetSave(m_MenuLayer->GetSave());
 	PushLayer(m_BackgroundLayer);

@@ -3,6 +3,7 @@
 #include "Player.hpp"
 #include <Swallow/Core/Timestep.hpp>
 #include <Swallow.hpp>
+#define POWERUP_DURATION 9.0f
 
 class Player;
 
@@ -13,6 +14,8 @@ enum PowerUpTypes
 	eFireDecrease,
 	eBombUp,
 	eBombDown,
+	eSpeedUp,
+	eSpeedDown,
 	eBombsCanBypassWalls,
 	eSoftBlockPass,
 	//Leave this last
@@ -45,7 +48,7 @@ class FireIncrease: public PowerUp
 		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eFireIncrease; }
 
 	private:
-		float	m_TimeRemaining = 1200000000.0f;
+		float	m_TimeRemaining = POWERUP_DURATION;
 		bool	m_Delete = false;
 };
 
@@ -63,7 +66,7 @@ class FireDecrease: public PowerUp
 		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eFireDecrease; }
 
 	private:
-		float	m_TimeRemaining = 12000.0f;
+		float	m_TimeRemaining = POWERUP_DURATION;
 		bool	m_Delete = false;
 };
 
@@ -81,7 +84,7 @@ class BombUp: public PowerUp
 		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eBombUp; }
 
 	private:
-		float	m_TimeRemaining = 12000.0f;
+		float	m_TimeRemaining = POWERUP_DURATION;
 		bool	m_Delete = false;
 };
 
@@ -100,7 +103,44 @@ class BombDown: public PowerUp
 		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eBombDown; }
 
 	private:
-		float	m_TimeRemaining = 12000.0f;
+		float	m_TimeRemaining = POWERUP_DURATION;
+		bool	m_Delete = false;
+};
+
+class SpeedUp: public PowerUp
+{
+		public:
+		SpeedUp();
+		SpeedUp(const SpeedUp&) = default;
+		SpeedUp &operator=(const SpeedUp&) = default;
+		~SpeedUp() = default;
+
+		void 	OnUpdate(Swallow::Timestep&) override;
+		bool	CanDelete() override;
+		virtual inline void	SetDelete(bool val) override { m_Delete = val;}
+		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eSpeedUp; }
+
+	private:
+		float	m_TimeRemaining = POWERUP_DURATION;
+		bool	m_Delete = false;
+};
+
+
+class SpeedDown: public PowerUp
+{
+		public:
+		SpeedDown();
+		SpeedDown(const SpeedDown&) = default;
+		SpeedDown &operator=(const SpeedDown&) = default;
+		~SpeedDown() = default;
+
+		void 	OnUpdate(Swallow::Timestep&) override;
+		bool	CanDelete() override;
+		virtual inline void	SetDelete(bool val) override { m_Delete = val;}
+		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eSpeedDown; }
+
+	private:
+		float	m_TimeRemaining = POWERUP_DURATION;
 		bool	m_Delete = false;
 };
 
@@ -118,7 +158,7 @@ class BombsCanBypassWalls: public PowerUp
 		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eBombsCanBypassWalls; }
 
 	private:
-		float	m_TimeRemaining = 1200000.0f;
+		float	m_TimeRemaining = POWERUP_DURATION;
 		bool	m_Delete = false;
 };
 
@@ -136,7 +176,7 @@ class SoftBlockPass: public PowerUp
 		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eSoftBlockPass ; }
 
 	private:
-		float	m_TimeRemaining = 1200000000.0f;
+		float	m_TimeRemaining = POWERUP_DURATION;
 		bool	m_Delete = false;
 };
 
@@ -154,7 +194,6 @@ class Key: public PowerUp
 		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eKey; }
 
 	private:
-		float	m_TimeRemaining = 1200000000.0f;
 		bool	m_Delete = false;
 };
 
@@ -172,7 +211,6 @@ class Exit: public PowerUp
 		virtual inline	PowerUpTypes	getPowerUpType() override { return PowerUpTypes::eExit; }
 
 	private:
-		float	m_TimeRemaining = 1200000000.0f;
 		bool	m_Delete = false;
 };
 

@@ -14,15 +14,17 @@ public:
 	void makeDecision();
 	glm::vec3& Destination();
 	void Update(Swallow::Timestep ts);
+	inline bool CanDelete() { return m_Delete; }
+	inline void SetDelete(bool b) { m_Delete = b; }
 
 	~Enemy();
 
 private:
-	glm::vec3							m_Pos;
+	glm::vec3							m_Destination;
 	Level								&m_Level;
-	uint8_t								m_MaxMoves;
 	Swallow::Ref<Swallow::GameObject>	m_Cube;
-	glm::vec2							m_MoveDir;
+	glm::vec3							m_MoveDir;
+	bool								m_Delete = false;
 
 protected:
 	Enemy() = default;

@@ -2,16 +2,18 @@
 
 #include <Swallow.hpp>
 #include "Level.hpp"
+#include "Player.hpp"
 
 class GameLayer : public Swallow::Layer {
 private:
 	Swallow::Ref<Level> m_Level;
+	Swallow::Ref<Player> m_Player;
 
 	Swallow::PerspectiveCamera m_Camera;
 	glm::vec3	m_Position;
-	glm::ivec2  map_size;
 	std::string m_Save;
 	float		chance;
+	int 		m_Lives = 3;
 
 	Swallow::Ref<Swallow::AudioBuffer> x;
 	Swallow::Ref<Swallow::AudioSource> s;
@@ -27,7 +29,6 @@ public:
 	bool OnKeyPressed(Swallow::KeyPressedEvent &e);
 	bool OnWindowResize(Swallow::WindowResizeEvent &e);
 
-	inline void SetMapSize(const glm::ivec2 &v) {map_size = v;}
 	inline void SetSpawnChance(const float chance) { this->chance = chance; }
 	inline void SetSave(const std::string &save) { this->m_Save = save; }
 
