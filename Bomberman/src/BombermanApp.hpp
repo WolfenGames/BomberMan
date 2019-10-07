@@ -16,8 +16,8 @@ public:
 	void LoadGame();
 
 private:
-	BombermanApp(const BombermanApp &s) = default;
-	BombermanApp &operator=(const BombermanApp &s) = default;
+	BombermanApp(const BombermanApp &s) = delete;
+	BombermanApp &operator=(const BombermanApp &s) = delete;
 
 	Swallow::Ref<GameLayer> m_GameLayer;
 	Swallow::Ref<GUILayer> m_GUILayer;

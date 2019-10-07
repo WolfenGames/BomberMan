@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:37 by ppreez            #+#    #+#             */
-/*   Updated: 2019/09/17 09:14:31 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/07 16:38:30 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ Button::Button(std::string text, float x, float y)
     GetText()->SetText(text);
     GetText()->SetColour(glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
     GetText()->GetTransform()->SetPosition(glm::vec3{x, y, 0.8f});
-    GetText()->GetTransform()->SetScale(glm::vec3{1.0f, 1.5f, 1.0f});
+    GetText()->GetTransform()->SetScale(glm::vec3{0.8f, 1.5f, 1.0f});
     
-    GetBackground()->GetTransform()->SetPosition(glm::vec3{x + 1.0f, y + 0.5f, 0.9f});
-    GetBackground()->GetTransform()->SetScale(glm::vec3{1.1f, 1.0f, 1.0f});
+    GetBackground()->GetTransform()->SetPosition(glm::vec3{x + (text.length() / 4.0f), y + 0.5f, 0.9f});
+    GetBackground()->GetTransform()->SetScale(glm::vec3{text.length() / 4.0f, 1.0f, 1.0f});
 }
 
 Button::Button(Button const &rhs)

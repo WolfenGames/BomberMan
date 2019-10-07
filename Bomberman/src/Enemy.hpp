@@ -8,8 +8,8 @@ class Enemy : public Swallow::GameObject
 {
 public:
 	Enemy(const glm::vec3&, Level&);
-	Enemy(const Enemy&) = default;
-	Enemy& operator=(const Enemy&) = default;
+	Enemy(const Enemy&) = delete;
+	Enemy& operator=(const Enemy&) = delete;
 	
 	void makeDecision();
 	glm::vec3& Destination();
@@ -25,6 +25,6 @@ private:
 	glm::vec2							m_MoveDir;
 
 protected:
-	Enemy() = default;
+	Enemy() = delete;
 
 };

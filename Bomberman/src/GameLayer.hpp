@@ -13,8 +13,8 @@ private:
 	float		chance;
 public:
 	GameLayer();
-	GameLayer(const GameLayer &s) = default;
-	GameLayer &operator=(const GameLayer &s) = default;
+	GameLayer(const GameLayer &s) = delete;
+	GameLayer &operator=(const GameLayer &s) = delete;
 	virtual ~GameLayer() = default;
 
 	bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);

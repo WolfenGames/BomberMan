@@ -10,8 +10,8 @@ private:
 
 public:
 	GUILayer();
-	GUILayer(const GUILayer &s) = default;
-	GUILayer &operator=(const GUILayer &s) = default;
+	GUILayer(const GUILayer &s) = delete;
+	GUILayer &operator=(const GUILayer &s) = delete;
 	virtual ~GUILayer() = default;
 
 	bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);

@@ -8,8 +8,8 @@ class Player: public Swallow::GameObject
 {
 public:
 	Player(const glm::vec3 &Pos, Level &l);
-	Player(const Player &rhs) = default;
-	Player &operator=(const Player &rhs) = default;
+	Player(const Player &rhs) = delete;
+	Player &operator=(const Player &rhs) = delete;
 	~Player();
 
 	inline glm::vec3 &Destination() { return m_Destination; }
