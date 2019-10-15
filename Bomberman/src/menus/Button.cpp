@@ -6,19 +6,15 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:37 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/07 16:38:30 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/15 12:08:31 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Button.hpp"
 
 Button::Button()
-:m_Pressed(false)
+:Button("Fill me", 0, 0) 
 {
-    m_Material = Swallow::MenuMaterial::Create();
-    m_Background = Swallow::Primatives::Quad();
-    m_Material->SetColour(glm::vec4{0.0f, 0.0f, 0.0f, 1.0f});
-    m_Background->SetMaterial(m_Material);
 }
 
 Button::Button(std::string text)
@@ -43,6 +39,7 @@ Button::Button(std::string text, float x, float y)
     
     GetBackground()->GetTransform()->SetPosition(glm::vec3{x + (text.length() / 4.0f), y + 0.5f, 0.9f});
     GetBackground()->GetTransform()->SetScale(glm::vec3{text.length() / 4.0f, 1.0f, 1.0f});
+
 }
 
 Button::Button(Button const &rhs)

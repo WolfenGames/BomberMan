@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:48:54 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/07 12:27:04 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/15 12:03:11 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,5 @@ void Menu::RecalculateButtons()
 void Menu::AddButton(const char *text, float x, float y)
 {
     m_Buttons.push_back(Button::Create(text, x, y));
+    m_Buttons.back()->Recalculate();
 }
