@@ -18,17 +18,21 @@ MenuLayer::MenuLayer()
 	m_Menu->GetBackground()->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_Menu->GetBackground()->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
 	// m_Menu->AddButton("Quit the game", 0.0f, 4.0f);
-	m_Menu->AddButton("Play", 0.0f, 7.0f);
+	m_Menu->AddButton("Play", 0.0f, 7.0f, m_Camera);
 	m_Menu->GetButtons().back()->GetBackground()->GetTransform()->SetScale(glm::vec3(1.0f, 1.0f, 0.0f));
 	m_Menu->Recalculate();
 	m_Menu->RecalculateButtons();
 	m_Menu->GetButtons().back()->GetBackground()->GetTransform()->Recalculate();
-	glm::vec4 bl = m_Menu->GetButtons().back()->GetBackground()->GetTransform()->GetModelMatrix() * glm::vec4(-1.0f, -1.0f, 0.0f, 1.0f);
-	glm::vec4 tr = m_Menu->GetButtons().back()->GetBackground()->GetTransform()->GetModelMatrix() * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
-	glm::vec2 bottomLeft = m_Camera.WorldToScreenPoint(glm::vec3(bl.x, bl.y, bl.z));
-	glm::vec2 topRight = m_Camera.WorldToScreenPoint(glm::vec3(tr.x, tr.y, tr.z));
-	//It Works. Just take this code and use it where you need.
-	SW_CORE_INFO("{} {}:{} {}", bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
+	// glm::vec4 bl = m_Menu->GetButtons().back()->GetBackground()->GetTransform()->GetModelMatrix() * glm::vec4(-1.0f, -1.0f, 0.0f, 1.0f);
+	// glm::vec4 tr = m_Menu->GetButtons().back()->GetBackground()->GetTransform()->GetModelMatrix() * glm::vec4(1.0f, 1.0f, 0.0f, 1.0f);
+	// glm::vec2 bottomLeft = m_Camera.WorldToScreenPoint(glm::vec3(bl.x, bl.y, bl.z));
+	// glm::vec2 topRight = m_Camera.WorldToScreenPoint(glm::vec3(tr.x, tr.y, tr.z));
+	// //It Works. Just take this code and use it where you need.
+	// bottomLeft.x = ((bottomLeft.x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
+	// bottomLeft.y = ((bottomLeft.y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
+	// topRight.x = ((topRight.x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
+	// topRight.y = ((topRight.y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
+	// SW_CORE_INFO("{} {}:{} {}", bottomLeft.x, bottomLeft.y, topRight.x, topRight.y);
 }
 
 void MenuLayer::OnEvent(Swallow::Event &e) {
@@ -44,13 +48,13 @@ bool MenuLayer::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	static_cast<void>(e);
 	float x = Swallow::Input::GetMouseX();
 	float y = Swallow::Input::GetMouseY();
-	// x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
-	// y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
+	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
+	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	SW_CORE_INFO("Mouse click X: {}", x);
 	SW_CORE_INFO("Mouse click Y: {}\n", y);
 	if (x > 0.68f && x < 0.9f && y > -0.5f && y < -0.4f)
 		Swallow::Application::Get().End();
-	if (x > 0.0f && x < 0.2f && y > -0.83f && y < -0.64f)
+	if (x > 0.0f && x < 0.2f && y > -0.85f && y < -0.65f)
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();

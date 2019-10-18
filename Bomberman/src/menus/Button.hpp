@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:53 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/07 16:38:33 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/18 13:36:16 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,14 @@ class Button: public Menu
         Button();
         Button(std::string text);
         Button(std::string text, float x, float y);
+        Button(std::string text, float x, float y, Swallow::OrthographicCamera &camera);
         Button(Button const &rhs);
         Button &operator=(Button const &rhs);
         ~Button();
 
         inline static Swallow::Ref<Button> Create() { return std::make_shared<Button>(); }
         inline static Swallow::Ref<Button> Create(std::string text, float x, float y) { return std::make_shared<Button>(text, x, y); }
+        inline static Swallow::Ref<Button> Create(std::string text, float x, float y, Swallow::OrthographicCamera &camera) { return std::make_shared<Button>(text, x, y, camera); }
         inline float GetBackgroundX() { return m_BackgroundX; }
         inline float GetBackgroundY() { return m_BackgroundY; }
         inline float GeTextX() { return m_TextX; }
@@ -34,13 +36,16 @@ class Button: public Menu
 
         bool Press();
         void Recalculate();
-        
+
+        void GenerateBackgroundDimensions(Swallow::OrthographicCamera &camera);        
         void SetBackgroundScale(float x, float y);
         // void SetBackgroundPosition(float x, float y);
         // void SetTextScale(float x, float y);
         // void SetTextPosition(float x, float y);
     private:
         bool m_Pressed;
+        glm::vec2 m_BottomLeft;
+        glm::vec2 m_TopRight;
         float m_BackgroundX;
         float m_BackgroundY;
         float m_TextX;

@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:48:47 by ppreez            #+#    #+#             */
-/*   Updated: 2019/09/16 16:39:32 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/18 13:32:32 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class Menu
         void Recalculate();
         void RecalculateButtons();
         void AddButton(const char *text, float x, float y);
+        void AddButton(const char *text, float x, float y, Swallow::OrthographicCamera &camera);
     protected:
         Swallow::Ref<Swallow::FlatColourMaterialInstance> m_Material;
         Swallow::Ref<Swallow::GameObject> m_Background;

@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 14:48:54 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/15 12:03:11 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/18 13:35:16 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,5 +64,11 @@ void Menu::RecalculateButtons()
 void Menu::AddButton(const char *text, float x, float y)
 {
     m_Buttons.push_back(Button::Create(text, x, y));
+    m_Buttons.back()->Recalculate();
+}
+
+void Menu::AddButton(const char *text, float x, float y, Swallow::OrthographicCamera &camera)
+{
+    m_Buttons.push_back(Button::Create(text, x, y, camera));
     m_Buttons.back()->Recalculate();
 }
