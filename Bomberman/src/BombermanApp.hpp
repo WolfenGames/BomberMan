@@ -3,6 +3,7 @@
 #include "GameLayer.hpp"
 #include "GUILayer.hpp"
 #include "MenuLayer.hpp"
+#include "menus/MainMenu.hpp"
 
 class BombermanApp : public Swallow::Application
 {

@@ -11,7 +11,7 @@ BombermanApp::BombermanApp()
 	Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/Bomberman.obj");
 	m_GameLayer = std::make_shared<GameLayer>();
 	m_GUILayer = std::make_shared<GUILayer>();
-	m_MenuLayer = std::make_shared<MenuLayer>();
+	m_MenuLayer = std::make_shared<MainMenu>();
 	LoadMenu();
 }
 

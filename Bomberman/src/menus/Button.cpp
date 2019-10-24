@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:37 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/18 13:35:01 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/24 11:26:36 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ Button::Button(std::string text, float x, float y)
     m_Material->SetColour(glm::vec4{0.0f, 0.0f, 0.0f, 1.0f});
     m_Background->SetMaterial(m_Material);
 
+    m_Text = Swallow::Text::Create();
     GetText()->SetText(text);
     GetText()->SetColour(glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
     GetText()->GetTransform()->SetPosition(glm::vec3{x, y, 0.8f});
@@ -51,6 +52,7 @@ Button::Button(std::string text, float x, float y, Swallow::OrthographicCamera &
     m_Material->SetColour(glm::vec4{0.0f, 0.0f, 0.0f, 1.0f});
     m_Background->SetMaterial(m_Material);
 
+    m_Text = Swallow::Text::Create();
     GetText()->SetText(text);
     GetText()->SetColour(glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
     GetText()->GetTransform()->SetPosition(glm::vec3{x, y, 0.8f});

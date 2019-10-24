@@ -4,7 +4,7 @@
 #include "menus/Menu.hpp"
 
 class MenuLayer : public Swallow::Layer {
-private:
+protected:
 	Swallow::Ref<Swallow::GameObject> m_Square;
 	Swallow::Ref<Swallow::Text> m_Text;
 	Swallow::Ref<Menu> m_Menu;
