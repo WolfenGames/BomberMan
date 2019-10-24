@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 10:26:52 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/24 14:32:24 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/24 15:50:04 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ bool MainMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	tr = m_Menu->GetButtons()[OPTIONS]->GetTopRight();
 	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
     {
-        SW_CORE_INFO("OPTIONS LOADED");
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadOptions();
         return true;
     }
     bl = m_Menu->GetButtons()[LOAD]->GetBottomLeft();

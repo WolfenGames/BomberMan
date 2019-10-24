@@ -6,13 +6,14 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 10:26:27 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/24 14:30:01 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/24 15:40:40 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "../MenuLayer.hpp"
+// #include "../MenuLayer.hpp"
+#include "OptionsMenu.hpp"
 
 class MainMenu: public MenuLayer
 {

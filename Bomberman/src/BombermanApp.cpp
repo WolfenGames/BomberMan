@@ -25,6 +25,17 @@ void BombermanApp::LoadMenu()
 	PushLayer(m_MenuLayer);
 }
 
+void BombermanApp::LoadOptions()
+{
+	m_OptionsLayer = std::make_shared<OptionsMenu>();
+	PushLayer(m_OptionsLayer);
+}
+
+void BombermanApp::UnloadOptions()
+{
+	PopLayer(m_OptionsLayer);
+}
+
 void BombermanApp::UnloadMenu()
 {
 	PopLayer(m_MenuLayer);
