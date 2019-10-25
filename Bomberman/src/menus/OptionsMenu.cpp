@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:33:23 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/24 16:03:55 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/25 12:44:54 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ bool OptionsMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
     {
         SW_CORE_INFO("Sound");
+		return true;
     }
 	bl = m_Menu->GetButtons()[RESOLUTION]->GetBottomLeft();
 	tr = m_Menu->GetButtons()[RESOLUTION]->GetTopRight();

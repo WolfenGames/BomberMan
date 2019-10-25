@@ -27,4 +27,5 @@ private:
 	Swallow::Ref<GUILayer> m_GUILayer;
 	Swallow::Ref<MenuLayer> m_MenuLayer;
 	Swallow::Ref<OptionsMenu> m_OptionsLayer;
+	// Swallow::Ref<KeyBindingsMenu> m_KeyBindingsLayer;
 };
