@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:33:12 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/24 15:39:48 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/25 15:09:57 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ class OptionsMenu: public MenuLayer
 
         void OnEvent(Swallow::Event &e) override;
         bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);
+        bool OnMouseMovedEvent(Swallow::MouseMovedEvent &e);
         bool OnKeyPressed(Swallow::KeyPressedEvent &e);
 
     private:

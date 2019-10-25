@@ -14,7 +14,7 @@ GameLayer::GameLayer()
 	s->SetPosition({0.0f, 0.0f, 0.0f});
 	s->SetVelocity({0.f, 0.f, 0.f});
 	s->SetLooping(true);
-	s->SetBuffer(x);
+	// s->SetBuffer(x);
 }
 
 void GameLayer::OnAttach()
@@ -23,7 +23,7 @@ void GameLayer::OnAttach()
 	m_Level = std::make_shared<Level>();
 	m_Level->SetPlayer(m_Player);
 	m_Player->SetLevel(m_Level);
-	s->Play();
+	// s->Play();
 	std::string path = "Saves/";
 	std::ifstream in;
 	in.open(path + m_Save + ".sav", std::ios::binary);
@@ -35,7 +35,7 @@ void GameLayer::OnAttach()
 
 void GameLayer::OnDetach()
 {
-	s->Stop();
+	// s->Stop();
 	m_Level.reset();
 	m_Player.reset();
 }

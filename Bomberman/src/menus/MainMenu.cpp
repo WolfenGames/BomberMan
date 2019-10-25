@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 10:26:52 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/24 15:50:04 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/25 16:39:49 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ MainMenu::MainMenu()
 	m_Menu->AddButton("Options", 0.0f, 1.0f, m_Camera);
 	m_Menu->AddButton("Load game", 0.0f, 4.0f, m_Camera);
 	m_Menu->AddButton("New game", 0.0f, 7.0f, m_Camera);
+	// m_Menu->GetButtons().insert
 	m_Menu->GetButtons().back()->GetBackground()->GetTransform()->SetScale(glm::vec3(2.1f, 1.0f, 0.0f));
 	m_Menu->Recalculate();
 	m_Menu->RecalculateButtons();
@@ -54,7 +55,11 @@ bool MainMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
-		Swallow::Application::Get().End();
+	{
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadExit();
+        return true;
+	}
 	bl = m_Menu->GetButtons()[NEW]->GetBottomLeft();
 	tr = m_Menu->GetButtons()[NEW]->GetTopRight();
 	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
@@ -86,7 +91,8 @@ bool MainMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
 	if (e.GetKeyCode() == SW_KEY_ESCAPE)
 	{
-		Swallow::Application::Get().End();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadExit();
 	}
 	else if (e.GetKeyCode() == SW_KEY_SPACE)
 	{

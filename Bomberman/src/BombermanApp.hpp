@@ -19,6 +19,8 @@ public:
 
 	void LoadOptions();
 	void UnloadOptions();
+	void LoadExit();
+	void UnloadExit();
 	inline Swallow::Ref<GameLayer> GetGameLayer() { return m_GameLayer; }
 
 private:
@@ -31,4 +33,5 @@ private:
 	Swallow::Ref<OptionsMenu> m_OptionsLayer;
 	// Swallow::Ref<KeyBindingsMenu> m_KeyBindingsLayer;
 	Swallow::Ref<Background> m_BackgroundLayer;
+	Swallow::Ref<ExitMenu> m_ExitLayer;
 };

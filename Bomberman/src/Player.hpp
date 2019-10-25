@@ -3,6 +3,7 @@
 #include "PowerUp.hpp"
 
 #include <Swallow.hpp>
+#include <list>
 
 class Level;
 class PowerUp;

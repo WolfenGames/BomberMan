@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:33:23 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/25 12:44:54 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/25 15:13:25 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ OptionsMenu::OptionsMenu()
 void OptionsMenu::OnEvent(Swallow::Event &e) {
 	Swallow::EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<Swallow::MouseButtonPressedEvent>(BIND_EVENT_FN(OptionsMenu::OnMouseButtonPressed));
+	dispatcher.Dispatch<Swallow::MouseMovedEvent>(BIND_EVENT_FN(OptionsMenu::OnMouseMovedEvent));
 	dispatcher.Dispatch<Swallow::KeyPressedEvent>(BIND_EVENT_FN(OptionsMenu::OnKeyPressed));
 }
-
 
 bool OptionsMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 {
@@ -80,6 +80,12 @@ bool OptionsMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 		SW_CORE_INFO("KEY BINDINGS");
 		return true;
 	}
+	return false;
+}
+
+bool OptionsMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
+{
+	static_cast<void>(e);
 	return false;
 }
 
