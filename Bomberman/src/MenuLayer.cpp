@@ -3,6 +3,7 @@
 #include <gtc/type_ptr.hpp>
 #include "gtx/transform.hpp"
 #include "Platform/OpenGL/OpenGLShader.hpp"
+#include <cpp/imgui_stdlib.h>
 #include "BombermanApp.hpp"
 #include "Swallow/AssetManager/Primatives.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
@@ -68,8 +69,8 @@ bool MenuLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 
 void MenuLayer::OnImGuiRender() {
 	ImGui::Begin("Menu");
-	ImGui::SliderInt2("Level Size", glm::value_ptr(map_size), 1, 50);
 	ImGui::SliderFloat("GenPercent", &chance, 0.1, 1, "%.1f", 1.0f);
+	ImGui::InputText("Name", &save, 0);
 	ImGui::End();
 }
 

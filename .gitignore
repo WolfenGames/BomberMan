@@ -11,9 +11,12 @@ bin-int/
 # Files
 *.user
 *.vcxproj*
+.DS_Store
 Makefile
 *.sln
 assets
+Saves
 Run.sh
 imgui.ini
 .vscode
+Assets.zip

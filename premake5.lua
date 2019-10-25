@@ -23,18 +23,22 @@ project "Bomberman"
 	files
 	{
 		"%{prj.name}/src/**.hpp",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/src/PowerUps/**.cpp",
+		"%{prj.name}/src/PowerUps/**.hpp"
 	}
 
 	includedirs
 	{
 		enginedir .. "vendor/spdlog/include",
 		enginedir .. "src",
+		enginedir .. "src/PowerUps",
 		enginedir .. "%{IncludeDir.GLFW}",
 		enginedir .. "%{IncludeDir.Glad}",
 		enginedir .. "%{IncludeDir.glm}",
 		enginedir .. "%{IncludeDir.freetype}",
 		enginedir .. "%{IncludeDir.ImGui}",
+		enginedir .. "vendor/imgui/misc",
 		enginedir .. "%{IncludeDir.AssImp}",
 		enginedir .. "%{IncludeDir.AssImpBuild}",
 		enginedir .. "%{IncludeDir.OpenAL}"
