@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:33:23 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/25 15:13:25 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/27 15:19:46 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #define SOUND 1
 #define RESOLUTION 2
 #define KEYS 3
+#define SWITCH 4
 
 OptionsMenu::OptionsMenu()
 :m_Camera(-10, 10, -10, 10, 10, -10), map_size(1.0f)
@@ -32,7 +33,7 @@ OptionsMenu::OptionsMenu()
 	m_Menu->AddButton("Sound", 0.0f, 1.0f, m_Camera);
 	m_Menu->AddButton("Resolution", 0.0f, 4.0f, m_Camera);
 	m_Menu->AddButton("Key Bindings", 0.0f, 7.0f, m_Camera);
-	m_Menu->AddButton("X", 3.0f, 1.0f, m_Camera);
+	m_Menu->AddButton("Off", 3.0f, 1.0f, m_Camera);
 	m_Menu->Recalculate();
 	m_Menu->RecalculateButtons();
 }
@@ -51,41 +52,47 @@ bool OptionsMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	float y = Swallow::Input::GetMouseY();
 	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
-	glm::vec2 bl = m_Menu->GetButtons()[SOUND]->GetBottomLeft();
-	glm::vec2 tr = m_Menu->GetButtons()[SOUND]->GetTopRight();
-	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
+	if (m_Menu->GetButtons()[SWITCH]->MouseInBounds(x, y))
     {
-        SW_CORE_INFO("Sound");
+        m_Menu->GetButtons()[SWITCH]->GetText()->SetText("On");
 		return true;
     }
-	bl = m_Menu->GetButtons()[RESOLUTION]->GetBottomLeft();
-	tr = m_Menu->GetButtons()[RESOLUTION]->GetTopRight();
-	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
+	if (m_Menu->GetButtons()[RESOLUTION]->MouseInBounds(x, y))
 	{
 		SW_CORE_INFO("Resolution");
 		return true;
 	}
-    bl = m_Menu->GetButtons()[BACK]->GetBottomLeft();
-	tr = m_Menu->GetButtons()[BACK]->GetTopRight();
-	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
+	if (m_Menu->GetButtons()[BACK]->MouseInBounds(x, y))
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadOptions();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
 		return true;
 	}
-    bl = m_Menu->GetButtons()[KEYS]->GetBottomLeft();
-	tr = m_Menu->GetButtons()[KEYS]->GetTopRight();
-	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
+	if (m_Menu->GetButtons()[KEYS]->MouseInBounds(x, y))
 	{
-		SW_CORE_INFO("KEY BINDINGS");
+		SW_CORE_INFO("Key Bindings");
 		return true;
 	}
 	return false;
 }
 
+
 bool OptionsMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 {
 	static_cast<void>(e);
+	float x = Swallow::Input::GetMouseX();
+	float y = Swallow::Input::GetMouseY();
+	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
+	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
+
+	for (size_t i = 0; i < m_Menu->GetButtons().size(); i++)
+	{
+
+		if (i != SOUND && m_Menu->GetButtons()[i]->MouseInBounds(x, y))
+			m_Menu->GetButtons()[i]->HighlightBackground();
+		else
+			m_Menu->GetButtons()[i]->UnhighlightBackground();
+	}
 	return false;
 }
 

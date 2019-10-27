@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 10:26:27 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/25 16:36:46 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/27 14:35:28 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ class MainMenu: public MenuLayer
         void OnEvent(Swallow::Event &e) override;
         bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);
         bool OnKeyPressed(Swallow::KeyPressedEvent &e);
-
+        bool OnMouseMovedEvent(Swallow::MouseMovedEvent &e);
     private:
     	Swallow::OrthographicCamera m_Camera;
     	glm::ivec2	map_size;

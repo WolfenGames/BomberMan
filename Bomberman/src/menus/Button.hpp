@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:53 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/24 11:22:19 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/27 14:51:36 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ class Button //public Menu
 
         void GenerateBackgroundDimensions(Swallow::OrthographicCamera &camera);        
         void SetBackgroundScale(float x, float y);
-        // void SetBackgroundPosition(float x, float y);
-        // void SetTextScale(float x, float y);
-        // void SetTextPosition(float x, float y);
+        void SetBackgroundColour(glm::vec4 colour);
+        void HighlightBackground();
+        void UnhighlightBackground();
+        bool MouseInBounds(float x, float y);
     private:
         bool m_Pressed;
         glm::vec2 m_BottomLeft;
@@ -57,6 +58,8 @@ class Button //public Menu
         float m_BackgroundY;
         float m_TextX;
         float m_TextY;
+        glm::vec4 m_BackgroundColour;
+        glm::vec4 m_BackgroundHighlight;
 
         Swallow::Ref<Swallow::FlatColourMaterialInstance> m_Material;
         Swallow::Ref<Swallow::GameObject> m_Background;

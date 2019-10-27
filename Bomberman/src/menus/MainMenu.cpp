@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 10:26:52 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/25 16:39:49 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/27 14:58:44 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void MainMenu::OnEvent(Swallow::Event &e) {
 	Swallow::EventDispatcher dispatcher(e);
 	dispatcher.Dispatch<Swallow::MouseButtonPressedEvent>(BIND_EVENT_FN(MainMenu::OnMouseButtonPressed));
 	dispatcher.Dispatch<Swallow::KeyPressedEvent>(BIND_EVENT_FN(MainMenu::OnKeyPressed));
+	dispatcher.Dispatch<Swallow::MouseMovedEvent>(BIND_EVENT_FN(MainMenu::OnMouseMovedEvent));
+
 }
 
 
@@ -50,37 +52,29 @@ bool MainMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
     static_cast<void>(e);
 	float x = Swallow::Input::GetMouseX();
 	float y = Swallow::Input::GetMouseY();
-	glm::vec2 bl = m_Menu->GetButtons()[QUIT]->GetBottomLeft();
-	glm::vec2 tr = m_Menu->GetButtons()[QUIT]->GetTopRight();
 	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
-	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
+	if (m_Menu->GetButtons()[QUIT]->MouseInBounds(x, y))
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadExit();
         return true;
 	}
-	bl = m_Menu->GetButtons()[NEW]->GetBottomLeft();
-	tr = m_Menu->GetButtons()[NEW]->GetTopRight();
-	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
+	if (m_Menu->GetButtons()[NEW]->MouseInBounds(x, y))
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
 		return true;
 	}
-    bl = m_Menu->GetButtons()[OPTIONS]->GetBottomLeft();
-	tr = m_Menu->GetButtons()[OPTIONS]->GetTopRight();
-	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
+	if (m_Menu->GetButtons()[OPTIONS]->MouseInBounds(x, y))
     {
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadOptions();
         return true;
     }
-    bl = m_Menu->GetButtons()[LOAD]->GetBottomLeft();
-	tr = m_Menu->GetButtons()[LOAD]->GetTopRight();
-	if (x > bl.x && x < tr.x && y < bl.y && y > tr.y)
+	if (m_Menu->GetButtons()[LOAD]->MouseInBounds(x, y))
     {
-        SW_CORE_INFO("LOAD MENU LOADED");
+        SW_CORE_INFO("Load Menu");
         return true;
         
     }
@@ -102,4 +96,22 @@ bool MainMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 	else
 		return false;
 	return true;
+}
+
+bool MainMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
+{
+	static_cast<void>(e);
+	float x = Swallow::Input::GetMouseX();
+	float y = Swallow::Input::GetMouseY();
+	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
+	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
+
+	for (size_t i = 0; i < m_Menu->GetButtons().size(); i++)
+	{
+		if (m_Menu->GetButtons()[i]->MouseInBounds(x, y))
+			m_Menu->GetButtons()[i]->HighlightBackground();
+		else
+			m_Menu->GetButtons()[i]->UnhighlightBackground();
+	}
+	return false;
 }

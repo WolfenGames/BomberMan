@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:37 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/24 11:26:36 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/27 14:55:49 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,13 @@ Button::Button(std::string text)
 }
 
 Button::Button(std::string text, float x, float y)
-:m_Pressed(false), m_BackgroundX(x), m_BackgroundY(y), m_TextX(x), m_TextY(y)
+:m_Pressed(false), m_BackgroundX(x), m_BackgroundY(y), m_TextX(x), m_TextY(y), 
+m_BackgroundColour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)), m_BackgroundHighlight(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f))
 {
     static_cast<void>(m_Pressed);
     m_Material = Swallow::MenuMaterial::Create();
     m_Background = Swallow::Primatives::Quad();
-    m_Material->SetColour(glm::vec4{0.0f, 0.0f, 0.0f, 1.0f});
+    m_Material->SetColour(m_BackgroundColour);
     m_Background->SetMaterial(m_Material);
 
     m_Text = Swallow::Text::Create();
@@ -44,12 +45,13 @@ Button::Button(std::string text, float x, float y)
 }
 
 Button::Button(std::string text, float x, float y, Swallow::OrthographicCamera &camera)
-:m_Pressed(false), m_BackgroundX(x), m_BackgroundY(y), m_TextX(x), m_TextY(y)
+:m_Pressed(false), m_BackgroundX(x), m_BackgroundY(y), m_TextX(x), m_TextY(y),
+ m_BackgroundColour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)), m_BackgroundHighlight(glm::vec4(0.2f, 0.2f, 0.2f, 1.0f))
 {
     static_cast<void>(m_Pressed);
     m_Material = Swallow::MenuMaterial::Create();
     m_Background = Swallow::Primatives::Quad();
-    m_Material->SetColour(glm::vec4{0.0f, 0.0f, 0.0f, 1.0f});
+    m_Material->SetColour(m_BackgroundColour);
     m_Background->SetMaterial(m_Material);
 
     m_Text = Swallow::Text::Create();
@@ -114,16 +116,27 @@ void Button::SetBackgroundScale(float x, float y)
     GetBackground()->GetTransform()->SetPosition(glm::vec3(x + m_BackgroundX, y + m_BackgroundY, 1.0f));
 }
 
-// void Button::SetBackgroundPosition(float x, float y)
-// {
-// }
+bool Button::MouseInBounds(float x, float y)
+{
+    if (x > m_BottomLeft.x && x < m_TopRight.x && y < m_BottomLeft.y && y > m_TopRight.y)
+    {
+        return true;
+    }
+    else
+        return false;
+}
 
-// void Button::SetTextScale(float x, float y)
-// {
+void Button::SetBackgroundColour(glm::vec4 colour)
+{
+    m_Material->SetColour(colour);
+}
 
-// }
+void Button::HighlightBackground()
+{
+    m_Material->SetColour(m_BackgroundHighlight);
+}
 
-// void Button::SetTextPosition(float x, float y)
-// {
-    
-// }
+void Button::UnhighlightBackground()
+{
+    m_Material->SetColour(m_BackgroundColour);
+}
