@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 10:26:52 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/27 14:58:44 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/28 15:04:58 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ MainMenu::MainMenu()
 	m_Menu->AddButton("Options", 0.0f, 1.0f, m_Camera);
 	m_Menu->AddButton("Load game", 0.0f, 4.0f, m_Camera);
 	m_Menu->AddButton("New game", 0.0f, 7.0f, m_Camera);
-	// m_Menu->GetButtons().insert
 	m_Menu->GetButtons().back()->GetBackground()->GetTransform()->SetScale(glm::vec3(2.1f, 1.0f, 0.0f));
 	m_Menu->Recalculate();
 	m_Menu->RecalculateButtons();
@@ -43,7 +42,7 @@ void MainMenu::OnEvent(Swallow::Event &e) {
 	dispatcher.Dispatch<Swallow::MouseButtonPressedEvent>(BIND_EVENT_FN(MainMenu::OnMouseButtonPressed));
 	dispatcher.Dispatch<Swallow::KeyPressedEvent>(BIND_EVENT_FN(MainMenu::OnKeyPressed));
 	dispatcher.Dispatch<Swallow::MouseMovedEvent>(BIND_EVENT_FN(MainMenu::OnMouseMovedEvent));
-
+	dispatcher.Dispatch<Swallow::WindowResizeEvent>(BIND_EVENT_FN(MenuLayer::OnWindowResize));
 }
 
 
@@ -74,9 +73,9 @@ bool MainMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
     }
 	if (m_Menu->GetButtons()[LOAD]->MouseInBounds(x, y))
     {
-        SW_CORE_INFO("Load Menu");
+        static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadLoad();
         return true;
-        
     }
 	return false;
 }

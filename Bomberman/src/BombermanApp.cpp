@@ -18,6 +18,7 @@ BombermanApp::BombermanApp()
 	m_BackgroundLayer = std::make_shared<Background>();
 	m_OptionsLayer = std::make_shared<OptionsMenu>();
 	m_ExitLayer = std::make_shared<ExitMenu>();
+	m_LoadLayer = std::make_shared<LoadingMenu>();
 	LoadMenu();
 }
 
@@ -36,6 +37,16 @@ void BombermanApp::LoadOptions()
 	PushLayer(m_OptionsLayer);
 }
 
+void BombermanApp::LoadLoad()
+{
+	PushLayer(m_LoadLayer);
+}
+
+void BombermanApp::UnloadLoad()
+{
+	PopLayer(m_LoadLayer);
+}
+
 void BombermanApp::UnloadOptions()
 {
 	PopLayer(m_OptionsLayer);
@@ -50,6 +61,7 @@ void BombermanApp::UnloadExit()
 {
 	PopLayer(m_ExitLayer);
 }
+
 
 void BombermanApp::UnloadMenu()
 {

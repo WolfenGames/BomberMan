@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:37 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/27 14:55:49 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/28 15:57:13 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ m_BackgroundColour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)), m_BackgroundHighlight(glm
     static_cast<void>(m_Pressed);
     m_Material = Swallow::MenuMaterial::Create();
     m_Background = Swallow::Primatives::Quad();
-    m_Material->SetColour(m_BackgroundColour);
+    m_Material->SetColour(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
     m_Background->SetMaterial(m_Material);
 
     m_Text = Swallow::Text::Create();
     GetText()->SetText(text);
-    GetText()->SetColour(glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
+    GetText()->SetColour(glm::vec4{0.7f, 0.7f, 0.7f, 1.0f});
     GetText()->GetTransform()->SetPosition(glm::vec3{x, y, 0.8f});
     GetText()->GetTransform()->SetScale(glm::vec3{0.8f, 1.5f, 1.0f});
     
@@ -51,12 +51,12 @@ Button::Button(std::string text, float x, float y, Swallow::OrthographicCamera &
     static_cast<void>(m_Pressed);
     m_Material = Swallow::MenuMaterial::Create();
     m_Background = Swallow::Primatives::Quad();
-    m_Material->SetColour(m_BackgroundColour);
+    m_Material->SetColour(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
     m_Background->SetMaterial(m_Material);
 
     m_Text = Swallow::Text::Create();
     GetText()->SetText(text);
-    GetText()->SetColour(glm::vec4{1.0f, 1.0f, 1.0f, 1.0f});
+    GetText()->SetColour(glm::vec4{0.7f, 0.7f, 0.7f, 1.0f});
     GetText()->GetTransform()->SetPosition(glm::vec3{x, y, 0.8f});
     GetText()->GetTransform()->SetScale(glm::vec3{0.8f, 1.5f, 1.0f});
     
@@ -107,7 +107,6 @@ void Button::GenerateBackgroundDimensions(Swallow::OrthographicCamera &camera)
 	m_BottomLeft.y = ((m_BottomLeft.y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	m_TopRight.x = ((m_TopRight.x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
 	m_TopRight.y = ((m_TopRight.y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
-	SW_CORE_INFO("{} {}:{} {}", m_BottomLeft.x, m_BottomLeft.y, m_TopRight.x, m_TopRight.y);
 }
 
 void Button::SetBackgroundScale(float x, float y)
@@ -133,10 +132,14 @@ void Button::SetBackgroundColour(glm::vec4 colour)
 
 void Button::HighlightBackground()
 {
-    m_Material->SetColour(m_BackgroundHighlight);
+    // m_Material->SetColour(m_BackgroundHighlight);
+    GetText()->SetColour(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
+    Recalculate();
 }
 
 void Button::UnhighlightBackground()
 {
-    m_Material->SetColour(m_BackgroundColour);
+    // m_Material->SetColour(m_BackgroundColour);
+    GetText()->SetColour(glm::vec4(0.7f, 0.7f, 0.7f, 1.0f));
+    Recalculate();
 }

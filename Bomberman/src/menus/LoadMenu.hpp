@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   MainMenu.hpp                                       :+:      :+:    :+:   */
+/*   LoadingMenu.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/21 10:26:27 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/28 14:04:25 by ppreez           ###   ########.fr       */
+/*   Created: 2019/10/28 10:44:28 by ppreez            #+#    #+#             */
+/*   Updated: 2019/10/28 10:44:55 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-// #include "../MenuLayer.hpp"
-#include "OptionsMenu.hpp"
-#include "ExitMenu.hpp"
-#include "LoadMenu.hpp"
+#include "../MenuLayer.hpp"
 
-class MainMenu: public MenuLayer
+class LoadingMenu: public MenuLayer
 {
     public:
-        MainMenu();
-        MainMenu(const MainMenu &rhs) = delete;
-        MainMenu &operator=(const MainMenu &rhs) = delete;
-        virtual ~MainMenu() = default;
+        LoadingMenu();
+        LoadingMenu(const LoadingMenu &rhs) = delete;
+        LoadingMenu &operator=(const LoadingMenu &rhs) = delete;
+        virtual ~LoadingMenu() = default;
 
         void OnEvent(Swallow::Event &e) override;
         bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);
-        bool OnKeyPressed(Swallow::KeyPressedEvent &e);
         bool OnMouseMovedEvent(Swallow::MouseMovedEvent &e);
+        bool OnKeyPressed(Swallow::KeyPressedEvent &e);
+
     private:
     	Swallow::OrthographicCamera m_Camera;
     	glm::ivec2	map_size;

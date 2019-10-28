@@ -8,30 +8,34 @@
 
 class BombermanApp : public Swallow::Application
 {
-public:
-	BombermanApp();
-	virtual ~BombermanApp();
+	public:
+		BombermanApp();
+		virtual ~BombermanApp();
 
-	void LoadMenu();
-	void UnloadMenu();
-	void UnloadGame();
-	void LoadGame();
+		void LoadMenu();
+		void UnloadMenu();
+		void UnloadGame();
+		void LoadGame();
 
-	void LoadOptions();
-	void UnloadOptions();
-	void LoadExit();
-	void UnloadExit();
-	inline Swallow::Ref<GameLayer> GetGameLayer() { return m_GameLayer; }
+		void LoadOptions();
+		void UnloadOptions();
+		void LoadExit();
+		void UnloadExit();
+		void LoadLoad();
+		void UnloadLoad();
 
-private:
-	BombermanApp(const BombermanApp &s) = delete;
-	BombermanApp &operator=(const BombermanApp &s) = delete;
+		inline Swallow::Ref<GameLayer> GetGameLayer() { return m_GameLayer; }
 
-	Swallow::Ref<GameLayer> m_GameLayer;
-	Swallow::Ref<GUILayer> m_GUILayer;
-	Swallow::Ref<MenuLayer> m_MenuLayer;
-	Swallow::Ref<OptionsMenu> m_OptionsLayer;
-	// Swallow::Ref<KeyBindingsMenu> m_KeyBindingsLayer;
-	Swallow::Ref<Background> m_BackgroundLayer;
-	Swallow::Ref<ExitMenu> m_ExitLayer;
+	private:
+		BombermanApp(const BombermanApp &s) = delete;
+		BombermanApp &operator=(const BombermanApp &s) = delete;
+
+		Swallow::Ref<GameLayer> m_GameLayer;
+		Swallow::Ref<GUILayer> m_GUILayer;
+		Swallow::Ref<MenuLayer> m_MenuLayer;
+		// Swallow::Ref<KeyBindingsMenu> m_KeyBindingsLayer;
+		Swallow::Ref<Background> m_BackgroundLayer;
+		Swallow::Ref<OptionsMenu> m_OptionsLayer;
+		Swallow::Ref<ExitMenu> m_ExitLayer;
+		Swallow::Ref<LoadingMenu> m_LoadLayer;
 };
