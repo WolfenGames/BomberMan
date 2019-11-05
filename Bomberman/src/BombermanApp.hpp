@@ -5,6 +5,14 @@
 #include "MenuLayer.hpp"
 #include "menus/MainMenu.hpp"
 #include "Background.hpp"
+#include "settings/Settings.hpp"
+
+struct s_Settings
+{
+	float Volume;
+	glm::vec2 Resolution;
+	std::unordered_map<std::string, int> KeyBindings;
+};
 
 class BombermanApp : public Swallow::Application
 {
@@ -38,4 +46,6 @@ class BombermanApp : public Swallow::Application
 		Swallow::Ref<OptionsMenu> m_OptionsLayer;
 		Swallow::Ref<ExitMenu> m_ExitLayer;
 		Swallow::Ref<LoadingMenu> m_LoadLayer;
+
+		Settings m_Settings;
 };

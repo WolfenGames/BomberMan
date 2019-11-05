@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:53 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/27 14:51:36 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/10/30 14:25:17 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 #include <Swallow.hpp>
 #include "Swallow/Renderer/material/MaterialInstance.hpp"
 #include "../material/MenuMaterial.hpp"
-// #include "Menu.hpp"
 
-class Button //public Menu
+class Button
 {
     public:
         Button();
@@ -42,6 +41,7 @@ class Button //public Menu
 
 
         bool Press();
+        bool Switch();
         void Recalculate();
 
         void GenerateBackgroundDimensions(Swallow::OrthographicCamera &camera);        

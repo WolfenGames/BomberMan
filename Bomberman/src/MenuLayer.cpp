@@ -70,7 +70,7 @@ bool MenuLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 void MenuLayer::OnImGuiRender() {
 	ImGui::Begin("Menu");
 	ImGui::SliderFloat("GenPercent", &chance, 0.1, 1, "%.1f", 1.0f);
-	// ImGui::InputText("Name", &save, 0);
+	ImGui::InputText("Name", &save, 0);
 	ImGui::End();
 }
 

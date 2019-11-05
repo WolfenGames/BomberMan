@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:58:37 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/28 15:57:13 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/04 14:57:56 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,15 @@ bool Button::Press()
     return true;
 }
 
+bool Button::Switch()
+{
+    if (m_Pressed == true)
+        m_Pressed = false;
+    else
+        m_Pressed = true;
+    return m_Pressed;
+}
+
 void Button::Recalculate()
 {
     m_Background->GetTransform()->Recalculate();
@@ -133,7 +142,7 @@ void Button::SetBackgroundColour(glm::vec4 colour)
 void Button::HighlightBackground()
 {
     // m_Material->SetColour(m_BackgroundHighlight);
-    GetText()->SetColour(glm::vec4(0.9f, 0.9f, 0.9f, 1.0f));
+    GetText()->SetColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     Recalculate();
 }
 

@@ -3,6 +3,7 @@
 #include "Swallow/Renderer/material/CharMaterial.hpp"
 
 BombermanApp::BombermanApp()
+:m_Settings()
 {
 	Swallow::FlatColourMaterial::Init();
 	Swallow::CharMaterial::Init();
@@ -19,6 +20,9 @@ BombermanApp::BombermanApp()
 	m_OptionsLayer = std::make_shared<OptionsMenu>();
 	m_ExitLayer = std::make_shared<ExitMenu>();
 	m_LoadLayer = std::make_shared<LoadingMenu>();
+	SW_CORE_INFO("Sound: {}", m_Settings.GetVolume());
+	SW_CORE_INFO("Resolution X: {}", m_Settings.GetResolution().x);
+	SW_CORE_INFO("Resolution Y: {}", m_Settings.GetResolution().y);
 	LoadMenu();
 }
 

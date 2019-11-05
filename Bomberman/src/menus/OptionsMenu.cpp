@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:33:23 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/28 15:58:13 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/05 11:57:45 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,12 @@ bool OptionsMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	if (m_Menu->GetButtons()[SWITCH]->MouseInBounds(x, y))
     {
-        m_Menu->GetButtons()[SWITCH]->GetText()->SetText("On");
+		if (m_Menu->GetButtons()[SWITCH]->Switch())
+		{
+        	m_Menu->GetButtons()[SWITCH]->GetText()->SetText("On");
+		}
+		else
+			m_Menu->GetButtons()[SWITCH]->GetText()->SetText("Off");
 		m_Menu->GetButtons()[SWITCH]->Recalculate();
 		return true;
     }
@@ -76,7 +81,6 @@ bool OptionsMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	}
 	return false;
 }
-
 
 bool OptionsMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 {
