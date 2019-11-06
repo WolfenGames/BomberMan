@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 09:23:01 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/05 14:53:14 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/06 14:53:12 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 Settings::Settings()
 :Settings("Settings.conf")
 {
-
 }
 
 Settings::Settings(const char *SettingsPath)
@@ -46,22 +45,18 @@ Settings::Settings(const char *SettingsPath)
             {
                 while (std::getline(SettingsFile, config))
                 {
-                    
+                    std::string key = config.substr(0, config.find(":"));
+                    std::string value = config.substr(config.find(":") + 1, config.npos);
+                    m_Keybindings[key] = std::stoi(value);
                 }
             }
         }
-        m_Volume = 0.12f;
-        m_Resolution = glm::vec2(200, 20);
-        SaveSettings();
     }
     else
     {
         SW_CORE_INFO("creating settings");
-        std::ofstream output(SettingsPath);
-        output << "sound:" << std::endl << "0.5f" << std::endl;
-        output << "resolution:" << std::endl << "800x600" << std::endl;
-        output << "keybindings:" << std::endl;
-        output.close();
+        SetDefaultSettings();
+        SaveSettings();
     }
 }
 
@@ -92,21 +87,25 @@ void Settings::SetKeybinding(std::string &key, int keycode)
 void Settings::SetDefaultSettings()
 {
     m_Volume = 0.5f;
-    m_Resolution = glm::vec2(800, 600);
-    m_Keybindings["UP"] = 1;
-    m_Keybindings["DOWN"] = 2;
-    m_Keybindings["LEFT"] = 3;
-    m_Keybindings["RIGHT"] = 4;
-    m_Keybindings["BOMB"] = 5;
-    m_Keybindings["ESC"] = 6;
-    m_Keybindings["SAVE"] = 7;
+    m_Resolution = glm::vec2(1280, 720);
+    m_Keybindings["UP"] = SW_KEY_W;
+    m_Keybindings["DOWN"] = SW_KEY_S;
+    m_Keybindings["LEFT"] = SW_KEY_A;
+    m_Keybindings["RIGHT"] = SW_KEY_D;
+    m_Keybindings["BOMB"] = SW_KEY_SPACE;
+    m_Keybindings["SAVE"] = SW_KEY_F5;
 }
 
 void Settings::SaveSettings()
 {
     std::ofstream output(m_Path);
-    output << "sound:" << std::endl << m_Volume << std::endl;
+    output << "sound:" << std::endl << m_Volume << "f" << std::endl;
     output << "resolution:" << std::endl << m_Resolution.x << "x" << m_Resolution.y << std::endl;
     output << "keybindings:" << std::endl;
+    for (auto a : m_Keybindings)
+    {
+        output << a.first << ":" << a.second << std::endl;
+    }
+    output.close();
 
 }

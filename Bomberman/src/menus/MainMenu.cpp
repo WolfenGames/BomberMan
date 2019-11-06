@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 10:26:52 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/28 15:04:58 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/06 16:35:59 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ bool MainMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	if (m_Menu->GetButtons()[NEW]->MouseInBounds(x, y))
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadNewGame();
 		return true;
 	}
 	if (m_Menu->GetButtons()[OPTIONS]->MouseInBounds(x, y))
@@ -90,7 +90,7 @@ bool MainMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 	else if (e.GetKeyCode() == SW_KEY_SPACE)
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadNewGame();
 	}
 	else
 		return false;

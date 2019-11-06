@@ -7,13 +7,6 @@
 #include "Background.hpp"
 #include "settings/Settings.hpp"
 
-struct s_Settings
-{
-	float Volume;
-	glm::vec2 Resolution;
-	std::unordered_map<std::string, int> KeyBindings;
-};
-
 class BombermanApp : public Swallow::Application
 {
 	public:
@@ -31,8 +24,15 @@ class BombermanApp : public Swallow::Application
 		void UnloadExit();
 		void LoadLoad();
 		void UnloadLoad();
+		void LoadKeys();
+		void UnloadKeys();
+		void LoadNewGame();
+		void UnloadNewGame();
+		void LoadPause();
+		void UnloadPause();
 
 		inline Swallow::Ref<GameLayer> GetGameLayer() { return m_GameLayer; }
+		inline Swallow::Ref<Settings> GetSettings() { return m_Settings; };
 
 	private:
 		BombermanApp(const BombermanApp &s) = delete;
@@ -46,6 +46,8 @@ class BombermanApp : public Swallow::Application
 		Swallow::Ref<OptionsMenu> m_OptionsLayer;
 		Swallow::Ref<ExitMenu> m_ExitLayer;
 		Swallow::Ref<LoadingMenu> m_LoadLayer;
-
-		Settings m_Settings;
+		Swallow::Ref<KeyMenu> m_KeyLayer;
+		Swallow::Ref<Settings> m_Settings;
+		Swallow::Ref<NewGame> m_NewGameLayer;
+		Swallow::Ref<PauseMenu> m_PauseLayer;
 };

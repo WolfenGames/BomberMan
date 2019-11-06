@@ -3,7 +3,6 @@
 #include "Swallow/Renderer/material/CharMaterial.hpp"
 
 BombermanApp::BombermanApp()
-:m_Settings()
 {
 	Swallow::FlatColourMaterial::Init();
 	Swallow::CharMaterial::Init();
@@ -13,6 +12,7 @@ BombermanApp::BombermanApp()
 	Swallow::AssetManager::LoadObject("Cube", "assets/Models/Cube.obj");
 	Swallow::AssetManager::LoadObject("EmptyQuad", "assets/Models/EmptyQuad.obj");
 
+	m_Settings = Settings::Create();
 	m_GameLayer = std::make_shared<GameLayer>();
 	m_GUILayer = std::make_shared<GUILayer>();
 	m_MenuLayer = std::make_shared<MainMenu>();
@@ -20,15 +20,36 @@ BombermanApp::BombermanApp()
 	m_OptionsLayer = std::make_shared<OptionsMenu>();
 	m_ExitLayer = std::make_shared<ExitMenu>();
 	m_LoadLayer = std::make_shared<LoadingMenu>();
-	SW_CORE_INFO("Sound: {}", m_Settings.GetVolume());
-	SW_CORE_INFO("Resolution X: {}", m_Settings.GetResolution().x);
-	SW_CORE_INFO("Resolution Y: {}", m_Settings.GetResolution().y);
+	m_KeyLayer = std::make_shared<KeyMenu>();
+	m_NewGameLayer = std::make_shared<NewGame>();
+	m_PauseLayer = std::make_shared<PauseMenu>();
 	LoadMenu();
 }
 
 BombermanApp::~BombermanApp()
 {
 
+}
+
+void BombermanApp::UnloadGame()
+{
+	PopLayer(m_GameLayer);
+	PopOverlay(m_GUILayer);
+	PopLayer(m_BackgroundLayer);
+}
+
+void BombermanApp::LoadGame()
+{
+	m_GameLayer->SetSpawnChance(m_MenuLayer->GetChance());
+	m_GameLayer->SetSave(m_MenuLayer->GetSave());
+	PushLayer(m_BackgroundLayer);
+	PushLayer(m_GameLayer);
+	PushOverlay(m_GUILayer);
+}
+
+Swallow::Application* Swallow::CreateApplication()
+{
+	return (new BombermanApp());
 }
 
 void BombermanApp::LoadMenu()
@@ -72,23 +93,32 @@ void BombermanApp::UnloadMenu()
 	PopLayer(m_MenuLayer);
 }
 
-void BombermanApp::UnloadGame()
+void BombermanApp::LoadKeys()
 {
-	PopLayer(m_GameLayer);
-	PopOverlay(m_GUILayer);
-	PopLayer(m_BackgroundLayer);
+	PushLayer(m_KeyLayer);
 }
 
-void BombermanApp::LoadGame()
+void BombermanApp::UnloadKeys()
 {
-	m_GameLayer->SetSpawnChance(m_MenuLayer->GetChance());
-	m_GameLayer->SetSave(m_MenuLayer->GetSave());
-	PushLayer(m_BackgroundLayer);
-	PushLayer(m_GameLayer);
-	PushOverlay(m_GUILayer);
+	PopLayer(m_KeyLayer);
 }
 
-Swallow::Application* Swallow::CreateApplication()
+void BombermanApp::LoadNewGame()
 {
-	return (new BombermanApp());
+	PushLayer(m_NewGameLayer);
+}
+
+void BombermanApp::UnloadNewGame()
+{
+	PopLayer(m_NewGameLayer);
+}
+
+void BombermanApp::LoadPause()
+{
+	PushLayer(m_PauseLayer);
+}
+
+void BombermanApp::UnloadPause()
+{
+	PopLayer(m_PauseLayer);
 }
