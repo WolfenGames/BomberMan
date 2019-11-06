@@ -1,15 +1,24 @@
 #include "BombermanApp.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 #include "Swallow/Renderer/material/CharMaterial.hpp"
+#include "Swallow/Renderer/texture/TextureMaterial.hpp"
 
 BombermanApp::BombermanApp()
 {
 	Swallow::FlatColourMaterial::Init();
+	Swallow::AnimationMaterial::Init();
 	Swallow::CharMaterial::Init();
+	Swallow::TextureMaterial::Init();
 	Swallow::AssetManager::LoadObject("Bomb", "assets/Models/Bomb.obj");
-	Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/Bomberman.obj");
+	//Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/Bomberman.obj");
+	Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/BombermanAnim.obj");
 	Swallow::AssetManager::LoadObject("Cube", "assets/Models/Cube.obj");
+	Swallow::AssetManager::LoadObject("IndestructableWall", "assets/Models/Indestructable_Wall.obj");
+	Swallow::AssetManager::LoadObject("DestructableWall", "assets/Models/Destructable_Wall.obj");
 	Swallow::AssetManager::LoadObject("EmptyQuad", "assets/Models/EmptyQuad.obj");
+	Swallow::AssetManager::LoadTexture("Atlas", "assets/Models/atlas.png", false);
+
+	Swallow::AssetManager::ListMeshes("DestructableWall");
 
 	m_GameLayer = std::make_shared<GameLayer>();
 	m_GUILayer = std::make_shared<GUILayer>();

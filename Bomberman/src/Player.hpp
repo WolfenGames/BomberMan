@@ -1,6 +1,7 @@
 #pragma once
 
 #include "PowerUp.hpp"
+#include "Swallow/Renderer/material/AnimationMaterial.hpp"
 
 #include <Swallow.hpp>
 
@@ -53,4 +54,6 @@ private:
 	Swallow::Ref<Swallow::GameObject> m_Cube;
 	glm::vec3 m_Destination;
 	std::list<Swallow::Ref<PowerUp>>	m_PowerUps;
+	Swallow::Ref<Swallow::AnimationMaterialInstance> 	animMaterial;
+	Swallow::Ref<Swallow::AnimationController> 			m_WalkAnimation;
 };

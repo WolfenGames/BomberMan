@@ -5,11 +5,38 @@
 
 Player::Player()
 {
-	static Swallow::Ref<Swallow::FlatColourMaterialInstance> mat = Swallow::FlatColourMaterial::Create();
-	mat->SetColour(glm::vec4(0.2f, 0.5f, 1.0f, 1.0f));
-	SetMaterial(mat);
-	SetVertexArray(Swallow::AssetManager::FetchObject("Bomberman", "Bomberman"));
-	GetTransform()->SetScale(glm::vec3(0.20f));
+	//Old material
+	//static Swallow::Ref<Swallow::FlatColourMaterialInstance> mat = Swallow::FlatColourMaterial::Create();
+	//mat->SetColour(glm::vec4(0.2f, 0.5f, 1.0f, 1.0f));
+	//SetMaterial(mat);
+	
+	//New material with aniamtions
+	
+	animMaterial = Swallow::AnimationMaterial::Create();
+	animMaterial->SetColour(glm::vec4(0.2f, 0.5f, 1.0f, 1.0f));
+	SetMaterial(animMaterial);
+	//SetVertexArray(Swallow::VertexArray::Create());
+	
+	SetVertexArray(Swallow::VertexArray::Create());
+	GetVertexArray()->SetIndexBuffer(Swallow::AssetManager::FetchObject("Bomberman", "BomberMan0")->GetIndexBuffer());
+
+	m_WalkAnimation = Swallow::AnimationController::Create("Bomberman");
+
+	m_WalkAnimation->AddKeyFrame("BomberMan0");
+	m_WalkAnimation->AddKeyFrame("BomberMan1");
+	m_WalkAnimation->AddKeyFrame("BomberMan2");
+	m_WalkAnimation->AddKeyFrame("BomberMan3");
+	m_WalkAnimation->AddKeyFrame("BomberMan4");
+	m_WalkAnimation->AddKeyFrame("BomberMan5");
+	m_WalkAnimation->AddKeyFrame("BomberMan6");
+	// m_WalkAnimation->AddKeyFrame("BomberMan7");
+	// m_WalkAnimation->AddKeyFrame("BomberMan8");
+
+	m_WalkAnimation->SetAdvanceTimer(0.0f);
+	GetVertexArray()->AddVertexBuffer(m_WalkAnimation->GetVertexBuffer1());
+	GetVertexArray()->AddVertexBuffer(m_WalkAnimation->GetVertexBuffer2());
+	//SetVertexArray(Swallow::AssetManager::FetchObject("Bomberman", "BomberMan0"));
+	//GetTransform()->SetScale(glm::vec3(0.20f));
 }
 
 Player::~Player()
@@ -67,19 +94,45 @@ bool Player::AddPower(Swallow::Ref<PowerUp> power)
 
 void Player::Update(Swallow::Timestep ts)
 {
+	switch (m_WalkAnimation->Advance(ts.GetSeconds() * 5.0f * m_Speed))
+	{
+		case ONGOING_KEYFRAME:
+			break;
+		case LAST_KEYFRAME:
+			m_WalkAnimation->SetAdvanceTimer(0.0f);
+		case NEXT_KEYFRAME:
+			GetVertexArray()->GetVertexBuffers().clear();
+	 		GetVertexArray()->AddVertexBuffer(m_WalkAnimation->GetVertexBuffer1());
+	 		GetVertexArray()->AddVertexBuffer(m_WalkAnimation->GetVertexBuffer2());
+			break;
+	}
+	animMaterial->SetAnim(glm::vec1(m_WalkAnimation->GetAdvancedTime()));
+
 	static float threshold = 0.1f;
 	if (Swallow::Input::IsKeyPressed(SW_KEY_W)
 		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f), Ghost())))
+	{
 		m_Destination.z = glm::floor(GetTransform()->GetPosition().z + 0.5f - threshold) - 0.5f;
+		GetTransform()->SetRotation(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
+	}
 	if (Swallow::Input::IsKeyPressed(SW_KEY_S)
 		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, 1.0f), Ghost())))
+	{
 		m_Destination.z = glm::floor(GetTransform()->GetPosition().z - 0.5f + threshold) + 1.5f;
+		GetTransform()->SetRotation(glm::vec3(0.0f, glm::radians(270.0f), 0.0f));
+	}
 	if (Swallow::Input::IsKeyPressed(SW_KEY_A)
 		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(-1.0f, 0.0f, 0.0f), Ghost())))
+	{
 		m_Destination.x = glm::floor(GetTransform()->GetPosition().x + 0.5f - threshold) - 0.5f;
+		GetTransform()->SetRotation(glm::vec3(0.0f, glm::radians(180.0f), 0.0f));
+	}
 	if (Swallow::Input::IsKeyPressed(SW_KEY_D)
 		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f), Ghost())))
+	{
 		m_Destination.x = glm::floor(GetTransform()->GetPosition().x - 0.5f + threshold) + 1.5f;
+		GetTransform()->SetRotation(glm::vec3(0.0f, glm::radians(0.0f), 0.0f));
+	}
 	float len = glm::length(m_Destination - GetTransform()->GetPosition());
 	if (len > 0.01f)
 		GetTransform()->GetPosition() += glm::normalize(m_Destination - GetTransform()->GetPosition()) * glm::min(ts.GetSeconds() * m_Speed, len);

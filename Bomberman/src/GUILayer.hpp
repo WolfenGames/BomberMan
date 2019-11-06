@@ -12,7 +12,7 @@ private:
 public:
 	GUILayer();
 	GUILayer(const GUILayer &s) = default;
-	GUILayer &operator=(const GUILayer &s) = default;
+	// GUILayer &operator=(const GUILayer &s) = default;
 	virtual ~GUILayer() = default;
 
 	bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);

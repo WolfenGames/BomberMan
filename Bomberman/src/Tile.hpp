@@ -25,7 +25,9 @@ class Tile : public Swallow::GameObject
 		inline bool			ContainsExit() { return m_containsExit; }
 		inline void			SetContainsExit(bool containsExit) { m_containsExit = containsExit; }
 		inline PowerUpTypes GetSecret() { return m_Secret; }
-		inline void SetSecret(PowerUpTypes secret) { std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(GetMaterial())->SetColour(glm::vec4(0.0, (static_cast<int>(secret) / 10.0f), 0.0f, 1.0f)); m_Secret = secret; }
+
+		//Disabled the return function for the colour here due to the texture instace not using it and crashing
+		inline void 		SetSecret(PowerUpTypes secret) { m_Secret = secret; }// { std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(GetMaterial())->SetColour(glm::vec4(0.0, (static_cast<int>(secret) / 10.0f), 0.0f, 1.0f)); m_Secret = secret; }
 
 	protected:
 		PowerUpTypes m_Secret = PowerUpTypes::None;

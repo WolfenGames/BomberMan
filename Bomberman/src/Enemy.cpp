@@ -4,16 +4,24 @@
 #include "gtc/random.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 
-Enemy::Enemy(const glm::vec3& pos, Level& level): m_Level(level)
+Enemy::Enemy(const glm::vec3& pos, Swallow::Ref<Level> level)
 {
-	static Swallow::Ref<Swallow::FlatColourMaterialInstance> mat2 = Swallow::FlatColourMaterial::Create();
-	mat2->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
+	m_Level = level;
+
 	GetTransform()->SetPosition(pos);
 	m_Destination = GetTransform()->GetPosition();
 	m_MoveDir = { 1.0f, 0.0, 0.0 };
-	SetVertexArray(Swallow::AssetManager::FetchObject("Bomberman", "Bomberman"));
+	SetVertexArray(Swallow::AssetManager::FetchObject("Bomberman", "BomberMan0"));
+	
+	//Supports animations
+	//animMaterial = Swallow::AnimationMaterial::Create();
+	//animMaterial->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
+	//SetMaterial(animMaterial);
+	//old materials
+	static Swallow::Ref<Swallow::FlatColourMaterialInstance> mat2 = Swallow::FlatColourMaterial::Create();
+	mat2->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
 	SetMaterial(mat2);
-	GetTransform()->SetScale(glm::vec3(0.18f));
+	//GetTransform()->SetScale(glm::vec3(1.0f));
 	makeDecision();
 }
 
@@ -48,18 +56,29 @@ void Enemy::Update(Swallow::Timestep ts)
 {
 	static float threshold = 0.1f;
 	if (m_MoveDir.z == -1
-		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f), false)))
+		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f), false)))
+	{
 		m_Destination.z = glm::floor(GetTransform()->GetPosition().z + 0.5f - threshold) - 0.5f;
+		GetTransform()->SetRotation(glm::vec3(0.0f, 0.0f, 0.0f));
+	}
 	if (m_MoveDir.z == 1
-		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, 1.0f), false)))
+		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, 1.0f), false)))
+	{
 		m_Destination.z = glm::floor(GetTransform()->GetPosition().z - 0.5f + threshold) + 1.5f;
+		GetTransform()->SetRotation(glm::vec3(0.0f, 180.0f, 0.0f));
+	}
 	if (m_MoveDir.x == -1
-		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(-1.0f, 0.0f, 0.0f), false)))
+		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(-1.0f, 0.0f, 0.0f), false)))
+	{
 		m_Destination.x = glm::floor(GetTransform()->GetPosition().x + 0.5f - threshold) - 0.5f;
+		GetTransform()->SetRotation(glm::vec3(0.0f, 90.0f, 0.0f));
+	}
 	if (m_MoveDir.x == 1
-		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level.IsEmpty(GetTransform()->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f), false)))
+		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f), false)))
+	{
 		m_Destination.x = glm::floor(GetTransform()->GetPosition().x - 0.5f + threshold) + 1.5f;
-	
+		GetTransform()->SetRotation(glm::vec3(0.0f, -90.0f, 0.0f));
+	}
 	float len = glm::length(m_Destination - GetTransform()->GetPosition());
 	if (len > 0.1f)
 	{

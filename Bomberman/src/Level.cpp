@@ -67,7 +67,7 @@ void Level::Load(const std::string &name)
 	{
 		in.read(reinterpret_cast<char *>(&x), sizeof(float));
 		in.read(reinterpret_cast<char *>(&y), sizeof(float));
-		m_Enemies.push_back(std::make_shared<Enemy>(glm::vec3(x, 0, y), *this));
+		m_Enemies.push_back(std::make_shared<Enemy>(glm::vec3(x, 0, y), static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->GetLevel()));
 		m_Enemies.back()->GetTransform()->Recalculate();
 	}
 
@@ -114,7 +114,7 @@ void Level::Generate(float chance)
 	m_Floor->SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
 	m_Floor->GetTransform()->SetScale(glm::vec3(m_Width, 1, m_Height));
 	m_Floor->SetMaterial(Swallow::FlatColourMaterial::Create());
-	m_Floor->GetTransform()->SetPosition(glm::vec3(m_Width / 2.0, -1, m_Height / 2.0));
+	m_Floor->GetTransform()->SetPosition(glm::vec3(m_Width / 2.0, -0.5f, m_Height / 2.0));
 	m_Floor->GetTransform()->Recalculate();
 	std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(m_Floor->GetMaterial())->SetColour(glm::vec4(1, 1, 1, 1));
 	m_Map.reserve(m_Width * m_Height);
@@ -199,7 +199,7 @@ void Level::MakePowerUp(int x, int y, bool predetermined, int type)
 
 void Level::MakeEnemy(int x, int y)
 {
-	Swallow::Ref<Enemy> newRef = std::make_shared<Enemy>(glm::vec3(x + 0.5f, 0, y + 0.5f), *this);
+	Swallow::Ref<Enemy> newRef = std::make_shared<Enemy>(glm::vec3(x + 0.5f, 0, y + 0.5f), static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->GetLevel());
 	glm::vec3 ePos = newRef->GetTransform()->GetPosition();
 	glm::vec3 myPos = m_Player->GetTransform()->GetPosition();
 	if (glm::length(ePos - myPos) < 5.0 || !IsEmpty(ePos, false))
@@ -378,6 +378,8 @@ void Level::DropBomb(glm::vec3 pos)
 		m_TempTimer->x = timer.x;
 		m_TempTimer->y = timer.y;
 		m_TempTimer->power = timer.power;
+		pos.y = 0;//Set the height above the ground
+		SW_CORE_INFO("Test {}", pos.y);
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))] = std::make_shared<Bomb>();
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->GetTransform()->SetPosition(pos);
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->GetTransform()->Recalculate();

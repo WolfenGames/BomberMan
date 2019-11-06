@@ -21,7 +21,7 @@ private:
 public:
 	GameLayer();
 	GameLayer(const GameLayer &s) = default;
-	GameLayer &operator=(const GameLayer &s) = default;
+	// GameLayer &operator=(const GameLayer &s) = default;
 	virtual ~GameLayer() = default;
 
 	bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);

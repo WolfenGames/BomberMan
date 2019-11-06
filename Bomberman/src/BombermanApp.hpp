@@ -19,8 +19,8 @@ public:
 	inline Swallow::Ref<GameLayer> GetGameLayer() { return m_GameLayer; }
 
 private:
-	BombermanApp(const BombermanApp &s) = default;
-	BombermanApp &operator=(const BombermanApp &s) = default;
+	// BombermanApp(const BombermanApp &s) = default;
+	// BombermanApp &operator=(const BombermanApp &s) = default;
 
 	Swallow::Ref<GameLayer> m_GameLayer;
 	Swallow::Ref<GUILayer> m_GUILayer;
