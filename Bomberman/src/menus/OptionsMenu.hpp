@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 14:33:12 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/25 15:09:57 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/07 17:53:47 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,6 @@ class OptionsMenu: public MenuLayer
     private:
     	Swallow::OrthographicCamera m_Camera;
     	glm::ivec2	map_size;
+        int m_Changed;
 
 };

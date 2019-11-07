@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:10:39 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/06 16:50:25 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/07 17:11:51 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 #define RESUME 0
 #define OPTIONS 1
-#define BACK 2
+#define QUIT 2
 
 PauseMenu::PauseMenu()
 :m_Camera(-10, 10, -10, 10, 10, -10), map_size(1.0f)
@@ -49,25 +49,20 @@ bool PauseMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	
-	if (m_Menu->GetButtons()[BACK]->MouseInBounds(x, y))
+	if (m_Menu->GetButtons()[QUIT]->MouseInBounds(x, y))
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
-		return true;
 	}
     if (m_Menu->GetButtons()[RESUME]->MouseInBounds(x, y))
 	{
-		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
-		return true;
 	}
     if (m_Menu->GetButtons()[OPTIONS]->MouseInBounds(x, y))
 	{
-		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadOptions();
-		return true;
 	}
-	return false;
+	return true;
 }
 
 bool PauseMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
@@ -96,7 +91,5 @@ bool PauseMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
         static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
 	}
-	else
-		return false;
 	return true;
 }

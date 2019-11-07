@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 09:23:01 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/06 14:53:12 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/07 17:50:28 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,19 @@ Settings::Settings(const char *SettingsPath)
             {
                 std::getline(SettingsFile, config);
                 m_Volume = std::stof(config);
+                if (m_Volume == 0.0f)
+                    m_VolumeString = "Off";
+                else if (m_Volume == 0.25f)
+                    m_VolumeString = "Quiet";
+                else if (m_Volume == 0.75f)
+                    m_VolumeString = "Loud";
+                else
+                    m_VolumeString = "Full";
             }
             if (config == "resolution:")
             {
                 std::getline(SettingsFile, config);
+                m_ResolutionString = config;
                 std::string width = config.substr(0, config.find("x"));
                 std::string height = config.substr(config.find("x") + 1, config.npos);
                 m_Resolution = glm::vec2(std::stoi(width), std::stoi(height));
@@ -86,8 +95,10 @@ void Settings::SetKeybinding(std::string &key, int keycode)
 
 void Settings::SetDefaultSettings()
 {
-    m_Volume = 0.5f;
+    m_Volume = 0.75f;
+    m_VolumeString = "Loud";
     m_Resolution = glm::vec2(1280, 720);
+    m_ResolutionString = "1280x720";
     m_Keybindings["UP"] = SW_KEY_W;
     m_Keybindings["DOWN"] = SW_KEY_S;
     m_Keybindings["LEFT"] = SW_KEY_A;
@@ -108,4 +119,50 @@ void Settings::SaveSettings()
     }
     output.close();
 
+}
+
+void Settings::CycleVolume()
+{
+    if (m_Volume == 0.0f)
+    {
+        m_VolumeString = "Quiet";
+        m_Volume = 0.25f;
+    }
+    else if (m_Volume == 0.25f)
+    {
+        m_VolumeString = "Loud";
+        m_Volume = 0.75f;
+    }
+    else if (m_Volume == 0.75f)
+    {
+        m_VolumeString = "Full";
+        m_Volume = 1.0f;
+    }
+    else
+    {
+        m_VolumeString = "Off";
+        m_Volume = 0.0f;
+    }
+}
+
+void Settings::CycleResolution()
+{
+    if (m_ResolutionString == "800x600")
+    {
+        m_Resolution.x = 1280;
+        m_Resolution.y = 720;
+        m_ResolutionString = "1280x720";
+    }
+    else if (m_ResolutionString == "1280x720")
+    {
+        m_Resolution.x = 1600;
+        m_Resolution.y = 900;
+        m_ResolutionString = "1600x900";
+    }
+    else
+    {
+        m_Resolution.x = 800;
+        m_Resolution.y = 600;
+        m_ResolutionString = "800x600";
+    }
 }

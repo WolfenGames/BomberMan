@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 15:57:43 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/06 16:05:38 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/07 15:54:00 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,13 @@ bool NewGame::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	
 	if (m_Menu->GetButtons()[BACK]->MouseInBounds(x, y))
-	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadNewGame();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
-		return true;
-	}
     if (m_Menu->GetButtons()[START]->MouseInBounds(x, y))
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadNewGame();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
-		return true;
 	}
-	return false;
+	return true;
 }
 
 bool NewGame::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
@@ -78,16 +73,13 @@ bool NewGame::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 		else
 			m_Menu->GetButtons()[i]->UnhighlightBackground();
 	}
-	return false;
+	return true;
 }
 
 bool NewGame::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
 	if (e.GetKeyCode() == SW_KEY_ESCAPE)
-	{
         static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadNewGame();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
-	}
 	else
 		return false;
 	return true;

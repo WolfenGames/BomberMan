@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 16:31:27 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/27 15:11:36 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/07 15:49:39 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,8 @@ bool ExitMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	if (m_Menu->GetButtons()[YES]->MouseInBounds(x, y))
 		Swallow::Application::Get().End();
 	if (m_Menu->GetButtons()[NO]->MouseInBounds(x, y))
-	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadExit();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
-		return true;
-	}
-	return false;
+	return true;
 }
 
 bool ExitMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
@@ -91,5 +87,5 @@ bool ExitMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 		else
 			m_Menu->GetButtons()[i]->UnhighlightBackground();
 	}
-	return false;
+	return true;
 }

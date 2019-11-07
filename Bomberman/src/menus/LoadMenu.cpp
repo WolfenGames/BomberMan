@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 10:45:41 by ppreez            #+#    #+#             */
-/*   Updated: 2019/10/28 15:43:22 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/07 15:52:14 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,8 @@ bool LoadingMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	if (m_Menu->GetButtons()[BACK]->MouseInBounds(x, y))
-	{
-		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadExit();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
-		return true;
-	}
-	return false;
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadLoad();
+	return true;
 }
 
 bool LoadingMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
@@ -62,10 +58,7 @@ bool LoadingMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 		Swallow::Application::Get().End();
 	}
 	else if (e.GetKeyCode() == SW_KEY_ESCAPE)
-	{
-		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadExit();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
-	}
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadLoad();
 	else
 		return false;
 	return true;
@@ -86,5 +79,5 @@ bool LoadingMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 		else
 			m_Menu->GetButtons()[i]->UnhighlightBackground();
 	}
-	return false;
+	return true;
 }

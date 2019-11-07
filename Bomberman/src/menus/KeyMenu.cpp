@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 13:55:54 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/06 15:53:39 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/07 16:07:40 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,8 @@ bool KeyMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	if (m_Menu->GetButtons().back()->MouseInBounds(x, y))
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadKeys();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadOptions();
-		return true;
 	}
-	return false;
+	return true;
 }
 
 bool KeyMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
@@ -76,16 +74,13 @@ bool KeyMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 		else
 			m_Menu->GetButtons()[i]->UnhighlightBackground();
 	}
-	return false;
+	return true;
 }
 
 bool KeyMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
 	if (e.GetKeyCode() == SW_KEY_ESCAPE)
-	{
-        static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadOptions();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
-	}
+        static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadKeys();
 	else
 		return false;
 	return true;
