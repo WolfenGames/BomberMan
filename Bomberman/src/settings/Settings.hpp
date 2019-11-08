@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 09:22:50 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/07 17:44:20 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/08 15:31:48 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ class Settings
         inline std::string GetResolutionString() { return m_ResolutionString; };
         inline glm::vec2 GetResolution() { return m_Resolution; };
         inline std::map<std::string, int> GetKeybindings() { return m_Keybindings; };
+        inline std::map<int, std::string> GetKeyMap() { return m_KeyMap; };
     private:
         std::string m_Path;
         float m_Volume;
@@ -45,4 +46,7 @@ class Settings
         std::string m_ResolutionString;
         glm::vec2 m_Resolution;
         std::map<std::string, int> m_Keybindings;
+        std::map<int, std::string> m_KeyMap;
+
+        void SetKeyMap();
 };

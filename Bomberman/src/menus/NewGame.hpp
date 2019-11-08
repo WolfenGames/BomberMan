@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 15:57:22 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/06 15:58:36 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/08 16:05:15 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,7 @@ class NewGame: public MenuLayer
     private:
     	Swallow::OrthographicCamera m_Camera;
     	glm::ivec2	map_size;
+        bool m_InputActive;
+        std::string m_Input;
 
 };

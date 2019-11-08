@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 13:55:54 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/07 16:07:40 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/08 15:49:55 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ KeyMenu::KeyMenu()
 	for (auto a : static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings()->GetKeybindings())
     {
         m_Menu->AddButton(a.first.c_str(), -2.0f, f, m_Camera);
-        m_Menu->AddButton(std::to_string(a.second).c_str(), 2.0f, f, m_Camera);
+		std::string key = static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings()->GetKeyMap()[a.second];
+        m_Menu->AddButton(key.c_str(), 2.0f, f, m_Camera);
         f -= 2.0f;
     }
 	m_Menu->AddButton("Back", 0.0f, f, m_Camera);

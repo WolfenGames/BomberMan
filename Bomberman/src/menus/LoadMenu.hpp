@@ -30,5 +30,7 @@ class LoadingMenu: public MenuLayer
     private:
     	Swallow::OrthographicCamera m_Camera;
     	glm::ivec2	map_size;
+        bool m_InputActive;
+        std::string m_Input;
 
 };
