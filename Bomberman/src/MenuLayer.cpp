@@ -3,8 +3,9 @@
 #include <gtc/type_ptr.hpp>
 #include "gtx/transform.hpp"
 #include "Platform/OpenGL/OpenGLShader.hpp"
+#include <cpp/imgui_stdlib.h>
 #include "BombermanApp.hpp"
-#include "Swallow/Renderer/Primatives.hpp"
+#include "Swallow/AssetManager/Primatives.hpp"
 #include "Swallow/Renderer/material/FlatColourMaterial.hpp"
 
 MenuLayer::MenuLayer()
@@ -21,6 +22,10 @@ MenuLayer::MenuLayer()
 	m_Square->GetTransform()->SetPosition(glm::vec3(0.0f, 9.0f, 0.0f));
 	m_Square->GetTransform()->Recalculate();
 	chance = 0.6f;
+	m_Text = Swallow::Text::Create();
+	m_Text->SetColour({1.0f, 1.0f, 1.0f, 1.0f});
+	m_Text->SetText("Welcome\nFriend");
+	m_Text->Recalculate();
 }
 
 void MenuLayer::OnEvent(Swallow::Event &e) {
@@ -69,8 +74,8 @@ bool MenuLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 
 void MenuLayer::OnImGuiRender() {
 	ImGui::Begin("Menu");
-	ImGui::SliderInt2("Level Size", glm::value_ptr(map_size), 1, 50);
 	ImGui::SliderFloat("GenPercent", &chance, 0.1, 1, "%.1f", 1.0f);
+	ImGui::InputText("Name", &save, 0);
 	ImGui::End();
 }
 
@@ -81,6 +86,7 @@ void MenuLayer::OnUpdate(Swallow::Timestep ts)
 	Swallow::Renderer::BeginScene(m_Camera);
 
 	Swallow::Renderer::Submit(m_Square);
+	Swallow::Renderer::Submit(m_Text);
 
 	Swallow::Renderer::EndScene();
 }
