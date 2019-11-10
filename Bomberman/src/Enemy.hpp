@@ -5,7 +5,7 @@
 
 class Level;
 
-class Enemy : public Swallow::GameObject
+class Enemy : public Swallow::GameObject, public ModelInfo
 {
 public:
 	Enemy(const glm::vec3&, Swallow::Ref<Level> l);

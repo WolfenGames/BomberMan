@@ -1,10 +1,11 @@
+#pragma once
 #include <Swallow.hpp>
 #include "Tile.hpp"
 
-class Wall : public Tile
+class Wall : public Tile, public Swallow::GameObject, public ModelInfo
 {
-	public:
-	Wall();
+public:
+	Wall() = default;
 	Wall(const Wall &s) = default;
 	Wall &operator=(const Wall &s) = default;
 	virtual ~Wall() = default;
