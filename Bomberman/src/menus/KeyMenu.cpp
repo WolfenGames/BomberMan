@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 13:55:54 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/11 11:43:34 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/11 14:36:21 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,22 @@ bool KeyMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	size_t i = 0;
 	for (auto a : m_Menu->GetButtons())
 	{
-		if (i >= m_KeyCount && i < m_Menu->GetButtons().size() - 1 && a->MouseInBounds(x, y))
+		if (m_InputActive == true && a->MouseInBounds(x, y))
+		{
+			m_Menu->GetButtons()[m_ActiveButton]->GetText()->SetText(m_TempText);
+			m_Menu->GetButtons()[m_ActiveButton]->Recalculate();
+			m_ActiveButton = i;
+			m_InputAction = m_Menu->GetButtons()[i - m_KeyCount]->GetText()->GetString();
+			m_TempText = m_Menu->GetButtons()[i]->GetText()->GetString();
+			m_Menu->GetButtons()[i]->GetText()->SetText("");
+			m_Menu->GetButtons()[i]->Recalculate();
+		}
+		else if (m_InputActive == false && i >= m_KeyCount && i < m_Menu->GetButtons().size() - 1 && a->MouseInBounds(x, y))
 		{
 			m_InputActive = true;
 			m_ActiveButton = i;
 			m_InputAction = m_Menu->GetButtons()[i - m_KeyCount]->GetText()->GetString();
+			m_TempText = m_Menu->GetButtons()[i]->GetText()->GetString();
 			m_Menu->GetButtons()[i]->GetText()->SetText("");
 			m_Menu->GetButtons()[i]->Recalculate();
 			m_Changed = 1;

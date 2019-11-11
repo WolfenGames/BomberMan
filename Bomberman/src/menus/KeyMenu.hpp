@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 13:55:36 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/11 11:24:36 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/11 12:52:22 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,5 @@ class KeyMenu: public MenuLayer
         bool m_InputActive;
         int m_ActiveButton;
         std::string m_InputAction;
+        std::string m_TempText;
 };
