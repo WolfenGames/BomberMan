@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 09:22:50 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/08 15:31:48 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/11 11:40:54 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ class Settings
         void CycleVolume();
         void CycleResolution();
 
+        void SetKeybinding(std::string &key, int keycode);
         inline static Swallow::Ref<Settings> Create() { return std::make_shared<Settings>(); };
         inline void SetVolume(float volume) { m_Volume = volume; };
         inline void SetResolution(glm::vec2 newRes) { m_Resolution = newRes; };
-        void SetKeybinding(std::string &key, int keycode);
 
         inline float GetVolume() { return m_Volume; };
         inline std::string GetVolumeString() { return m_VolumeString; };
