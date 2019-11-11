@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 13:55:54 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/11 14:36:21 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/11 15:11:49 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,15 +120,6 @@ bool KeyMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 	if (m_InputActive)
 	{
 		input += static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings()->GetKeyMap()[e.GetKeyCode()];
-		// for (auto a : m_Menu->GetButtons())
-		// {
-		// 	conflict = a->GetText()->GetString();
-		// 	if (conflict == input)
-		// 	{
-		// 		a->GetText()->SetText("");
-		// 		static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings()->SetKeybinding(conflict, 0);
-		// 	}
-		// }
 		static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings()->SetKeybinding(m_InputAction, e.GetKeyCode());
 		m_Menu->GetButtons()[m_ActiveButton]->GetText()->SetText(input);
 		m_InputActive = false;
