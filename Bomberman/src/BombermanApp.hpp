@@ -15,8 +15,6 @@ public:
 	void UnloadMenu();
 	void UnloadGame();
 	void LoadGame();
-	void LoadModels(const std::vector<std::string> &assetPaths)
-	void LoadModelAsset(const std::string &path)
 
 	inline Swallow::Ref<GameLayer> GetGameLayer() { return m_GameLayer; }
 

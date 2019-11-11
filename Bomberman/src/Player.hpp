@@ -4,12 +4,11 @@
 #include "Swallow/Renderer/material/AnimationMaterial.hpp"
 
 #include <Swallow.hpp>
-#include "ModelInfo.hpp"
 
 class Level;
 class PowerUp;
 
-class Player: public Swallow::GameObject, public ModelInfo
+class Player: public Swallow::GameObject
 {
 public:
 	Player();
@@ -55,7 +54,7 @@ private:
 	Swallow::Ref<Swallow::GameObject> m_Cube;
 
 	//Swallow::Ref<Swallow::GameObject> m_Cube;
-	Level &m_Level;
+	//Level &m_Level;
 	glm::vec3 m_Destination;
 	std::list<Swallow::Ref<PowerUp>>	m_PowerUps;
 	Swallow::Ref<Swallow::AnimationMaterialInstance> 	animMaterial;
