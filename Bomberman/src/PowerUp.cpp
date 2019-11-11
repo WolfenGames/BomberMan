@@ -4,17 +4,26 @@
 #include <Swallow.hpp>
 #include <Swallow/Renderer/material/FlatColourMaterial.hpp>
 #include <Swallow/Renderer/material/FlatColourMaterial.hpp>
+#include "Swallow/Renderer/texture/TextureMaterial.hpp"
 
 
 #pragma region FireIncrease
 FireIncrease::FireIncrease(){
 	m_Delete = false;
+
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> FireIncreaseMat = Swallow::FlatColourMaterial::Create();
 	FireIncreaseMat->SetColour(glm::vec4(1.0f, 0.f, 0.f, 1.f));
 	SetMaterial(FireIncreaseMat);
-	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> FireIncreaseMat = Swallow::TextureMaterial::Create();
+	FireIncreaseMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(FireIncreaseMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("FireIncrease", "FireIncrease"));
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
 		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 	#endif
@@ -35,16 +44,25 @@ bool	FireIncrease::CanDelete()
 #pragma region FireDecrease
 FireDecrease::FireDecrease(){
 	m_Delete = false;
+
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> FireDecreaseMat = Swallow::FlatColourMaterial::Create();
 	FireDecreaseMat->SetColour(glm::vec4(1.0f, 0.0f, 0.0f, 1.f));
 	SetMaterial(FireDecreaseMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> FireDecreaseMat = Swallow::TextureMaterial::Create();
+	FireDecreaseMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(FireDecreaseMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("FireDecrease", "FireDecrease"));
+	
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
 		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 	#endif
-	GetTransform()->SetRotation(glm::vec3(glm::radians(45.0f), 0.0f, 0.0f));
 };
 
 void	FireDecrease::OnUpdate(Swallow::Timestep& time)
@@ -62,12 +80,21 @@ bool FireDecrease::CanDelete()
 #pragma region BombUp
 BombUp::BombUp(){
 	m_Delete = false;
+	
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> BombUpMat = Swallow::FlatColourMaterial::Create();
 	BombUpMat->SetColour(glm::vec4(0.0f, 0.0f, 0.0f, 1.f));
 	SetMaterial(BombUpMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> BombUpMat = Swallow::TextureMaterial::Create();
+	BombUpMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(BombUpMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("BombUp", "BombUp"));
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
 		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 	#endif
@@ -89,16 +116,24 @@ bool	BombUp::CanDelete()
 #pragma region BombDown
 BombDown::BombDown(){
 	m_Delete = false;
+	
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> BombDownMat = Swallow::FlatColourMaterial::Create();
 	BombDownMat->SetColour(glm::vec4(0.0f, 0.0f, 0.0f, 1.f));
 	SetMaterial(BombDownMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> BombDownMat = Swallow::TextureMaterial::Create();
+	BombDownMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(BombDownMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("BombDown", "BombDown"));
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
 		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 	#endif
-	GetTransform()->SetRotation(glm::vec3(glm::radians(45.0f), 0.0f, 0.0f));
 };
 
 void BombDown::OnUpdate(Swallow::Timestep& time)
@@ -117,12 +152,22 @@ bool	BombDown::CanDelete()
 #pragma region SpeedUp
 SpeedUp::SpeedUp(){
 	m_Delete = false;
+
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> SpeedUpMat = Swallow::FlatColourMaterial::Create();
 	SpeedUpMat->SetColour(glm::vec4(0.5f, 0.5f, 0.5f, 1.f));
 	SetMaterial(SpeedUpMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> SpeedUpMat = Swallow::TextureMaterial::Create();
+	SpeedUpMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(SpeedUpMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("SpeedUp", "SpeedUp"));
+
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
 		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 	#endif
@@ -144,16 +189,25 @@ bool	SpeedUp::CanDelete()
 #pragma region SpeedDown
 SpeedDown::SpeedDown(){
 	m_Delete = false;
+
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> SpeedDownMat = Swallow::FlatColourMaterial::Create();
 	SpeedDownMat->SetColour(glm::vec4(0.5f, 0.5f, 0.5f, 1.f));
 	SetMaterial(SpeedDownMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> SpeedDownMat = Swallow::TextureMaterial::Create();
+	SpeedDownMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(SpeedDownMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("SpeedDown", "SpeedDown"));
+	
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
 		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 	#endif
-	GetTransform()->SetRotation(glm::vec3(glm::radians(45.0f), 0.0f, 0.0f));
 };
 
 void SpeedDown::OnUpdate(Swallow::Timestep& time)
@@ -172,12 +226,22 @@ bool	SpeedDown::CanDelete()
 #pragma region BombsCanBypassWalls
 BombsCanBypassWalls::BombsCanBypassWalls(){
 	m_Delete = false;
+
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> BombsCanBypassWallsMat = Swallow::FlatColourMaterial::Create();
 	BombsCanBypassWallsMat->SetColour(glm::vec4(0.0f, 1.0f, 1.0f, 1.f));
 	SetMaterial(BombsCanBypassWallsMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> BombsCanBypassWallsMat = Swallow::TextureMaterial::Create();
+	BombsCanBypassWallsMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(BombsCanBypassWallsMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("BombCanBypassWalls", "BombCanBypassWalls"));
+	
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
 		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 	#endif
@@ -203,6 +267,7 @@ SoftBlockPass::SoftBlockPass(){
 	SoftBlockPassMat->SetColour(glm::vec4(1.f, 1.f, 1.f, 1.f));
 	SetMaterial(SoftBlockPassMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	
 	#ifdef SW_DEBUG
 		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
 	#else
