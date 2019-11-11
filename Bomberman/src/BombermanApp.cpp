@@ -59,19 +59,6 @@ void BombermanApp::LoadGame()
 	PushOverlay(m_GUILayer);
 }
 
-void BombermanApp::LoadModelAsset(std::string &path)
-{
-	Swallow::AssetManager::LoadObject(path);
-}
-
-void BombermanApp::LoadModels(const std::vector<std::string> &assetPaths)
-{
-	for (auto path: assetsPaths)
-	{
-		Swallow::AssetManager::LoadObject(path);
-	}
-}
-
 Swallow::Application* Swallow::CreateApplication()
 {
 	return (new BombermanApp());
