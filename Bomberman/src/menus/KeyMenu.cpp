@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 13:55:54 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/11 15:11:49 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/11 15:25:27 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,16 @@ bool KeyMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	if (m_Menu->GetButtons().back()->MouseInBounds(x, y))
 	{
+		if (m_InputActive == true)
+		{
+			m_Menu->GetButtons()[m_ActiveButton]->GetText()->SetText(m_TempText);
+			m_Menu->GetButtons()[m_ActiveButton]->Recalculate();
+			m_InputActive = false;
+			m_ActiveButton = -1;
+		}
 		static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings()->SaveSettings();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadKeys();
+		return true;
 	}
 	size_t i = 0;
 	for (auto a : m_Menu->GetButtons())
