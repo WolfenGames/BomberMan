@@ -16,8 +16,8 @@ protected:
 	float		chance;
 public:
 	MenuLayer();
-	MenuLayer(const MenuLayer &s) = delete;
-	MenuLayer &operator=(const MenuLayer &s) = delete;
+	MenuLayer(const MenuLayer &s) = default;
+	// MenuLayer &operator=(const MenuLayer &s) = default;
 	virtual ~MenuLayer() = default;
 
 	bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);

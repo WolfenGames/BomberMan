@@ -33,6 +33,9 @@ class BombermanApp : public Swallow::Application
 
 		inline Swallow::Ref<GameLayer> GetGameLayer() { return m_GameLayer; }
 		inline Swallow::Ref<Settings> GetSettings() { return m_Settings; };
+private:
+	// BombermanApp(const BombermanApp &s) = default;
+	// BombermanApp &operator=(const BombermanApp &s) = default;
 
 	private:
 		BombermanApp(const BombermanApp &s) = delete;

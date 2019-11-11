@@ -71,7 +71,7 @@ bool GameLayer::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 bool GameLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
 	if (e.GetKeyCode() == SW_KEY_SPACE)
-		m_Level->DropBomb(m_Level->GetPlayer()->Destination());
+		m_Level->DropBomb(glm::vec3(m_Level->GetPlayer()->Destination().x, m_Level->GetPlayer()->Destination().y + 0.5f, m_Level->GetPlayer()->Destination().z));
 	else if (e.GetKeyCode() == SW_KEY_F5)
 		m_Level->Save(m_Save);
 	else

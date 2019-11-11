@@ -1,12 +1,21 @@
 #include "Wall.hpp"
 #include <Swallow/Renderer/material/FlatColourMaterial.hpp>
+#include <Swallow/Renderer/texture/TextureMaterial.hpp>
 
+//Destructable walls
 Wall::Wall()
 {
+	/*
 	Swallow::Ref<Swallow::FlatColourMaterialInstance> Brick = Swallow::FlatColourMaterial::Create();
 	Brick->SetColour(glm::vec4(0.9, 0.5, 0.2, 1.0));
 	SetMaterial(Brick);
-	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> Brick = Swallow::TextureMaterial::Create();
+	Brick->SetTexture(Swallow::AssetManager::FetchTexture("Atlas"));
+	SetMaterial(Brick);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("DestructableWall", "Destructable_Wall.001"));
 	GetTransform()->SetScale(glm::vec3(0.95f));
 
 	m_isDestructable = true;
@@ -15,14 +24,16 @@ Wall::Wall()
 	m_canPassThrough = true;
 }
 
+//Indestructable walls
 Pillar::Pillar()
 {
-	static Swallow::Ref<Swallow::FlatColourMaterialInstance> Pillar = Swallow::FlatColourMaterial::Create();
-	Pillar->SetColour(glm::vec4(0.5, 0.5, 0.5, 1.0));
+	Swallow::Ref<Swallow::TextureMaterialInstance> Pillar = Swallow::TextureMaterial::Create();
+	Pillar->SetTexture(Swallow::AssetManager::FetchTexture("Atlas"));
 	SetMaterial(Pillar);
-	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
-	GetTransform()->SetScale(glm::vec3(0.95f));
 
+	SetVertexArray(Swallow::AssetManager::FetchObject("IndestructableWall", "Indestructable_Wall.001"));
+	GetTransform()->SetScale(glm::vec3(1.0f));
+	
 	m_isDestructable = false;
 	m_isFilled = true;
 	m_isExit = false;

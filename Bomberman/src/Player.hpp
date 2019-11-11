@@ -1,9 +1,9 @@
 #pragma once
 
 #include "PowerUp.hpp"
+#include "Swallow/Renderer/material/AnimationMaterial.hpp"
 
 #include <Swallow.hpp>
-#include <list>
 
 class Level;
 class PowerUp;
@@ -52,6 +52,11 @@ private:
 	bool	m_Won = false;
 	float	m_Speed = 2.0f;
 	Swallow::Ref<Swallow::GameObject> m_Cube;
+
+	//Swallow::Ref<Swallow::GameObject> m_Cube;
+	//Level &m_Level;
 	glm::vec3 m_Destination;
 	std::list<Swallow::Ref<PowerUp>>	m_PowerUps;
+	Swallow::Ref<Swallow::AnimationMaterialInstance> 	animMaterial;
+	Swallow::Ref<Swallow::AnimationController> 			m_WalkAnimation;
 };

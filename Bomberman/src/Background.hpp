@@ -10,6 +10,7 @@ class Background : public Swallow::Layer
 		Background();
 		Background(const Background&) = default;
 		Background &operator=(const Background&) = delete;
+		// Background &operator=(const Background&) = default;
 
 	private:
 		Swallow::Ref<BackDrop> m_BackDrop;

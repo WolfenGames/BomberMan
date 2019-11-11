@@ -1,9 +1,10 @@
+#pragma once
 #include <Swallow.hpp>
 #include "Tile.hpp"
 
 class Wall : public Tile
 {
-	public:
+public:
 	Wall();
 	Wall(const Wall &s) = default;
 	Wall &operator=(const Wall &s) = default;
