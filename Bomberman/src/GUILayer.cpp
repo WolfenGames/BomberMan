@@ -60,7 +60,7 @@ bool GUILayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 	if (e.GetKeyCode() == SW_KEY_ESCAPE)
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadPause();
 	}
 	else
 		return false;
