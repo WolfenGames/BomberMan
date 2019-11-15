@@ -4,6 +4,8 @@
 #include <gtc/type_ptr.hpp>
 #include "Platform/OpenGL/OpenGLShader.hpp"
 
+bool GameLayer::IsPaused = false;
+
 GameLayer::GameLayer()
 	:m_Camera(glm::radians(45.0f), Swallow::Application::Get().GetWindow().GetWidth() / (float)Swallow::Application::Get().GetWindow().GetHeight(), 0.01f, 100.0f)
 {
@@ -73,7 +75,10 @@ bool GameLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 	if (e.GetKeyCode() == SW_KEY_SPACE)
 		m_Level->DropBomb(glm::vec3(m_Level->GetPlayer()->Destination().x, m_Level->GetPlayer()->Destination().y + 0.5f, m_Level->GetPlayer()->Destination().z));
 	else if (e.GetKeyCode() == SW_KEY_F5)
+	{
 		m_Level->Save(m_Save);
+		SW_CORE_INFO("Save: {}", m_save);
+	}
 	else
 		return false;
 	return true;
@@ -85,34 +90,37 @@ void GameLayer::OnImGuiRender() {
 
 void GameLayer::OnUpdate(Swallow::Timestep ts)
 {
-	static_cast<void>(ts);
-	m_Position = glm::vec3(glm::clamp(m_Level->GetPlayer()->GetTransform()->GetPosition().x, 12.f, 17.f), 15, 13);
-	m_Camera.SetPosition(m_Position);
-	m_Camera.Recalculate();
-	m_Level->Update(ts);
+	if (!IsPaused)
+	{
+		static_cast<void>(ts);
+		m_Position = glm::vec3(glm::clamp(m_Level->GetPlayer()->GetTransform()->GetPosition().x, 12.f, 17.f), 15, 13);
+		m_Camera.SetPosition(m_Position);
+		m_Camera.Recalculate();
+		m_Level->Update(ts);
 
-	Swallow::Renderer::BeginScene(m_Camera);
+		Swallow::Renderer::BeginScene(m_Camera);
 
-	m_Level->Draw();
+		m_Level->Draw();
 	
 
-	Swallow::Renderer::EndScene();
-	if (m_Level->GetDeadStatus())
-	{
-		SW_INFO("DID DIE!");
-		m_Lives--;
-		if (m_Lives < 0)
+		Swallow::Renderer::EndScene();
+		if (m_Level->GetDeadStatus())
 		{
-			SW_INFO("DID Lose!");
-			static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();
-			static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
-			return;
-		}
-		m_Level->Generate();
-	};
-	if (m_Player->WON())
-	{
-		SW_INFO("DID WIN!");
-		m_Level->Generate();
-	};
+			SW_INFO("DID DIE!");
+			m_Lives--;
+			if (m_Lives < 0)
+			{
+				SW_INFO("DID Lose!");
+				static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();
+				static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
+				return;
+			}
+			m_Level->Generate();
+		};
+		if (m_Player->WON())
+		{
+			SW_INFO("DID WIN!");
+			m_Level->Generate();
+		};
+	}
 }
