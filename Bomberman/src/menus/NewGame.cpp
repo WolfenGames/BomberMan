@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 15:57:43 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/08 16:06:24 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/11 15:53:08 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,17 @@ bool NewGame::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	
 	if (m_Menu->GetButtons()[BACK]->MouseInBounds(x, y))
+	{
+		if (m_InputActive && (m_Input == "" || m_Input == "Enter name"))
+			m_Input = "Player";
+		m_InputActive = false;
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadNewGame();
+	}
     if (m_Menu->GetButtons()[START]->MouseInBounds(x, y))
 	{
+		if (m_InputActive && (m_Input == "" || m_Input == "Enter name"))
+			m_Input = "Player";
+		m_InputActive = false;
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadNewGame();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
 	}

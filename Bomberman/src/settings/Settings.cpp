@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/04 09:23:01 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/11 11:19:49 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/12 09:26:02 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,5 +212,13 @@ void Settings::SetKeyMap()
     m_KeyMap[SW_KEY_RIGHT] = "Right";    
     m_KeyMap[SW_KEY_ENTER] = "Enter";
     m_KeyMap[SW_KEY_SPACE] = "Space";
+    m_KeyMap[SW_KEY_F1] = "F1";
+    m_KeyMap[SW_KEY_F2] = "F2";
+    m_KeyMap[SW_KEY_F3] = "F3";
+    m_KeyMap[SW_KEY_F4] = "F4";
     m_KeyMap[SW_KEY_F5] = "F5";
+    m_KeyMap[SW_KEY_F6] = "F6";
+    m_KeyMap[SW_KEY_F7] = "F7";
+    m_KeyMap[SW_KEY_F8] = "F8";
+    m_KeyMap[SW_KEY_F9] = "F9";
 }

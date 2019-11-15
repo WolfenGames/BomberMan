@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 10:45:41 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/08 15:46:58 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/11 15:28:54 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ LoadingMenu::LoadingMenu()
 	m_Menu->GetBackground()->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_Menu->GetBackground()->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
 	m_Menu->AddButton("Back", 0.0f, -2.0f, m_Camera);
-	m_Menu->AddButton("Input", 0.0f, 4.0f, m_Camera);
+	
 	m_Menu->Recalculate();
 	m_Menu->RecalculateButtons();
 }
@@ -48,13 +48,6 @@ bool LoadingMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	if (m_Menu->GetButtons()[BACK]->MouseInBounds(x, y))
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadLoad();
-	if (m_Menu->GetButtons()[INPUT]->MouseInBounds(x, y))
-	{
-		m_InputActive = true;
-		m_Input = "";
-		m_Menu->GetButtons()[INPUT]->GetText()->SetText(m_Input);
-		m_Menu->GetButtons()[INPUT]->Recalculate();
-	}
 	return true;
 }
 
