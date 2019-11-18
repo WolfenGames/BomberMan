@@ -77,7 +77,7 @@ bool GameLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 	else if (e.GetKeyCode() == SW_KEY_F5)
 	{
 		m_Level->Save(m_Save);
-		SW_CORE_INFO("Save: {}", m_save);
+		SW_CORE_INFO("Save: {}", m_Save);
 	}
 	else
 		return false;

@@ -6,18 +6,19 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 10:45:41 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/11 15:28:54 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/18 11:18:45 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "LoadMenu.hpp"
 #include "../BombermanApp.hpp"
+#include <dirent.h>
 
 #define BACK 0
 #define INPUT 1
 
 LoadingMenu::LoadingMenu()
-:m_Camera(-10, 10, -10, 10, 10, -10), map_size(1.0f), m_InputActive(false)
+:m_Camera(-10, 10, -10, 10, 10, -10), map_size(1.0f)
 {
 	m_Camera.SetPosition(glm::vec3(0, 0, 0));
 	m_Camera.SetRotation(glm::vec3(0, 0, 0));
@@ -26,8 +27,8 @@ LoadingMenu::LoadingMenu()
 	m_Menu = Menu::Create();
 	m_Menu->GetBackground()->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_Menu->GetBackground()->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
-	m_Menu->AddButton("Back", 0.0f, -2.0f, m_Camera);
-	
+	float f = AddSaves();
+	m_Menu->AddButton("Back", 0.0f, f, m_Camera);
 	m_Menu->Recalculate();
 	m_Menu->RecalculateButtons();
 }
@@ -46,41 +47,26 @@ bool LoadingMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	float y = Swallow::Input::GetMouseY();
 	x = ((x * 2) / Swallow::Application::Get().GetWindow().GetWidth()) - 1;
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
-	if (m_Menu->GetButtons()[BACK]->MouseInBounds(x, y))
+	if (m_Menu->GetButtons().back()->MouseInBounds(x, y))
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadLoad();
+	for (size_t i = 0 ; i < m_Menu->GetButtons().size() - 1 ; i++)
+	{
+		if (m_Menu->GetButtons()[i]->MouseInBounds(x, y))
+		{
+			std::string name = m_Menu->GetButtons()[i]->GetText()->GetString();
+			GameLayer::IsPaused = false;
+			static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadLoad();
+			std::ifstream s(std::string("Saves/") + name + ".sav");
+			static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetSave(name);
+			static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
+		}
+	}
 	return true;
 }
 
 bool LoadingMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
-	if (m_InputActive && e.GetKeyCode() == SW_KEY_ENTER)
-	{
-		m_InputActive = false;
-		m_Menu->GetButtons()[INPUT]->UnhighlightBackground();
-		return true;
-	}
-	if (m_InputActive)
-	{
-		int key = e.GetKeyCode();
-		if ((key > 47 && key < 58) || (key > 64 && key < 91))
-		{
-			m_Input += static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings()->GetKeyMap()[e.GetKeyCode()];
-			m_Menu->GetButtons()[INPUT]->GetText()->SetText(m_Input);
-			m_Menu->GetButtons()[INPUT]->Recalculate();
-		}
-		if (key == SW_KEY_BACKSPACE)
-		{
-			m_Input.pop_back();
-			m_Menu->GetButtons()[INPUT]->GetText()->SetText(m_Input);
-			m_Menu->GetButtons()[INPUT]->Recalculate();
-		}
-		return true;
-	}
-	if (e.GetKeyCode() == SW_KEY_SPACE)
-	{
-		Swallow::Application::Get().End();
-	}
-	else if (e.GetKeyCode() == SW_KEY_ESCAPE)
+	if (e.GetKeyCode() == SW_KEY_ESCAPE)
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadLoad();
 	else
 		return false;
@@ -103,4 +89,31 @@ bool LoadingMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 			m_Menu->GetButtons()[i]->UnhighlightBackground();
 	}
 	return true;
+}
+
+float LoadingMenu::AddSaves()
+{
+	DIR *dir;
+	struct dirent *dirent;
+	std::string name;
+	size_t len;
+	float f = 6.0f;
+	if ((dir = opendir("./Saves/")) == NULL)
+	{
+		SW_CORE_WARN("Could not open Saves directory.");
+		return 0.0f;
+	}
+	while ((dirent = readdir(dir)) != NULL)
+	{
+		name = dirent->d_name;
+		len = name.find(".sav");
+		if (len != name.npos && len > 3)
+		{
+			name = name.substr(0, len);
+			m_Menu->AddButton(name.c_str(), 0.0f, f, m_Camera);
+			f -= 2.0f;
+		}
+	}
+	closedir(dir);
+	return f;
 }

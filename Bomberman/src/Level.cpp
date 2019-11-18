@@ -82,7 +82,7 @@ void Level::Load(const std::string &name)
 
 	in.read(reinterpret_cast<char *>(&x), sizeof(float));
 	in.read(reinterpret_cast<char *>(&y), sizeof(float));
-	m_Player->GetTransform()->SetPosition(glm::vec3(static_cast<int>(x), 0, static_cast<int>(y)));
+	m_Player->GetTransform()->SetPosition(glm::vec3(static_cast<int>(x) + 0.5f, 0, static_cast<int>(y) + 0.5f));
 	m_Player->Destination() = m_Player->GetTransform()->GetPosition();
 	int temp;
 	in.read(reinterpret_cast<char *>(&temp), sizeof(int));
