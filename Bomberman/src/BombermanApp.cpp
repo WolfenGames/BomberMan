@@ -18,7 +18,7 @@ BombermanApp::BombermanApp()
 	Swallow::AssetManager::LoadObject("IndestructableWall", "assets/Models/Indestructable_Wall.obj");
 	Swallow::AssetManager::LoadObject("DestructableWall", "assets/Models/Destructable_Wall.obj");
 	Swallow::AssetManager::LoadObject("EmptyQuad", "assets/Models/EmptyQuad.obj");
-	Swallow::AssetManager::LoadTexture("Atlas", "assets/Models/atlas.png");
+	Swallow::AssetManager::LoadTexture("Atlas", "assets/Models/atlas.png", false);
 
 	Swallow::AssetManager::ListMeshes("DestructableWall");
 
