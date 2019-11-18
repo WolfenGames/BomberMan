@@ -28,6 +28,7 @@ public:
 	bool OnMouseMovedEvent(Swallow::MouseMovedEvent &e);
 	bool OnKeyPressed(Swallow::KeyPressedEvent &e);
 	bool OnWindowResize(Swallow::WindowResizeEvent &e);
+	static bool IsPaused;
 
 	inline void SetSpawnChance(const float chance) { this->chance = chance; }
 	inline void SetSave(const std::string &save) { this->m_Save = save; }

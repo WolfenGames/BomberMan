@@ -6,7 +6,7 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:10:39 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/07 17:11:51 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/15 16:06:03 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,13 @@ bool PauseMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	if (m_Menu->GetButtons()[QUIT]->MouseInBounds(x, y))
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();		
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
 	}
     if (m_Menu->GetButtons()[RESUME]->MouseInBounds(x, y))
 	{
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
+		GameLayer::IsPaused = false;
 	}
     if (m_Menu->GetButtons()[OPTIONS]->MouseInBounds(x, y))
 	{

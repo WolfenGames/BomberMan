@@ -6,12 +6,19 @@
 /*   By: ppreez <ppreez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 15:57:43 by ppreez            #+#    #+#             */
-/*   Updated: 2019/11/08 16:06:24 by ppreez           ###   ########.fr       */
+/*   Updated: 2019/11/15 16:33:55 by ppreez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "NewGame.hpp"
 #include "../BombermanApp.hpp"
+#ifdef SW_PLATFORM_MACOSX
+	#include <unistd.h>
+#else
+	#ifdef SW_PLATFORM_WINDOWS
+		#include <cstdio>
+	#endif
+#endif
 
 #define INPUT 0
 #define START 1
@@ -50,10 +57,32 @@ bool NewGame::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	y = ((y * 2) / Swallow::Application::Get().GetWindow().GetHeight()) - 1;
 	
 	if (m_Menu->GetButtons()[BACK]->MouseInBounds(x, y))
+	{
+		if (m_InputActive && (m_Input == "" || m_Input == "Enter name"))
+			m_Input = "Player";
+		m_InputActive = false;
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadNewGame();
+	}
     if (m_Menu->GetButtons()[START]->MouseInBounds(x, y))
 	{
+		if (m_InputActive && (m_Input == "" || m_Input == "Enter name"))
+			m_Input = "Player";
+		
+		m_InputActive = false;
+		GameLayer::IsPaused = false;
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadNewGame();
+		std::ifstream s(std::string("Saves/") + m_Input + ".sav");
+		if (s)
+		{
+			#ifdef SW_PLATFORM_MACOSX
+				unlink((std::string("Saves/") + m_Input + ".sav").c_str());
+			#else
+				#ifdef SW_PLATFORM_WINDOWS
+					std::remove(std::string("Saves/") + m_Input + ".sav");
+				#endif
+			#endif
+		}
+		static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetSave(m_Input);
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
 	}
 	if (m_Menu->GetButtons()[INPUT]->MouseInBounds(x, y))
