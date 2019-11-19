@@ -27,6 +27,9 @@ class LoadingMenu: public MenuLayer
         bool OnMouseMovedEvent(Swallow::MouseMovedEvent &e);
         bool OnKeyPressed(Swallow::KeyPressedEvent &e);
 
+        virtual void OnAttach() override;
+		virtual void OnDetach() override;
+
     private:
         float AddSaves();
 

@@ -99,6 +99,13 @@ bool OptionsMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 		SW_CORE_INFO("CLICKED");
 		static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings()->SaveSettings();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadOptions();
+		Swallow::Ref<Settings> settings = static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings();
+		Swallow::WindowProps p;
+		p.Width = settings->GetResolution().x;
+		p.Height = settings->GetResolution().y;
+		p.Title = "Bomberman";
+		static_cast<BombermanApp &>(Swallow::Application::Get()).RecreateWindow(&p);
+		Swallow::RenderCommand::SetClearColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 		m_Menu->GetButtons()[BACK]->GetText()->SetText("Back");
 		m_Menu->GetButtons().pop_back();
 		m_Menu->Recalculate();

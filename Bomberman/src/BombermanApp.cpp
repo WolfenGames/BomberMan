@@ -4,15 +4,16 @@
 #include "Swallow/Renderer/texture/TextureMaterial.hpp"
 #include "Swallow/AssetManager/AssetManager.hpp"
 
-BombermanApp::BombermanApp()
+BombermanApp::BombermanApp(Swallow::WindowProps *props)
+	:Swallow::Application(props)
 {
+	static_cast<void>(props);
 	Swallow::FlatColourMaterial::Init();
 	Swallow::AnimationMaterial::Init();
 	Swallow::CharMaterial::Init();
 	Swallow::MenuMaterial::Init();
 	Swallow::TextureMaterial::Init();
 	Swallow::AssetManager::LoadObject("Bomb", "assets/Models/Bomb.obj");
-	//Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/Bomberman.obj");
 	Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/BombermanAnim.obj");
 	Swallow::AssetManager::LoadObject("Cube", "assets/Models/Cube.obj");
 	Swallow::AssetManager::LoadObject("IndestructableWall", "assets/Models/Indestructable_Wall.obj");
@@ -58,7 +59,12 @@ void BombermanApp::LoadGame()
 
 Swallow::Application* Swallow::CreateApplication()
 {
-	return (new BombermanApp());
+	Swallow::Ref<Settings> settings = Settings::Create();
+	WindowProps p;
+	p.Width = settings->GetResolution().x;
+	p.Height = settings->GetResolution().y;
+	p.Title = "Bomberman";
+	return (new BombermanApp(&p));
 }
 
 void BombermanApp::LoadMenu()

@@ -10,7 +10,7 @@
 class BombermanApp : public Swallow::Application
 {
 	public:
-		BombermanApp();
+		BombermanApp(Swallow::WindowProps *props = nullptr);
 		virtual ~BombermanApp();
 
 		void LoadMenu();

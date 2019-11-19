@@ -30,9 +30,11 @@ public:
 	bool OnWindowResize(Swallow::WindowResizeEvent &e);
 	static bool IsPaused;
 
+	inline int GetLives() { return m_Lives; }
 	inline void SetSpawnChance(const float chance) { this->chance = chance; }
 	inline void SetSave(const std::string &save) { this->m_Save = save; }
 
+	virtual void SetLives(int lives) { m_Lives = lives; }
 	virtual void OnEvent(Swallow::Event &e) override;
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;

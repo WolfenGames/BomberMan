@@ -121,11 +121,7 @@ SpeedUp::SpeedUp(){
 	SpeedUpMat->SetColour(glm::vec4(0.5f, 0.5f, 0.5f, 1.f));
 	SetMaterial(SpeedUpMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
-	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
-	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
-	#endif
+	GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
 };
 
 void	SpeedUp::OnUpdate(Swallow::Timestep& time)

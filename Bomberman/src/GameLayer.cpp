@@ -26,6 +26,7 @@ void GameLayer::OnAttach()
 	m_Level->SetPlayer(m_Player);
 	m_Player->SetLevel(m_Level);
 	s->Play();
+	m_Lives = 3;
 	std::string path = "Saves/";
 	std::ifstream in;
 	in.open(path + m_Save + ".sav", std::ios::binary);
@@ -37,6 +38,7 @@ void GameLayer::OnAttach()
 
 void GameLayer::OnDetach()
 {
+	SW_INFO("Detaching Game Layer");
 	s->Stop();
 	m_Level.reset();
 	m_Player.reset();
@@ -72,9 +74,10 @@ bool GameLayer::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 
 bool GameLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
-	if (e.GetKeyCode() == SW_KEY_SPACE)
+	Swallow::Ref<Settings> s = static_cast<BombermanApp &>(Swallow::Application::Get()).GetSettings();
+	if (e.GetKeyCode() == s->GetKeybindings()["Bomb"])
 		m_Level->DropBomb(glm::vec3(m_Level->GetPlayer()->Destination().x, m_Level->GetPlayer()->Destination().y + 0.5f, m_Level->GetPlayer()->Destination().z));
-	else if (e.GetKeyCode() == SW_KEY_F5)
+	else if (e.GetKeyCode() == s->GetKeybindings()["Save"])
 	{
 		m_Level->Save(m_Save);
 		SW_CORE_INFO("Save: {}", m_Save);
@@ -106,11 +109,9 @@ void GameLayer::OnUpdate(Swallow::Timestep ts)
 		Swallow::Renderer::EndScene();
 		if (m_Level->GetDeadStatus())
 		{
-			SW_INFO("DID DIE!");
 			m_Lives--;
-			if (m_Lives < 0)
+			if (m_Lives < 1)
 			{
-				SW_INFO("DID Lose!");
 				static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();
 				static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
 				return;
@@ -119,7 +120,6 @@ void GameLayer::OnUpdate(Swallow::Timestep ts)
 		};
 		if (m_Player->WON())
 		{
-			SW_INFO("DID WIN!");
 			m_Level->Generate();
 		};
 	}

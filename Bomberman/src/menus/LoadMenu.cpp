@@ -27,8 +27,6 @@ LoadingMenu::LoadingMenu()
 	m_Menu = Menu::Create();
 	m_Menu->GetBackground()->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
 	m_Menu->GetBackground()->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
-	float f = AddSaves();
-	m_Menu->AddButton("Back", 0.0f, f, m_Camera);
 	m_Menu->Recalculate();
 	m_Menu->RecalculateButtons();
 }
@@ -91,6 +89,18 @@ bool LoadingMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 	return true;
 }
 
+void LoadingMenu::OnAttach()
+{
+	m_Menu->GetButtons().clear();
+	float f = AddSaves();
+	m_Menu->AddButton("Back", 0.0f, f, m_Camera);
+}
+
+void LoadingMenu::OnDetach()
+{
+
+}
+
 float LoadingMenu::AddSaves()
 {
 	DIR *dir;
@@ -107,8 +117,9 @@ float LoadingMenu::AddSaves()
 	{
 		name = dirent->d_name;
 		len = name.find(".sav");
-		if (len != name.npos && len > 3)
+		if (len != name.npos && len > 0)
 		{
+			SW_CORE_INFO("save: {}", name);
 			name = name.substr(0, len);
 			m_Menu->AddButton(name.c_str(), 0.0f, f, m_Camera);
 			f -= 2.0f;
