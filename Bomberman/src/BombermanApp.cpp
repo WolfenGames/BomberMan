@@ -41,6 +41,10 @@ BombermanApp::BombermanApp()
 	Swallow::AssetManager::LoadObject("FireDecrease", "assets/Models/Pickups/FireDecrease.obj");
 	Swallow::AssetManager::LoadObject("SpeedDown", "assets/Models/Pickups/SpeedDown.obj");
 	Swallow::AssetManager::LoadObject("SpeedUp", "assets/Models/Pickups/SpeedUp.obj");
+	Swallow::AssetManager::LoadObject("Key", "assets/Models/Pickups/Key.obj");
+	Swallow::AssetManager::LoadObject("SoftBlock", "assets/Models/Pickups/SoftBlock.obj");
+	Swallow::AssetManager::LoadObject("Door", "assets/Models/Pickups/Door.obj");
+	
 
 	Swallow::AssetManager::ListMeshes("FireIncrease");
 	Swallow::AssetManager::ListMeshes("FireDecrease");

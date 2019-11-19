@@ -25,7 +25,7 @@ FireIncrease::FireIncrease(){
 	#ifdef SW_DEBUG
 		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 }
 
@@ -61,7 +61,7 @@ FireDecrease::FireDecrease(){
 	#ifdef SW_DEBUG
 		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 };
 
@@ -96,7 +96,7 @@ BombUp::BombUp(){
 	#ifdef SW_DEBUG
 		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 };
 
@@ -132,7 +132,7 @@ BombDown::BombDown(){
 	#ifdef SW_DEBUG
 		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 };
 
@@ -169,7 +169,7 @@ SpeedUp::SpeedUp(){
 	#ifdef SW_DEBUG
 		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 };
 
@@ -206,7 +206,7 @@ SpeedDown::SpeedDown(){
 	#ifdef SW_DEBUG
 		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 };
 
@@ -243,7 +243,7 @@ BombsCanBypassWalls::BombsCanBypassWalls(){
 	#ifdef SW_DEBUG
 		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 };
 
@@ -263,15 +263,24 @@ bool	BombsCanBypassWalls::CanDelete()
 #pragma region SoftBlockPass
 SoftBlockPass::SoftBlockPass(){
 	m_Delete = false;
+	
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> SoftBlockPassMat = Swallow::FlatColourMaterial::Create();
 	SoftBlockPassMat->SetColour(glm::vec4(1.f, 1.f, 1.f, 1.f));
 	SetMaterial(SoftBlockPassMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
-	
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> SoftBlockPassMat = Swallow::TextureMaterial::Create();
+	SoftBlockPassMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(SoftBlockPassMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("SoftBlock", "SoftBlock"));
+
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 };
 
@@ -291,14 +300,24 @@ bool	SoftBlockPass::CanDelete()
 
 Key::Key(){
 	m_Delete = false;
+	
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> SoftBlockPassMat = Swallow::FlatColourMaterial::Create();
 	SoftBlockPassMat->SetColour(glm::vec4(1.f, 1.f, 0.3f, 1.f));
 	SetMaterial(SoftBlockPassMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> SoftBlockPassMat = Swallow::TextureMaterial::Create();
+	SoftBlockPassMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(SoftBlockPassMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("Key", "Key"));
+
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 };
 
@@ -317,14 +336,24 @@ bool	Key::CanDelete()
 
 Exit::Exit(){
 	m_Delete = false;
+
+	/*
 	static Swallow::Ref<Swallow::FlatColourMaterialInstance> SoftBlockPassMat = Swallow::FlatColourMaterial::Create();
 	SoftBlockPassMat->SetColour(glm::vec4(1.f, 0.f, 1.f, 1.f));
 	SetMaterial(SoftBlockPassMat);
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
+	*/
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> SoftBlockPassMat = Swallow::TextureMaterial::Create();
+	SoftBlockPassMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(SoftBlockPassMat);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("Door", "Door"));
+
 	#ifdef SW_DEBUG
-		GetTransform()->SetScale(glm::vec3(0.5f, 1.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#else
-		GetTransform()->SetScale(glm::vec3(0.5f, 0.5f, 0.5f));
+		GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
 	#endif
 };
 
