@@ -91,7 +91,6 @@ bool PauseMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 	if (e.GetKeyCode() == SW_KEY_ESCAPE)
 	{
         static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
 	}
 	return true;
 }

@@ -65,13 +65,12 @@ bool ExitMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 	else if (e.GetKeyCode() == SW_KEY_ESCAPE)
 	{
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadExit();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
 	}
 	else
 		return false;
 	return true;
 }
-
+ 
 bool ExitMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 {
 	static_cast<void>(e);

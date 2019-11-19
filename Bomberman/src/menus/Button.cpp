@@ -16,7 +16,7 @@ Button::Button()
 :Button("Sample text", 0, 0) 
 {
 }
-
+ 
 Button::Button(std::string text)
 :m_Pressed(false)
 {
