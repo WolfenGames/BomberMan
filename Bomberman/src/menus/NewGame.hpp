@@ -13,7 +13,7 @@
 #pragma once
 
 #include "../MenuLayer.hpp"
-
+ 
 class NewGame: public MenuLayer
 {
     public:

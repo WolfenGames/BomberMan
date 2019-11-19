@@ -70,7 +70,7 @@ bool ExitMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 		return false;
 	return true;
 }
-
+ 
 bool ExitMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 {
 	static_cast<void>(e);
