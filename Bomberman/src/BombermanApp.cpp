@@ -22,12 +22,17 @@ BombermanApp::BombermanApp()
 	Swallow::AssetManager::LoadTexture("BomberManColor", "assets/Models/BombermanColor.png", false);
 
 	//Enemies
+	//Textures
+	Swallow::AssetManager::LoadTexture("EnemyTexture", "assets/Models/Characters/Enemies/Textures/textureAtlas_Enemy.png", false);
+	//Models
 	Swallow::AssetManager::LoadObject("Enemy", "assets/Models/Characters/Enemies/Enemy.obj");
+	
 
 
 	//Pickups
 	//Texture
 	Swallow::AssetManager::LoadTexture("PickupsTexture", "assets/Models/Pickups/Pallete1.png", false);
+	
 	//Models
 	Swallow::AssetManager::LoadObject("BombCanBypassWalls", "assets/Models/Pickups/BombCanBypassWalls.obj");
 	Swallow::AssetManager::LoadObject("BombUp", "assets/Models/Pickups/BombUp.obj");

@@ -24,19 +24,17 @@ Enemy::Enemy(const glm::vec3& pos, Swallow::Ref<Level> level)
 	//GetTransform()->SetScale(glm::vec3(1.0f));
 
 	m_EnemyAnimMaterial = Swallow::AnimationMaterial::Create();
-	m_EnemyAnimMaterial->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	m_EnemyAnimMaterial->SetTexture(Swallow::AssetManager::FetchTexture("EnemyTexture"));
 	SetMaterial(m_EnemyAnimMaterial);
 
 	SetVertexArray(Swallow::VertexArray::Create());
-	GetVertexArray()->SetIndexBuffer(Swallow::AssetManager::FetchObject("Enemy", "Enemy02")->GetIndexBuffer());
+	GetVertexArray()->SetIndexBuffer(Swallow::AssetManager::FetchObject("Enemy", "Enemy00")->GetIndexBuffer());
 
 	m_EnemyWalkAnimation = Swallow::AnimationController::Create("Enemy");
 
 	m_EnemyWalkAnimation->AddKeyFrame("Enemy00");
 	m_EnemyWalkAnimation->AddKeyFrame("Enemy01");
 	m_EnemyWalkAnimation->AddKeyFrame("Enemy02");
-	m_EnemyWalkAnimation->AddKeyFrame("Enemy03");
-
 
 	m_EnemyWalkAnimation->SetAdvanceTimer(0.0f);
 	GetVertexArray()->AddVertexBuffer(m_EnemyWalkAnimation->GetVertexBuffer1());
@@ -74,7 +72,7 @@ glm::vec3& Enemy::Destination()
 
 void Enemy::Update(Swallow::Timestep ts)
 {
-	switch (m_EnemyWalkAnimation->Advance(ts.GetSeconds() * 4.f))
+	switch (m_EnemyWalkAnimation->Advance(ts.GetSeconds() * 6.f))
 	{
 		case ONGOING_KEYFRAME:
 			break;

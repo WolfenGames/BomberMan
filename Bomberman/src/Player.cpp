@@ -150,7 +150,7 @@ void Player::Update(Swallow::Timestep ts)
 		GetVertexArray()->AddVertexBuffer(m_WalkAnimation->GetVertexBuffer1());
 		GetVertexArray()->AddVertexBuffer(m_WalkAnimation->GetVertexBuffer2());
 
-		switch (m_WalkAnimation->Advance(ts.GetSeconds() * 5.0f * m_Speed))
+		switch (m_WalkAnimation->Advance(ts.GetSeconds() * 5.5f * m_Speed))
 		{
 			case ONGOING_KEYFRAME:
 				break;
