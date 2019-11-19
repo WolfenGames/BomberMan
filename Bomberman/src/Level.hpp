@@ -5,7 +5,6 @@
 #include "Enemy.hpp"
 #include "Flame.hpp"
 #include "PowerUp.hpp"
-#include <list>
 
 class Level
 {

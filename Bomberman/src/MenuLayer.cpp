@@ -15,12 +15,17 @@ MenuLayer::MenuLayer()
 	m_Camera.SetRotation(glm::vec3(0, 0, 0));
 	m_Camera.Recalculate();
 
-	m_Menu = Menu::Create();
-	m_Menu->GetBackground()->GetTransform()->SetPosition(glm::vec3(0.0f, 0.0f, 1.0f));
-	m_Menu->GetBackground()->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
-	m_Menu->Recalculate();
-	m_Menu->RecalculateButtons();
-	// m_Menu->GetButtons().back()->GetBackground()->GetTransform()->Recalculate();
+	m_Square = Swallow::Primatives::Quad();
+	Swallow::Ref<Swallow::FlatColourMaterialInstance> mat = Swallow::FlatColourMaterial::Create();
+	mat->SetColour(glm::vec4(0.2, 0.5, 0.9, 1.0));
+	m_Square->SetMaterial(mat);
+	m_Square->GetTransform()->SetPosition(glm::vec3(0.0f, 9.0f, 0.0f));
+	m_Square->GetTransform()->Recalculate();
+	chance = 0.6f;
+	m_Text = Swallow::Text::Create();
+	m_Text->SetColour({1.0f, 1.0f, 1.0f, 1.0f});
+	m_Text->SetText("Welcome\nFriend");
+	m_Text->Recalculate();
 }
 
 void MenuLayer::OnEvent(Swallow::Event &e) {
@@ -53,7 +58,6 @@ bool MenuLayer::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 
 bool MenuLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
-	SW_CORE_INFO("Hi");
 	if (e.GetKeyCode() == SW_KEY_ESCAPE)
 	{
 		Swallow::Application::Get().End();
@@ -69,6 +73,10 @@ bool MenuLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 }
 
 void MenuLayer::OnImGuiRender() {
+	ImGui::Begin("Menu");
+	ImGui::SliderFloat("GenPercent", &chance, 0.1, 1, "%.1f", 1.0f);
+	ImGui::InputText("Name", &save, 0);
+	ImGui::End();
 }
 
 
@@ -77,12 +85,8 @@ void MenuLayer::OnUpdate(Swallow::Timestep ts)
 	static_cast<void>(ts);
 	Swallow::Renderer::BeginScene(m_Camera);
 
-	Swallow::Renderer::Submit(m_Menu->GetBackground());
-	Swallow::Renderer::Submit(m_Menu->GetText());
-	for (auto a : m_Menu->GetButtons())
-	{
-		Swallow::Renderer::Submit(a->GetBackground());
-		Swallow::Renderer::Submit(a->GetText());
-	}
+	Swallow::Renderer::Submit(m_Square);
+	Swallow::Renderer::Submit(m_Text);
+
 	Swallow::Renderer::EndScene();
 }

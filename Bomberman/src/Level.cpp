@@ -14,12 +14,10 @@
 
 void Level::Load(const std::string &name)
 {
-	m_Player->Reset();
 	m_DEAD = false;
 	m_Enemies.clear();
 	m_Flames.clear();
 	m_PowerUps.clear();
-	m_Map.clear();
 	std::string path = "Saves/";
 	std::ifstream in;
 	in.open(path + name + ".sav", std::ios::binary);
@@ -84,7 +82,7 @@ void Level::Load(const std::string &name)
 
 	in.read(reinterpret_cast<char *>(&x), sizeof(float));
 	in.read(reinterpret_cast<char *>(&y), sizeof(float));
-	m_Player->GetTransform()->SetPosition(glm::vec3(static_cast<int>(x) + 0.5f, 0, static_cast<int>(y) + 0.5f));
+	m_Player->GetTransform()->SetPosition(glm::vec3(static_cast<int>(x) + 0.5, 0, static_cast<int>(x) + 0.5));
 	m_Player->Destination() = m_Player->GetTransform()->GetPosition();
 	int temp;
 	in.read(reinterpret_cast<char *>(&temp), sizeof(int));
@@ -100,20 +98,16 @@ void Level::Load(const std::string &name)
 	m_Player->SetKey(temp);
 	in.read(reinterpret_cast<char *>(&x), sizeof(float));
 	m_Player->SetSpeed(x);
-	in.read(reinterpret_cast<char *>(&temp), sizeof(int));
-	static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetLives(temp);
 	in.close();
 	SW_INFO("Done");
 }
 
 void Level::Generate(float chance)
 {
-	m_Player->Reset();
 	m_DEAD = false;
 	m_Enemies.clear();
 	m_Flames.clear();
 	m_PowerUps.clear();
-	m_Map.clear();
 	std::srand(static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()));
 	int desiredEnemies = ((m_Width + m_Height) / 2.0f) * chance;
 	m_Floor = std::make_shared<Swallow::GameObject>();
@@ -197,6 +191,7 @@ void Level::MakePowerUp(int x, int y, bool predetermined, int type)
 {
 	auto newpos = glm::vec3(x + 0.5f, 0, y + 0.5f);
 	int	whichPowerUpToSpawn = (!predetermined) ? glm::linearRand(PowerUpTypes::eFireIncrease + 0, PowerUpTypes::TotalPowerUps - 1) : type;
+	SW_INFO("{}", whichPowerUpToSpawn);
 	m_PowerUps.push_back(powerUpFactory.newPowerUp(PowerUpTypes(whichPowerUpToSpawn)));
 	m_PowerUps.back()->GetTransform()->SetPosition(newpos);
 	m_PowerUps.back()->GetTransform()->Recalculate();
@@ -383,7 +378,8 @@ void Level::DropBomb(glm::vec3 pos)
 		m_TempTimer->x = timer.x;
 		m_TempTimer->y = timer.y;
 		m_TempTimer->power = timer.power;
-		pos.y = 0;
+		pos.y = 0;//Set the height above the ground
+		SW_CORE_INFO("Test {}", pos.y);
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))] = std::make_shared<Bomb>();
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->GetTransform()->SetPosition(pos);
 		m_Map[(static_cast<uint32_t>(pos.x)) * m_Height + (static_cast<uint32_t>(pos.z))]->GetTransform()->Recalculate();
@@ -481,8 +477,6 @@ void Level::Draw()
 
 void Level::Save(const std::string &name)
 {
-	if (name.length() < 1)
-		return;
 	#ifdef SW_PLATFORM_MACOSX
 		mkdir("Saves", S_IRWXU | S_IRGRP | S_IXGRP | S_IROTH | S_IXOTH);
 	#endif
@@ -549,7 +543,5 @@ void Level::Save(const std::string &name)
 	f.write(reinterpret_cast<char *>(&temp), sizeof(int));
 	float x = m_Player->GetSpeed();
 	f.write(reinterpret_cast<char *>(&x), sizeof(float));
-	temp = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->GetLives();
-	f.write(reinterpret_cast<char *>(&temp), sizeof(int));	
 	f.close();
 }

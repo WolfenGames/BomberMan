@@ -9,7 +9,6 @@ class Background : public Swallow::Layer
 	public:
 		Background();
 		Background(const Background&) = default;
-		Background &operator=(const Background&) = delete;
 		// Background &operator=(const Background&) = default;
 
 	private:

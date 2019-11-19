@@ -11,17 +11,35 @@ Enemy::Enemy(const glm::vec3& pos, Swallow::Ref<Level> level)
 	GetTransform()->SetPosition(pos);
 	m_Destination = GetTransform()->GetPosition();
 	m_MoveDir = { 1.0f, 0.0, 0.0 };
-	SetVertexArray(Swallow::AssetManager::FetchObject("Bomberman", "BomberMan0"));
+	//SetVertexArray(Swallow::AssetManager::FetchObject("Enemy", "Bomberman00"));
 	
 	//Supports animations
 	//animMaterial = Swallow::AnimationMaterial::Create();
 	//animMaterial->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
 	//SetMaterial(animMaterial);
 	//old materials
-	static Swallow::Ref<Swallow::FlatColourMaterialInstance> mat2 = Swallow::FlatColourMaterial::Create();
-	mat2->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
-	SetMaterial(mat2);
+	//static Swallow::Ref<Swallow::FlatColourMaterialInstance> mat2 = Swallow::FlatColourMaterial::Create();
+	//mat2->SetColour(glm::vec4(0.9f, 0.1f, 0.2f, 1.0f));
+	//SetMaterial(mat2);
 	//GetTransform()->SetScale(glm::vec3(1.0f));
+
+	m_EnemyAnimMaterial = Swallow::AnimationMaterial::Create();
+	m_EnemyAnimMaterial->SetTexture(Swallow::AssetManager::FetchTexture("EnemyTexture"));
+	SetMaterial(m_EnemyAnimMaterial);
+
+	SetVertexArray(Swallow::VertexArray::Create());
+	GetVertexArray()->SetIndexBuffer(Swallow::AssetManager::FetchObject("Enemy", "Enemy00")->GetIndexBuffer());
+
+	m_EnemyWalkAnimation = Swallow::AnimationController::Create("Enemy");
+
+	m_EnemyWalkAnimation->AddKeyFrame("Enemy00");
+	m_EnemyWalkAnimation->AddKeyFrame("Enemy01");
+	m_EnemyWalkAnimation->AddKeyFrame("Enemy02");
+
+	m_EnemyWalkAnimation->SetAdvanceTimer(0.0f);
+	GetVertexArray()->AddVertexBuffer(m_EnemyWalkAnimation->GetVertexBuffer1());
+	GetVertexArray()->AddVertexBuffer(m_EnemyWalkAnimation->GetVertexBuffer2());
+
 	makeDecision();
 }
 
@@ -54,6 +72,20 @@ glm::vec3& Enemy::Destination()
 
 void Enemy::Update(Swallow::Timestep ts)
 {
+	switch (m_EnemyWalkAnimation->Advance(ts.GetSeconds() * 6.f))
+	{
+		case ONGOING_KEYFRAME:
+			break;
+		case LAST_KEYFRAME:
+			m_EnemyWalkAnimation->SetAdvanceTimer(0.0f);
+		case NEXT_KEYFRAME:
+			GetVertexArray()->GetVertexBuffers().clear();
+			GetVertexArray()->AddVertexBuffer(m_EnemyWalkAnimation->GetVertexBuffer1());
+			GetVertexArray()->AddVertexBuffer(m_EnemyWalkAnimation->GetVertexBuffer2());
+			break;
+	}
+	m_EnemyAnimMaterial->SetAnim(glm::vec1(m_EnemyWalkAnimation->GetAdvancedTime()));
+
 	static float threshold = 0.1f;
 	if (m_MoveDir.z == -1
 		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f), false)))

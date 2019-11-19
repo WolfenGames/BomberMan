@@ -1,5 +1,4 @@
 #Directories
-.DS_Store
 .vs/
 bin/
 bin-int/
