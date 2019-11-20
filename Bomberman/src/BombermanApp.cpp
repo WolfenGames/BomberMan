@@ -12,6 +12,7 @@ BombermanApp::BombermanApp(Swallow::WindowProps *props)
 	Swallow::AnimationMaterial::Init();
 	Swallow::CharMaterial::Init();
 	Swallow::MenuMaterial::Init();
+	Swallow::MenuBackgroundMaterial::Init();
 	Swallow::TextureMaterial::Init();
 	Swallow::AssetManager::LoadObject("Bomb", "assets/Models/Bomb.obj");
 	Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/BombermanAnim.obj");
@@ -51,6 +52,10 @@ BombermanApp::BombermanApp(Swallow::WindowProps *props)
 	Swallow::AssetManager::ListMeshes("FireIncrease");
 	Swallow::AssetManager::ListMeshes("FireDecrease");
 
+
+	Swallow::AssetManager::LoadObject("BackgroundModel", "assets/Models/Backgrounds/Background.obj");
+	Swallow::AssetManager::LoadTexture("Background", "assets/Models/Backgrounds/Menu.png", false);
+	
 	m_Settings = Settings::Create();
 	m_GameLayer = std::make_shared<GameLayer>();
 	m_GUILayer = std::make_shared<GUILayer>();

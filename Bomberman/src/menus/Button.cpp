@@ -30,7 +30,7 @@ m_BackgroundColour(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f)), m_BackgroundHighlight(glm
     static_cast<void>(m_Pressed);
     m_Material = Swallow::MenuMaterial::Create();
     m_Background = Swallow::Primatives::Quad();
-    m_Material->SetColour(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    m_Material->SetColour(glm::vec4(0.0f, 0.0f, 1.0f, 0.0f));
     m_Background->SetMaterial(m_Material);
 
     m_Text = Swallow::Text::Create();
@@ -51,7 +51,7 @@ Button::Button(std::string text, float x, float y, Swallow::OrthographicCamera &
     static_cast<void>(m_Pressed);
     m_Material = Swallow::MenuMaterial::Create();
     m_Background = Swallow::Primatives::Quad();
-    m_Material->SetColour(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    m_Material->SetColour(glm::vec4(0.0f, 0.0f, 1.0f, 0.0f));
     m_Background->SetMaterial(m_Material);
 
     m_Text = Swallow::Text::Create();
