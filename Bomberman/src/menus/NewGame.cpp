@@ -113,7 +113,7 @@ bool NewGame::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 	}
 	return true;
 }
-
+ 
 bool NewGame::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
 	if (m_InputActive && e.GetKeyCode() == SW_KEY_ENTER)
