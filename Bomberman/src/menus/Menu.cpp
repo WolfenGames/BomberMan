@@ -12,14 +12,17 @@
 
 #include "Menu.hpp"
 #include "Button.hpp"
+#include "Swallow/Renderer/texture/TextureMaterial.hpp"
  
 Menu::Menu()
 {
-    m_Material = Swallow::MenuMaterial::Create();
-    m_Material->SetColour(glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
+    m_Material = Swallow::MenuBackgroundMaterial::Create();
+    m_Material->SetTexture(Swallow::AssetManager::FetchTexture("Background"));
+
     m_Background = Swallow::Primatives::Quad();
     m_Background->SetMaterial(m_Material);
-	m_Background->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
+    m_Background->GetTransform()->SetScale(glm::vec3(1.f, 1.f, 1.f));
+//	  m_Background->GetTransform()->SetScale(glm::vec3(10.0f, 10.0f, 0.0f));
     m_Text = Swallow::Text::Create();
     m_Text->SetColour(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
     m_Text->GetTransform()->SetScale(glm::vec3{1.0f, 2.0f, 1.0f});

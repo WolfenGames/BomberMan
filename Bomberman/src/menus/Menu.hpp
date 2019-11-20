@@ -15,6 +15,8 @@
 #include <Swallow.hpp>
 #include "Swallow/Renderer/material/MaterialInstance.hpp"
 #include "../material/MenuMaterial.hpp"
+#include "../material/MenuBackgroundMaterial.hpp"
+#include "Swallow/Renderer/texture/TextureMaterial.hpp"
 #include "Button.hpp"
  
 // class Button;
@@ -36,7 +38,7 @@ class Menu
         void AddButton(const char *text, float x, float y);
         void AddButton(const char *text, float x, float y, Swallow::OrthographicCamera &camera);
     protected:
-        Swallow::Ref<Swallow::FlatColourMaterialInstance> m_Material;
+        Swallow::Ref<Swallow::TextureMaterialInstance> m_Material;
         Swallow::Ref<Swallow::GameObject> m_Background;
 	    Swallow::Ref<Swallow::Text> m_Text;
         std::vector<Swallow::Ref<Button>> m_Buttons;
