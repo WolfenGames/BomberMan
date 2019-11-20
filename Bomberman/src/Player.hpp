@@ -41,6 +41,8 @@ public:
 	inline bool WON() { return this->m_Won; }
 	inline void SetLevel(const Swallow::Ref<Level> &l) { m_Level = l; }
 
+	inline void Reset() { m_Won = false; m_HasKey = false; }
+
 	void Update(Swallow::Timestep ts);
 
 private:

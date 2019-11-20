@@ -2,6 +2,7 @@
 #include "Level.hpp"
 #include "gtx/transform.hpp"
 #include <Swallow/Renderer/material/FlatColourMaterial.hpp>
+#include "BombermanApp.hpp"
 
 Player::Player()
 {
@@ -77,11 +78,11 @@ bool Player::AddPower(Swallow::Ref<PowerUp> power)
 			m_BombCount = std::clamp(m_BombCount, 1, ~(1 << 31));
 			return true;
 		case PowerUpTypes::eSpeedUp:
-			m_Speed += 1.0f;
+			m_Speed += 0.25f;
 			m_Speed = glm::clamp(m_Speed, 1.0f, 6.0f);
 			return true;
 		case PowerUpTypes::eSpeedDown:
-			m_Speed -= 1.0f;
+			m_Speed -= 0.25f;
 			m_Speed = glm::clamp(m_Speed, 1.0f, 6.0f);
 			return true;
 		case PowerUpTypes::eBombsCanBypassWalls:
@@ -116,19 +117,19 @@ void Player::Update(Swallow::Timestep ts)
 		m_Destination.z = glm::floor(GetTransform()->GetPosition().z + 0.5f - threshold) - 0.5f;
 		GetTransform()->SetRotation(glm::vec3(0.0f, glm::radians(90.0f), 0.0f));
 	}
-	if (Swallow::Input::IsKeyPressed(SW_KEY_S)
+	if (Swallow::Input::IsKeyPressed(s->GetKeybindings()["Down"])
 		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, 1.0f), Ghost())))
 	{
 		m_Destination.z = glm::floor(GetTransform()->GetPosition().z - 0.5f + threshold) + 1.5f;
 		GetTransform()->SetRotation(glm::vec3(0.0f, glm::radians(270.0f), 0.0f));
 	}
-	if (Swallow::Input::IsKeyPressed(SW_KEY_A)
+	if (Swallow::Input::IsKeyPressed(s->GetKeybindings()["Left"])
 		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(-1.0f, 0.0f, 0.0f), Ghost())))
 	{
 		m_Destination.x = glm::floor(GetTransform()->GetPosition().x + 0.5f - threshold) - 0.5f;
 		GetTransform()->SetRotation(glm::vec3(0.0f, glm::radians(180.0f), 0.0f));
 	}
-	if (Swallow::Input::IsKeyPressed(SW_KEY_D)
+	if (Swallow::Input::IsKeyPressed(s->GetKeybindings()["Right"])
 		&& glm::abs(m_Destination.z - GetTransform()->GetPosition().z) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(1.0f, 0.0f, 0.0f), Ghost())))
 	{
 		m_Destination.x = glm::floor(GetTransform()->GetPosition().x - 0.5f + threshold) + 1.5f;
