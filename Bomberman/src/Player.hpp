@@ -61,4 +61,5 @@ private:
 	std::list<Swallow::Ref<PowerUp>>	m_PowerUps;
 	Swallow::Ref<Swallow::AnimationMaterialInstance> 	animMaterial;
 	Swallow::Ref<Swallow::AnimationController> 			m_WalkAnimation;
+	Swallow::Ref<Swallow::AnimationController> 			m_IdleAnimation;
 };

@@ -15,13 +15,41 @@ BombermanApp::BombermanApp(Swallow::WindowProps *props)
 	Swallow::TextureMaterial::Init();
 	Swallow::AssetManager::LoadObject("Bomb", "assets/Models/Bomb.obj");
 	Swallow::AssetManager::LoadObject("Bomberman", "assets/Models/BombermanAnim.obj");
+	Swallow::AssetManager::LoadObject("BombermanIdle", "assets/Models/BombermanAnimIdle.obj");
 	Swallow::AssetManager::LoadObject("Cube", "assets/Models/Cube.obj");
 	Swallow::AssetManager::LoadObject("IndestructableWall", "assets/Models/Indestructable_Wall.obj");
 	Swallow::AssetManager::LoadObject("DestructableWall", "assets/Models/Destructable_Wall.obj");
 	Swallow::AssetManager::LoadObject("EmptyQuad", "assets/Models/EmptyQuad.obj");
 	Swallow::AssetManager::LoadTexture("Atlas", "assets/Models/atlas.png", false);
+	Swallow::AssetManager::LoadTexture("BomberManColor", "assets/Models/BombermanColor.png", false);
 
-	Swallow::AssetManager::ListMeshes("DestructableWall");
+	//Enemies
+	//Textures
+	Swallow::AssetManager::LoadTexture("EnemyTexture", "assets/Models/Characters/Enemies/Textures/textureAtlas_Enemy.png", false);
+	//Models
+	Swallow::AssetManager::LoadObject("Enemy", "assets/Models/Characters/Enemies/Enemy.obj");
+	
+
+
+	//Pickups
+	//Texture
+	Swallow::AssetManager::LoadTexture("PickupsTexture", "assets/Models/Pickups/Pallete1.png", false);
+	
+	//Models
+	Swallow::AssetManager::LoadObject("BombCanBypassWalls", "assets/Models/Pickups/BombCanBypassWalls.obj");
+	Swallow::AssetManager::LoadObject("BombUp", "assets/Models/Pickups/BombUp.obj");
+	Swallow::AssetManager::LoadObject("BombDown", "assets/Models/Pickups/BombDown.obj");
+	Swallow::AssetManager::LoadObject("FireIncrease", "assets/Models/Pickups/FireIncrease.obj");
+	Swallow::AssetManager::LoadObject("FireDecrease", "assets/Models/Pickups/FireDecrease.obj");
+	Swallow::AssetManager::LoadObject("SpeedDown", "assets/Models/Pickups/SpeedDown.obj");
+	Swallow::AssetManager::LoadObject("SpeedUp", "assets/Models/Pickups/SpeedUp.obj");
+	Swallow::AssetManager::LoadObject("Key", "assets/Models/Pickups/Key.obj");
+	Swallow::AssetManager::LoadObject("SoftBlock", "assets/Models/Pickups/SoftBlock.obj");
+	Swallow::AssetManager::LoadObject("Door", "assets/Models/Pickups/Door.obj");
+	
+
+	Swallow::AssetManager::ListMeshes("FireIncrease");
+	Swallow::AssetManager::ListMeshes("FireDecrease");
 
 	m_Settings = Settings::Create();
 	m_GameLayer = std::make_shared<GameLayer>();

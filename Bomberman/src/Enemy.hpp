@@ -26,7 +26,8 @@ private:
 	Swallow::Ref<Swallow::GameObject>					m_Cube;
 	glm::vec3											m_MoveDir;
 	bool												m_Delete = false;
-	Swallow::Ref<Swallow::AnimationMaterialInstance> 	animMaterial;
+	Swallow::Ref<Swallow::AnimationMaterialInstance> 	m_EnemyAnimMaterial;
+	Swallow::Ref<Swallow::AnimationController> 			m_EnemyWalkAnimation;
 
 protected:
 	Enemy() = default;
