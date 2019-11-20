@@ -110,7 +110,7 @@ void Player::Update(Swallow::Timestep ts)
 {
 	bool isRunning = false;
 	static float threshold = 0.1f;
-
+	Swallow::Ref<Settings> s = static_cast<BombermanApp&>(Swallow::Application::Get()).GetSettings();
 	if (Swallow::Input::IsKeyPressed(SW_KEY_W)
 		&& glm::abs(m_Destination.x - GetTransform()->GetPosition().x) < threshold && (m_Level->IsEmpty(GetTransform()->GetPosition() + glm::vec3(0.0f, 0.0f, -1.0f), Ghost())))
 	{
