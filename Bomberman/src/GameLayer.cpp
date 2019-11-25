@@ -27,6 +27,8 @@ void GameLayer::OnAttach()
 	m_Player->SetLevel(m_Level);
 	s->Play();
 	m_Lives = 3;
+	m_Score = 0;
+	m_runGameOverOnce = false;
 	std::string path = "Saves/";
 	std::ifstream in;
 	in.open(path + m_Save + ".sav", std::ios::binary);
@@ -38,7 +40,6 @@ void GameLayer::OnAttach()
 
 void GameLayer::OnDetach()
 {
-	SW_INFO("Detaching Game Layer");
 	s->Stop();
 	m_Level.reset();
 	m_Player.reset();
@@ -112,8 +113,14 @@ void GameLayer::OnUpdate(Swallow::Timestep ts)
 			m_Lives--;
 			if (m_Lives < 1)
 			{
-				static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();
-				static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
+				//if (!m_runGameOverOnce)
+				//{
+					SW_INFO("GAME LAYER!");
+					static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();	
+					static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGameOver();
+					//m_runGameOverOnce = true;
+				//}
+
 				return;
 			}
 			m_Level->Generate();

@@ -102,6 +102,8 @@ void Level::Load(const std::string &name)
 	m_Player->SetSpeed(x);
 	in.read(reinterpret_cast<char *>(&temp), sizeof(int));
 	static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetLives(temp);
+	in.read(reinterpret_cast<char *>(&temp), sizeof(int));
+	static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetScore(temp);
 	in.close();
 	SW_INFO("Done");
 }
@@ -550,6 +552,8 @@ void Level::Save(const std::string &name)
 	float x = m_Player->GetSpeed();
 	f.write(reinterpret_cast<char *>(&x), sizeof(float));
 	temp = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->GetLives();
-	f.write(reinterpret_cast<char *>(&temp), sizeof(int));	
+	f.write(reinterpret_cast<char *>(&temp), sizeof(int));
+	temp = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->GetScore();
+	f.write(reinterpret_cast<char *>(&temp), sizeof(int));
 	f.close();
 }

@@ -6,6 +6,7 @@
 #include "menus/MainMenu.hpp"
 #include "Background.hpp"
 #include "settings/Settings.hpp"
+#include "menus/GameOverMenu.hpp"
 
 class BombermanApp : public Swallow::Application
 {
@@ -30,6 +31,8 @@ class BombermanApp : public Swallow::Application
 		void UnloadNewGame();
 		void LoadPause();
 		void UnloadPause();
+		void LoadGameOver();
+		void UnloadGameOver();
 
 		inline Swallow::Ref<GameLayer> GetGameLayer() { return m_GameLayer; }
 		inline Swallow::Ref<Settings> GetSettings() { return m_Settings; };
@@ -53,4 +56,5 @@ private:
 		Swallow::Ref<Settings> m_Settings;
 		Swallow::Ref<NewGame> m_NewGameLayer;
 		Swallow::Ref<PauseMenu> m_PauseLayer;
+		Swallow::Ref<GameOverMenu> m_GameOverLayer;
 };
