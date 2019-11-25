@@ -58,7 +58,7 @@ BombermanApp::BombermanApp(Swallow::WindowProps *props)
 	
 	m_Settings = Settings::Create();
 	m_GameLayer = std::make_shared<GameLayer>();
-	m_GUILayer = std::make_shared<GUILayer>();
+	m_GUILayer = std::make_shared<HudMenu>();
 	m_MenuLayer = std::make_shared<MainMenu>();
 	m_BackgroundLayer = std::make_shared<Background>();
 	m_OptionsLayer = std::make_shared<OptionsMenu>();
@@ -164,7 +164,7 @@ void BombermanApp::UnloadNewGame()
 
 void BombermanApp::LoadPause()
 {
-	PushLayer(m_PauseLayer);
+	PushOverlay(m_PauseLayer);
 }
 
 void BombermanApp::UnloadPause()
@@ -179,7 +179,5 @@ void BombermanApp::LoadGameOver()
 
 void BombermanApp::UnloadGameOver()
 {
-	SW_INFO("HERE 1");
 	PopOverlay(m_GameOverLayer);
-	SW_INFO("HERE 2");
 }

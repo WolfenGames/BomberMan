@@ -45,7 +45,7 @@ private:
 		BombermanApp &operator=(const BombermanApp &s) = delete;
 
 		Swallow::Ref<GameLayer> m_GameLayer;
-		Swallow::Ref<GUILayer> m_GUILayer;
+		Swallow::Ref<HudMenu> m_GUILayer;
 		Swallow::Ref<MenuLayer> m_MenuLayer;
 		// Swallow::Ref<KeyBindingsMenu> m_KeyBindingsLayer;
 		Swallow::Ref<Background> m_BackgroundLayer;
