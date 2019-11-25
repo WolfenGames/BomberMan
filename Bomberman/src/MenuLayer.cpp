@@ -53,19 +53,8 @@ bool MenuLayer::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 
 bool MenuLayer::OnKeyPressed(Swallow::KeyPressedEvent &e)
 {
-	SW_CORE_INFO("Hi");
-	if (e.GetKeyCode() == SW_KEY_ESCAPE)
-	{
-		Swallow::Application::Get().End();
-	}
-	else if (e.GetKeyCode() == SW_KEY_SPACE)
-	{
-		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
-		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
-	}
-	else
-		return false;
-	return true;
+	static_cast<void>(e);
+	return false;
 }
 
 void MenuLayer::OnImGuiRender() {

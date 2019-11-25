@@ -104,6 +104,8 @@ void Level::Load(const std::string &name)
 	static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetLives(temp);
 	in.read(reinterpret_cast<char *>(&temp), sizeof(int));
 	static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetScore(temp);
+	in.read(reinterpret_cast<char *>(&x), sizeof(float));
+	static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetDifficulty(x);
 	in.close();
 	SW_INFO("Done");
 }
@@ -261,7 +263,8 @@ void Level::Explode(Timer &t)
 			if (tile->GetSecret() != PowerUpTypes::None)
 				MakePowerUp(x, y, true, tile->GetSecret());
 			tile = std::make_shared<Tile>();
-			
+			Swallow::Ref<GameLayer> g = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
+			g->SetScore(g->GetScore() + 100);
 			if (!m_Player->GetBombsCanBypassWalls())
 				break;
 		}
@@ -290,6 +293,8 @@ void Level::Explode(Timer &t)
 			if (tile->GetSecret() != PowerUpTypes::None)
 				MakePowerUp(x, y, true, tile->GetSecret());
 			tile = std::make_shared<Tile>();
+			Swallow::Ref<GameLayer> g = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
+			g->SetScore(g->GetScore() + 100);
 			if (!m_Player->GetBombsCanBypassWalls())
 				break;
 		}
@@ -318,6 +323,8 @@ void Level::Explode(Timer &t)
 			if (tile->GetSecret() != PowerUpTypes::None)
 				MakePowerUp(x, y, true, tile->GetSecret());
 			tile = std::make_shared<Tile>();
+			Swallow::Ref<GameLayer> g = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
+			g->SetScore(g->GetScore() + 100);
 			if (!m_Player->GetBombsCanBypassWalls())
 				break;
 		}
@@ -346,6 +353,8 @@ void Level::Explode(Timer &t)
 			if (tile->GetSecret() != PowerUpTypes::None)
 				MakePowerUp(x, y, true, tile->GetSecret());
 			tile = std::make_shared<Tile>();
+			Swallow::Ref<GameLayer> g = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
+			g->SetScore(g->GetScore() + 100);
 			if (!m_Player->GetBombsCanBypassWalls())
 				break;
 		}
@@ -429,6 +438,8 @@ void Level::Update(Swallow::Timestep ts)
 		glm::vec3 myPos = m_Player->GetTransform()->GetPosition();
 		if (glm::length(ePos - myPos) < 0.5)
 		{
+			Swallow::Ref<GameLayer> g = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
+			g->SetScore(g->GetScore() + 50);
 			if (m_Player->AddPower(powerInACan))
 				powerInACan->SetDelete(true);
 		}
@@ -441,6 +452,8 @@ void Level::Update(Swallow::Timestep ts)
 			glm::vec3 ePos = enemy->GetTransform()->GetPosition();
 			if (glm::length(ePos - fPos) < 0.5)
 			{
+				Swallow::Ref<GameLayer> g = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
+				g->SetScore(g->GetScore() + 500);
 				enemy->SetDelete(true);
 			}
 		}
@@ -555,5 +568,7 @@ void Level::Save(const std::string &name)
 	f.write(reinterpret_cast<char *>(&temp), sizeof(int));
 	temp = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->GetScore();
 	f.write(reinterpret_cast<char *>(&temp), sizeof(int));
+	x = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->GetScore();
+	f.write(reinterpret_cast<char *>(&x), sizeof(float));
 	f.close();
 }

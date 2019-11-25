@@ -21,6 +21,7 @@ GameLayer::GameLayer()
 
 void GameLayer::OnAttach()
 {
+	m_Difficulty = 0.6;
 	m_Player = std::make_shared<Player>();
 	m_Level = std::make_shared<Level>();
 	m_Level->SetPlayer(m_Player);
@@ -33,7 +34,7 @@ void GameLayer::OnAttach()
 	std::ifstream in;
 	in.open(path + m_Save + ".sav", std::ios::binary);
 	if (m_Save.empty() || !in.good())
-		m_Level->Generate();
+		m_Level->Generate(m_Difficulty);
 	else
 		m_Level->Load(m_Save);
 }
@@ -97,7 +98,7 @@ void GameLayer::OnUpdate(Swallow::Timestep ts)
 	if (!IsPaused)
 	{
 		static_cast<void>(ts);
-		m_Position = glm::vec3(glm::clamp(m_Level->GetPlayer()->GetTransform()->GetPosition().x, 12.f, 17.f), 15, 13);
+		m_Position = glm::vec3(glm::clamp(m_Level->GetPlayer()->GetTransform()->GetPosition().x, 10.f, 19.f), 15, 13);
 		m_Camera.SetPosition(m_Position);
 		m_Camera.Recalculate();
 		m_Level->Update(ts);
@@ -127,7 +128,9 @@ void GameLayer::OnUpdate(Swallow::Timestep ts)
 		};
 		if (m_Player->WON())
 		{
-			m_Level->Generate();
+			m_Score += 5000 * m_Difficulty;
+			m_Difficulty += 0.05;
+			m_Level->Generate(m_Difficulty);
 		};
 	}
 }

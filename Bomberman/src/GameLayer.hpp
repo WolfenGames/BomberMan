@@ -16,6 +16,7 @@ private:
 	int 		m_Lives = 3;
 	int			m_Score;
 	bool		m_runGameOverOnce = false;
+	float		m_Difficulty;
 
 	Swallow::Ref<Swallow::AudioBuffer> x;
 	Swallow::Ref<Swallow::AudioSource> s;
@@ -34,11 +35,13 @@ public:
 
 	inline int GetLives() { return m_Lives; }
 	inline int GetScore() { return m_Score; }
+	inline float GetDifficulty() { return m_Difficulty; }
 	inline void SetSpawnChance(const float chance) { this->chance = chance; }
 	inline void SetSave(const std::string &save) { this->m_Save = save; }
 
 	virtual void SetLives(int lives) { m_Lives = lives; }
 	virtual void SetScore(int score) { m_Score = score; }
+	virtual void SetDifficulty(float difficulty) { m_Difficulty = difficulty; }
 	virtual void OnEvent(Swallow::Event &e) override;
 	virtual void OnAttach() override;
 	virtual void OnDetach() override;
