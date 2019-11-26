@@ -34,12 +34,7 @@ void GameOverMenu::OnUpdate(Swallow::Timestep ts)
     m_Timer -= ts.GetSeconds();
     if (m_Timer <= 0)
     {
-        //if (!m_hasBeenReset)
-        //{
-            SW_INFO("JKASAS");
-            static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGameOver();
-            static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
-            //m_hasBeenReset = true;
-        //}
+        static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGameOver();
+        static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
     }
 }

@@ -33,6 +33,7 @@ class Menu
         inline Swallow::Ref<Swallow::GameObject> GetBackground() { return m_Background; }
         inline Swallow::Ref<Swallow::Text> GetText() { return m_Text; }
         inline std::vector<Swallow::Ref<Button>> &GetButtons() { return m_Buttons; }
+        
         void Recalculate();
         void RecalculateButtons();
         void AddButton(const char *text, float x, float y);

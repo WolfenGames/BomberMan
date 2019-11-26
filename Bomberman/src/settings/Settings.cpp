@@ -147,7 +147,7 @@ void Settings::CycleVolume()
 
 void Settings::CycleResolution()
 {
-    if (m_ResolutionString == "800x600")
+    if (m_ResolutionString == "860x486")
     {
         m_Resolution.x = 1280;
         m_Resolution.y = 720;
@@ -161,9 +161,9 @@ void Settings::CycleResolution()
     }
     else
     {
-        m_Resolution.x = 800;
-        m_Resolution.y = 600;
-        m_ResolutionString = "800x600";
+        m_Resolution.x = 860;
+        m_Resolution.y = 486;
+        m_ResolutionString = "860x486";
     }
 }
 

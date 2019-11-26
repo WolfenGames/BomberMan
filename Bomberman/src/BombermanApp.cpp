@@ -21,22 +21,19 @@ BombermanApp::BombermanApp(Swallow::WindowProps *props)
 	Swallow::AssetManager::LoadObject("IndestructableWall", "assets/Models/Indestructable_Wall.obj");
 	Swallow::AssetManager::LoadObject("DestructableWall", "assets/Models/Destructable_Wall.obj");
 	Swallow::AssetManager::LoadObject("EmptyQuad", "assets/Models/EmptyQuad.obj");
-	Swallow::AssetManager::LoadTexture("Atlas", "assets/Models/atlas.png", false);
-	Swallow::AssetManager::LoadTexture("BomberManColor", "assets/Models/BombermanColor.png", false);
+	Swallow::AssetManager::LoadObject("Floor", "assets/Models/Floor.obj");
 
-	//Enemies
 	//Textures
-	Swallow::AssetManager::LoadTexture("EnemyTexture", "assets/Models/Characters/Enemies/Textures/textureAtlas_Enemy.png", false);
-	//Models
+	Swallow::AssetManager::LoadTexture("Atlas", "assets/Images/Textures/atlas.png", false);
+	Swallow::AssetManager::LoadTexture("EnemyTexture", "assets/Images/Textures/textureAtlas_Enemy.png", false);
+	Swallow::AssetManager::LoadTexture("BomberManColor", "assets/Images/Textures/BombermanColor.png", false);
+	Swallow::AssetManager::LoadTexture("PickupsTexture", "assets/Images/Textures/Pallete1.png", false);
+	
+	//Enemies
 	Swallow::AssetManager::LoadObject("Enemy", "assets/Models/Characters/Enemies/Enemy.obj");
 	
 
-
-	//Pickups
-	//Texture
-	Swallow::AssetManager::LoadTexture("PickupsTexture", "assets/Models/Pickups/Pallete1.png", false);
-	
-	//Models
+	//Pickups	
 	Swallow::AssetManager::LoadObject("BombCanBypassWalls", "assets/Models/Pickups/BombCanBypassWalls.obj");
 	Swallow::AssetManager::LoadObject("BombUp", "assets/Models/Pickups/BombUp.obj");
 	Swallow::AssetManager::LoadObject("BombDown", "assets/Models/Pickups/BombDown.obj");
@@ -52,9 +49,8 @@ BombermanApp::BombermanApp(Swallow::WindowProps *props)
 	Swallow::AssetManager::ListMeshes("FireIncrease");
 	Swallow::AssetManager::ListMeshes("FireDecrease");
 
-
-	Swallow::AssetManager::LoadObject("BackgroundModel", "assets/Models/Backgrounds/Background.obj");
-	Swallow::AssetManager::LoadTexture("Background", "assets/Models/Backgrounds/Menu.png", false);
+	Swallow::AssetManager::LoadTexture("Background", "assets/Images/Backgrounds/Menu.png", false);
+	Swallow::AssetManager::LoadTexture("HUDBackground", "assets/Images/Backgrounds/GUI.png", false);
 	
 	m_Settings = Settings::Create();
 	m_GameLayer = std::make_shared<GameLayer>();
@@ -106,10 +102,6 @@ void BombermanApp::LoadMenu()
 	PushLayer(m_MenuLayer);
 }
 
-void BombermanApp::LoadOptions()
-{
-	PushLayer(m_OptionsLayer);
-}
 
 void BombermanApp::LoadLoad()
 {
@@ -121,9 +113,14 @@ void BombermanApp::UnloadLoad()
 	PopLayer(m_LoadLayer);
 }
 
+void BombermanApp::LoadOptions()
+{
+	PushOverlay(m_OptionsLayer);
+}
+
 void BombermanApp::UnloadOptions()
 {
-	PopLayer(m_OptionsLayer);
+	PopOverlay(m_OptionsLayer);
 }
 
 void BombermanApp::LoadExit()
@@ -169,7 +166,7 @@ void BombermanApp::LoadPause()
 
 void BombermanApp::UnloadPause()
 {
-	PopLayer(m_PauseLayer);
+	PopOverlay(m_PauseLayer);
 }
 
 void BombermanApp::LoadGameOver()

@@ -56,6 +56,8 @@ void GameLayer::OnEvent(Swallow::Event &e) {
 
 bool GameLayer::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 {
+	if (!IsPaused)
+		return true;
 	static_cast<void>(e);
 	return false;
 }

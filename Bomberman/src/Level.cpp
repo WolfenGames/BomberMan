@@ -25,13 +25,9 @@ void Level::Load(const std::string &name)
 	in.open(path + name + ".sav", std::ios::binary);
 	in.read(reinterpret_cast<char *>(&m_Width), 4);
 	in.read(reinterpret_cast<char *>(&m_Height), 4);
-	m_Floor = std::make_shared<Swallow::GameObject>();
-	m_Floor->SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
-	m_Floor->GetTransform()->SetScale(glm::vec3(m_Width, 1, m_Height));
-	m_Floor->SetMaterial(Swallow::FlatColourMaterial::Create());
-	m_Floor->GetTransform()->SetPosition(glm::vec3(m_Width / 2.0, -1, m_Height / 2.0));
-	m_Floor->GetTransform()->Recalculate();
-	std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(m_Floor->GetMaterial())->SetColour(glm::vec4(1, 1, 1, 1));
+
+	_MakeFloor();
+	_MakeBoundry();
 	m_Map.reserve(m_Width * m_Height);
 	PowerUpTypes type;
 	for (uint i = 0; i < (m_Width * m_Height); i++)
@@ -110,6 +106,61 @@ void Level::Load(const std::string &name)
 	SW_INFO("Done");
 }
 
+void Level::_MakeFloor()
+{
+	Swallow::Ref<Swallow::TextureMaterialInstance> floorMaterial = Swallow::TextureMaterial::Create();
+	floorMaterial->SetTexture(Swallow::AssetManager::FetchTexture("Atlas"));
+
+	m_FloorArray.reserve(m_Width * m_Height);
+	for (uint i = 0; i < (m_Width * m_Height); i++)
+	{
+		m_FloorArray.push_back(std::make_shared<Floor>());
+
+		m_FloorArray[i]->GetTransform()->SetPosition(glm::vec3(i / m_Height + 0.5f, -1, i % m_Height + 0.5f));
+
+		m_FloorArray[i]->GetTransform()->Recalculate();
+	}
+
+}
+
+void Level::_MakeBoundry()
+{
+	Swallow::Ref<Swallow::TextureMaterialInstance> floorMaterial = Swallow::TextureMaterial::Create();
+	floorMaterial->SetTexture(Swallow::AssetManager::FetchTexture("Atlas"));
+
+	m_Boundry.reserve(3 * 2 * (m_Height + 1) + m_Width);
+	for (int i = 1; i <= (int)(m_Width); i++)
+	{
+		m_Boundry.push_back(std::make_shared<Pillar>());
+
+		m_Boundry.back()->GetTransform()->SetPosition(glm::vec3(i - 0.5f, 0, -0.5f));
+
+		m_Boundry.back()->GetTransform()->Recalculate();
+	}
+	for (int i = -1; i <= (int)(m_Height); i++)
+	{
+		m_Boundry.push_back(std::make_shared<Pillar>());
+		m_Boundry.back()->GetTransform()->SetPosition(glm::vec3(-0.5f, 0, i - 0.5f));
+		m_Boundry.back()->GetTransform()->Recalculate();
+		m_Boundry.push_back(std::make_shared<Pillar>());
+		m_Boundry.back()->GetTransform()->SetPosition(glm::vec3(-1.5f, 0, i - 0.5f));
+		m_Boundry.back()->GetTransform()->Recalculate();
+		m_Boundry.push_back(std::make_shared<Pillar>());
+		m_Boundry.back()->GetTransform()->SetPosition(glm::vec3(-2.5f, 0, i - 0.5f));
+		m_Boundry.back()->GetTransform()->Recalculate();
+		m_Boundry.push_back(std::make_shared<Pillar>());
+		m_Boundry.back()->GetTransform()->SetPosition(glm::vec3(m_Width + 0.5f, 0, i - 0.5f));
+		m_Boundry.back()->GetTransform()->Recalculate();
+		m_Boundry.push_back(std::make_shared<Pillar>());
+		m_Boundry.back()->GetTransform()->SetPosition(glm::vec3(m_Width + 1.5f, 0, i - 0.5f));
+		m_Boundry.back()->GetTransform()->Recalculate();
+		m_Boundry.push_back(std::make_shared<Pillar>());
+		m_Boundry.back()->GetTransform()->SetPosition(glm::vec3(m_Width + 2.5f, 0, i - 0.5f));
+		m_Boundry.back()->GetTransform()->Recalculate();
+	}
+
+}
+
 void Level::Generate(float chance)
 {
 	m_Player->Reset();
@@ -120,13 +171,10 @@ void Level::Generate(float chance)
 	m_Map.clear();
 	std::srand(static_cast<uint32_t>(std::chrono::system_clock::now().time_since_epoch().count()));
 	int desiredEnemies = ((m_Width + m_Height) / 2.0f) * chance;
-	m_Floor = std::make_shared<Swallow::GameObject>();
-	m_Floor->SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
-	m_Floor->GetTransform()->SetScale(glm::vec3(m_Width, 1, m_Height));
-	m_Floor->SetMaterial(Swallow::FlatColourMaterial::Create());
-	m_Floor->GetTransform()->SetPosition(glm::vec3(m_Width / 2.0, -0.5f, m_Height / 2.0));
-	m_Floor->GetTransform()->Recalculate();
-	std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(m_Floor->GetMaterial())->SetColour(glm::vec4(1, 1, 1, 1));
+
+
+	_MakeFloor();
+	_MakeBoundry();
 	m_Map.reserve(m_Width * m_Height);
 	for (uint32_t x = 0; x < m_Width; x++)
 	{
@@ -482,16 +530,25 @@ void Level::Draw()
 				Swallow::Ref<Swallow::FlatColourMaterialInstance> mat = std::dynamic_pointer_cast<Swallow::FlatColourMaterialInstance>(m_Map[(x) * m_Height + (y)]->GetMaterial());
 				Swallow::Renderer::Submit(m_Map[(x) * m_Height + (y)]);
 			}
+			Swallow::Renderer::Submit(m_FloorArray[(x) * m_Height + (y)]);
 		}
-	}
-	for (auto x : m_Enemies)
+	}	
+
+	//Left
+	for (auto &boundry : m_Boundry)
+		Swallow::Renderer::Submit(boundry);
+
+	for (auto &x : m_Enemies)
 		Swallow::Renderer::Submit((Swallow::Ref<Enemy>(x)));
 	for (auto &f : m_Flames)
 		Swallow::Renderer::Submit(f);
 	for (auto p: m_PowerUps)
 		Swallow::Renderer::Submit(p);
 	Swallow::Renderer::Submit(m_Player);
+
+	/* Olf Floor
 	Swallow::Renderer::Submit(m_Floor);
+	*/
 }
 
 void Level::Save(const std::string &name)

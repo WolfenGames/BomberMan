@@ -29,9 +29,13 @@ HudMenu::HudMenu()
 	m_Camera.SetRotation(glm::vec3(0, 0, 0));
 	m_Camera.Recalculate();
 
+    Swallow::Ref<Swallow::TextureMaterialInstance>  m_Material = Swallow::MenuBackgroundMaterial::Create();
+    m_Material->SetTexture(Swallow::AssetManager::FetchTexture("HUDBackground"));
+
 	m_Menu = Menu::Create();
-	m_Menu->GetBackground()->GetTransform()->SetPosition(glm::vec3(0.0f, -10.0f, 1.0f));
-	m_Menu->GetBackground()->GetTransform()->SetScale(glm::vec3(10.0f, 4.6f, 0.0f));
+	m_Menu->GetBackground()->SetMaterial(m_Material);
+	m_Menu->GetBackground()->GetTransform()->SetPosition(glm::vec3(0.0f, -7.5f, 1.0f));
+	m_Menu->GetBackground()->GetTransform()->SetScale(glm::vec3(10.0f, 2.5f, 0.0f));
 	m_Menu->GetText()->GetTransform()->SetScale(glm::vec3(0.0f, 0.0f, 0.0f));
 	m_Menu->AddButton("Score - 0", -9.0f, -7.0f, m_Camera);
 	m_Menu->AddButton("Lives - 0", -9.0f, -9.0f, m_Camera);
@@ -86,7 +90,7 @@ void HudMenu::UpdateButtons()
 	if (!gamelayer->GetLevel())
 		return ;
 	auto player = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->GetLevel()->GetPlayer();
-	m_Menu->GetButtons()[SCORE]->GetText()->SetText(("Score - " + std::to_string(gamelayer->GetLives())).c_str());
+	m_Menu->GetButtons()[SCORE]->GetText()->SetText(("Score - " + std::to_string(gamelayer->GetScore())).c_str());
 	m_Menu->GetButtons()[LIVES]->GetText()->SetText(("Lives - " + std::to_string(gamelayer->GetLives())).c_str());
 	if (player->Ghost())
 		m_Menu->GetButtons()[GHOST]->GetText()->SetText("Ghost");

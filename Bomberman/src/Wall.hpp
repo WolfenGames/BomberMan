@@ -21,3 +21,14 @@ class Pillar : public Tile
 
 	private:
 };
+
+class Floor : public Tile
+{
+	public:
+	Floor();
+	Floor(const Floor &s) = default;
+	Floor &operator=(const Floor &s) = default;
+	virtual ~Floor() = default;
+
+	private:
+};

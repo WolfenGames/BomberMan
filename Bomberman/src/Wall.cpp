@@ -39,3 +39,19 @@ Pillar::Pillar()
 	m_isExit = false;
 	m_canPassThrough = false;
 }
+
+//Floor
+Floor::Floor()
+{
+	Swallow::Ref<Swallow::TextureMaterialInstance> Floor = Swallow::TextureMaterial::Create();
+	Floor->SetTexture(Swallow::AssetManager::FetchTexture("Atlas"));
+	SetMaterial(Floor);
+
+	SetVertexArray(Swallow::AssetManager::FetchObject("Floor", "Floor"));
+	GetTransform()->SetScale(glm::vec3(1.0f));
+	
+	m_isDestructable = false;
+	m_isFilled = true;
+	m_isExit = false;
+	m_canPassThrough = false;
+}

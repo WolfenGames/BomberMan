@@ -5,6 +5,7 @@
 #include "Enemy.hpp"
 #include "Flame.hpp"
 #include "PowerUp.hpp"
+#include "Wall.hpp"
 #include <list>
 
 class Level
@@ -48,6 +49,8 @@ class Level
 		void Draw();
 
 	private:
+		void _MakeFloor();
+		void _MakeBoundry();
 		bool	m_DEAD = false;
 		uint32_t m_Width = 29, m_Height = 11;
 		Swallow::Ref<Player> m_Player;
@@ -60,6 +63,8 @@ class Level
 		Timer *m_TempTimer = nullptr;
 
 		std::vector<Swallow::Ref<Tile>> m_Map;
+		std::vector<Swallow::Ref<Pillar>> m_Boundry;
+		std::vector<Swallow::Ref<Floor>> m_FloorArray;
 
 		PowerUpFactory		powerUpFactory;
 };

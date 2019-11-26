@@ -51,8 +51,9 @@ bool PauseMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 	
 	if (m_Menu->GetButtons()[QUIT]->MouseInBounds(x, y))
 	{
-		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();		
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
+		GameLayer::IsPaused  = false;
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadMenu();
 	}
     if (m_Menu->GetButtons()[RESUME]->MouseInBounds(x, y))
@@ -69,6 +70,7 @@ bool PauseMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 
 bool PauseMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 {
+
 	static_cast<void>(e);
 	float x = Swallow::Input::GetMouseX();
 	float y = Swallow::Input::GetMouseY();
@@ -77,7 +79,6 @@ bool PauseMenu::OnMouseMovedEvent(Swallow::MouseMovedEvent &e)
 
 	for (size_t i = 0; i < m_Menu->GetButtons().size(); i++)
 	{
-
 		if (m_Menu->GetButtons()[i]->MouseInBounds(x, y))
 			m_Menu->GetButtons()[i]->HighlightBackground();
 		else
@@ -91,6 +92,7 @@ bool PauseMenu::OnKeyPressed(Swallow::KeyPressedEvent &e)
 	if (e.GetKeyCode() == SW_KEY_ESCAPE)
 	{
         static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadPause();
+		GameLayer::IsPaused = false;
 	}
 	return true;
 }
