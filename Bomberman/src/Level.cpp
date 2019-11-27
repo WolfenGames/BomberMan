@@ -296,7 +296,12 @@ void Level::Burn(int x, int y)
 void Level::Explode(Timer &t)
 {
 	m_Map[t.x * m_Height + t.y] = std::make_shared<Tile>();
+	
+	auto gamelayer = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
+	gamelayer->GetExplosionAudio()->Play();
+
 	Burn(t.x, t.y);
+	
 	for (int i = 1; t.x - i >= 0 && i < t.power; i++)
 	{
 		int x = t.x - i;
@@ -422,6 +427,9 @@ void Level::Explode(Timer &t)
 
 void Level::DropBomb(glm::vec3 pos)
 {
+	auto gamelayer = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
+	gamelayer->GetMalletAudio()->Play();
+
 	if (m_BombTimers.size() == static_cast<unsigned long>(m_Player->GetBombCount()) + 1)
 		return;
 	static_cast<void>(pos);
@@ -511,6 +519,12 @@ void Level::Update(Swallow::Timestep ts)
 			m_DEAD = true;
 		}
 		f->Advance(ts);
+	}
+
+	if (m_DEAD)
+	{
+		auto gamelayer = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
+		gamelayer->GetDeadAudio()->Play();
 	}
 
 	m_Enemies.remove_if([] (Swallow::Ref<Enemy> p) -> bool { return p->CanDelete(); });

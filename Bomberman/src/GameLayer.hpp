@@ -18,8 +18,22 @@ private:
 	bool		m_runGameOverOnce = false;
 	float		m_Difficulty;
 
+
+
 	Swallow::Ref<Swallow::AudioBuffer> x;
 	Swallow::Ref<Swallow::AudioSource> s;
+
+	Swallow::Ref<Swallow::AudioBuffer> m_OneUpBuffer;
+	Swallow::Ref<Swallow::AudioSource> m_OneUpSource;
+
+	Swallow::Ref<Swallow::AudioBuffer> m_MalletAudioBuffer;
+	Swallow::Ref<Swallow::AudioSource> m_MalletAudioSource;
+
+	Swallow::Ref<Swallow::AudioBuffer> m_ExplosionBuffer;
+	Swallow::Ref<Swallow::AudioSource> m_ExplosionSource;
+
+	Swallow::Ref<Swallow::AudioBuffer> m_DeadBuffer;
+	Swallow::Ref<Swallow::AudioSource> m_DeadSource;
 
 public:
 	GameLayer();
@@ -35,6 +49,12 @@ public:
 
 	inline int GetLives() { return m_Lives; }
 	inline int GetScore() { return m_Score; }
+
+	inline Swallow::Ref<Swallow::AudioSource> GetOneUpAudio() {return m_OneUpSource; }
+	inline Swallow::Ref<Swallow::AudioSource> GetMalletAudio() {return m_MalletAudioSource; }
+	inline Swallow::Ref<Swallow::AudioSource> GetExplosionAudio() {return m_ExplosionSource; }
+	inline Swallow::Ref<Swallow::AudioSource> GetDeadAudio() {return m_DeadSource; }
+
 	inline float GetDifficulty() { return m_Difficulty; }
 	inline void SetSpawnChance(const float chance) { this->chance = chance; }
 	inline void SetSave(const std::string &save) { this->m_Save = save; }

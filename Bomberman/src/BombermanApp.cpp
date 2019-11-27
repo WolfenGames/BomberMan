@@ -94,6 +94,7 @@ Swallow::Application* Swallow::CreateApplication()
 	p.Width = settings->GetResolution().x;
 	p.Height = settings->GetResolution().y;
 	p.Title = "Bomberman";
+	Swallow::AudioCommand::SetGain(settings->GetVolume());
 	return (new BombermanApp(&p));
 }
 

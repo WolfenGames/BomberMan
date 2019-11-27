@@ -11,12 +11,48 @@ GameLayer::GameLayer()
 {
 	m_Camera.SetRotation(glm::vec3(glm::radians(-70.0f), glm::radians(0.0f), 0));
 	m_Camera.Recalculate();
+	
 	x = Swallow::AudioBuffer::Create("assets/Sounds/Background.wav");
 	s = Swallow::AudioSource::Create();
 	s->SetPosition({0.0f, 0.0f, 0.0f});
 	s->SetVelocity({0.f, 0.f, 0.f});
 	s->SetLooping(true);
 	s->SetBuffer(x);
+
+	m_OneUpBuffer = Swallow::AudioBuffer::Create("assets/Sounds/1Up.wav");
+	m_OneUpSource = Swallow::AudioSource::Create();
+	m_OneUpSource->SetPosition({0.0f, 0.0f, 0.0f});
+	m_OneUpSource->SetVelocity({0.f, 0.f, 0.f});
+	m_OneUpSource->SetGain(0.5f);
+	m_OneUpSource->SetLooping(false);
+	m_OneUpSource->SetBuffer(m_OneUpBuffer);
+
+
+	m_MalletAudioBuffer = Swallow::AudioBuffer::Create("assets/Sounds/Mallet.wav");
+	m_MalletAudioSource = Swallow::AudioSource::Create();
+	m_MalletAudioSource->SetPosition({0.0f, 0.0f, 0.0f});
+	m_MalletAudioSource->SetVelocity({0.f, 0.f, 0.f});
+	m_MalletAudioSource->SetGain(0.9f);
+	m_MalletAudioSource->SetLooping(false);
+	m_MalletAudioSource->SetBuffer(m_MalletAudioBuffer);
+
+
+	m_ExplosionBuffer = Swallow::AudioBuffer::Create("assets/Sounds/Explosion.wav");
+	m_ExplosionSource = Swallow::AudioSource::Create();
+	m_ExplosionSource->SetPosition({0.0f, 0.0f, 0.0f});
+	m_ExplosionSource->SetVelocity({0.f, 0.f, 0.f});
+	m_ExplosionSource->SetGain(0.8f);
+	m_ExplosionSource->SetLooping(false);
+	m_ExplosionSource->SetBuffer(m_ExplosionBuffer);
+
+	m_DeadBuffer = Swallow::AudioBuffer::Create("assets/Sounds/Dead.wav");
+	m_DeadSource = Swallow::AudioSource::Create();
+	m_DeadSource->SetPosition({0.0f, 0.0f, 0.0f});
+	m_DeadSource->SetVelocity({0.f, 0.f, 0.f});
+	m_DeadSource->SetGain(0.8f);
+	m_DeadSource->SetLooping(false);
+	m_DeadSource->SetBuffer(m_DeadBuffer);
+
 }
 
 void GameLayer::OnAttach()
@@ -42,6 +78,9 @@ void GameLayer::OnAttach()
 void GameLayer::OnDetach()
 {
 	s->Stop();
+	m_ExplosionSource->Stop();
+	m_MalletAudioSource->Stop();
+	m_OneUpSource->Stop();
 	m_Level.reset();
 	m_Player.reset();
 }
@@ -116,13 +155,8 @@ void GameLayer::OnUpdate(Swallow::Timestep ts)
 			m_Lives--;
 			if (m_Lives < 1)
 			{
-				//if (!m_runGameOverOnce)
-				//{
-					SW_INFO("GAME LAYER!");
-					static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();	
-					static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGameOver();
-					//m_runGameOverOnce = true;
-				//}
+				static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();	
+				static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGameOver();
 
 				return;
 			}

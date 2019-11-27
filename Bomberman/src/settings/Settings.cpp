@@ -143,6 +143,7 @@ void Settings::CycleVolume()
         m_VolumeString = "Off";
         m_Volume = 0.0f;
     }
+    Swallow::AudioCommand::SetGain(m_Volume);
 }
 
 void Settings::CycleResolution()

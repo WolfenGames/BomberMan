@@ -91,6 +91,7 @@ bool OptionsMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 		m_Menu->AddButton("Save", 3.0f, -2.0f, m_Camera);
 		m_Menu->GetButtons()[BACK]->GetText()->SetText("Cancel");
 		m_Menu->GetButtons()[BACK]->Recalculate();
+		Swallow::AudioCommand::SetGain(0.3);
 		m_Menu->Recalculate();
 		m_Menu->RecalculateButtons();
 	}
