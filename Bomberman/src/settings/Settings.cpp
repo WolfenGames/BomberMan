@@ -42,6 +42,7 @@ Settings::Settings(const char *SettingsPath)
                     m_VolumeString = "Loud";
                 else
                     m_VolumeString = "Full";
+                Swallow::AudioCommand::SetGain(m_Volume);
             }
             if (config == "resolution:")
             {
@@ -106,6 +107,7 @@ void Settings::SetDefaultSettings()
     m_Keybindings["Right"] = SW_KEY_D;
     m_Keybindings["Bomb"] = SW_KEY_SPACE;
     m_Keybindings["Save"] = SW_KEY_F5;
+    Swallow::AudioCommand::SetGain(m_Volume);
 }
 
 void Settings::SaveSettings()
