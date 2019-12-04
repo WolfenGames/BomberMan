@@ -35,6 +35,27 @@ MainMenu::MainMenu()
 	m_Menu->GetButtons().back()->GetBackground()->GetTransform()->SetScale(glm::vec3(2.1f, 1.0f, 0.0f));
 	m_Menu->Recalculate();
 	m_Menu->RecalculateButtons();
+
+	m_MenuMusicBuffer = Swallow::AudioBuffer::Create("assets/Sounds/MenuMusic.wav");
+	m_MenuMusicSource = Swallow::AudioSource::Create();
+	m_MenuMusicSource->SetPosition({0.0f, 0.0f, 0.0f});
+	m_MenuMusicSource->SetVelocity({0.f, 0.f, 0.f});
+	m_MenuMusicSource->SetGain(0.8f);
+	m_MenuMusicSource->SetLooping(true);
+	m_MenuMusicSource->SetBuffer(m_MenuMusicBuffer);
+
+}
+
+void MainMenu::OnAttach()
+{
+	MenuLayer::OnAttach();
+	m_MenuMusicSource->Play();
+}
+
+void MainMenu::OnDetach()
+{
+	MenuLayer::OnDetach();
+	m_MenuMusicSource->Stop();
 }
 
 void MainMenu::OnEvent(Swallow::Event &e) {

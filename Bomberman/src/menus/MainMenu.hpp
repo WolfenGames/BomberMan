@@ -33,7 +33,18 @@ class MainMenu: public MenuLayer
         bool OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e);
         bool OnKeyPressed(Swallow::KeyPressedEvent &e);
         bool OnMouseMovedEvent(Swallow::MouseMovedEvent &e);
+
+        inline Swallow::Ref<Swallow::AudioSource> GetMenuMusicAudio() {return m_MenuMusicSource; }
+	    inline Swallow::Ref<Swallow::AudioBuffer> GetMenuMusicBuffer() {return m_MenuMusicBuffer; }
+
+        virtual void OnAttach() override;
+	    virtual void OnDetach() override;
+        
+
     private:
+        Swallow::Ref<Swallow::AudioBuffer> m_MenuMusicBuffer;
+        Swallow::Ref<Swallow::AudioSource> m_MenuMusicSource;
+
     	Swallow::OrthographicCamera m_Camera;
     	glm::ivec2	map_size;
 
