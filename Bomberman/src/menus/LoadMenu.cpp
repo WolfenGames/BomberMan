@@ -56,6 +56,7 @@ bool LoadingMenu::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 			static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadLoad();
 			std::ifstream s(std::string("Saves/") + name + ".sav");
 			static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetSave(name);
+			static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
 			static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
 		}
 	}

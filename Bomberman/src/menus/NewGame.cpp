@@ -83,6 +83,7 @@ bool NewGame::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 			#endif
 		}
 		static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer()->SetSave(m_Input);
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
 		static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGame();
 	}
 	if (m_Menu->GetButtons()[INPUT]->MouseInBounds(x, y))

@@ -14,6 +14,7 @@
 
 void Level::Load(const std::string &name)
 {
+	m_BombTimers.clear();
 	m_Player->Reset();
 	m_DEAD = false;
 	m_Enemies.clear();
@@ -163,6 +164,7 @@ void Level::_MakeBoundry()
 
 void Level::Generate(float chance)
 {
+	m_BombTimers.clear();
 	m_Player->Reset();
 	m_DEAD = false;
 	m_Enemies.clear();

@@ -100,18 +100,18 @@ Swallow::Application* Swallow::CreateApplication()
 
 void BombermanApp::LoadMenu()
 {
-	PushLayer(m_MenuLayer);
+	PushOverlay(m_MenuLayer);
 }
 
 
 void BombermanApp::LoadLoad()
 {
-	PushLayer(m_LoadLayer);
+	PushOverlay(m_LoadLayer);
 }
 
 void BombermanApp::UnloadLoad()
 {
-	PopLayer(m_LoadLayer);
+	PopOverlay(m_LoadLayer);
 }
 
 void BombermanApp::LoadOptions()
@@ -126,38 +126,38 @@ void BombermanApp::UnloadOptions()
 
 void BombermanApp::LoadExit()
 {
-	PushLayer(m_ExitLayer);
+	PushOverlay(m_ExitLayer);
 }
 
 void BombermanApp::UnloadExit()
 {
-	PopLayer(m_ExitLayer);
+	PopOverlay(m_ExitLayer);
 }
 
 
 void BombermanApp::UnloadMenu()
 {
-	PopLayer(m_MenuLayer);
+	PopOverlay(m_MenuLayer);
 }
 
 void BombermanApp::LoadKeys()
 {
-	PushLayer(m_KeyLayer);
+	PushOverlay(m_KeyLayer);
 }
 
 void BombermanApp::UnloadKeys()
 {
-	PopLayer(m_KeyLayer);
+	PopOverlay(m_KeyLayer);
 }
 
 void BombermanApp::LoadNewGame()
 {
-	PushLayer(m_NewGameLayer);
+	PushOverlay(m_NewGameLayer);
 }
 
 void BombermanApp::UnloadNewGame()
 {
-	PopLayer(m_NewGameLayer);
+	PopOverlay(m_NewGameLayer);
 }
 
 void BombermanApp::LoadPause()
