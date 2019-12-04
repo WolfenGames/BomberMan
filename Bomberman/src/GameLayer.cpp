@@ -23,7 +23,7 @@ GameLayer::GameLayer()
 	m_OneUpSource = Swallow::AudioSource::Create();
 	m_OneUpSource->SetPosition({0.0f, 0.0f, 0.0f});
 	m_OneUpSource->SetVelocity({0.f, 0.f, 0.f});
-	m_OneUpSource->SetGain(0.5f);
+	m_OneUpSource->SetGain(0.8f);
 	m_OneUpSource->SetLooping(false);
 	m_OneUpSource->SetBuffer(m_OneUpBuffer);
 

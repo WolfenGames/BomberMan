@@ -71,6 +71,7 @@ bool NewGame::OnMouseButtonPressed(Swallow::MouseButtonPressedEvent &e)
 		m_InputActive = false;
 		GameLayer::IsPaused = false;
 		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadNewGame();
+		static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadMenu();
 		std::ifstream s(std::string("Saves/") + m_Input + ".sav");
 		if (s)
 		{
