@@ -59,8 +59,6 @@ Player::~Player()
 
 bool Player::AddPower(Swallow::Ref<PowerUp> power)
 {
-	auto gamelayer = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
-	gamelayer->GetOneUpAudio()->Play();
 	
 	switch (power->getPowerUpType())
 	{

@@ -497,9 +497,12 @@ void Level::Update(Swallow::Timestep ts)
 		if (glm::length(ePos - myPos) < 0.5)
 		{
 			Swallow::Ref<GameLayer> g = static_cast<BombermanApp &>(Swallow::Application::Get()).GetGameLayer();
-			g->SetScore(g->GetScore() + 50);
 			if (m_Player->AddPower(powerInACan))
+			{
+				g->SetScore(g->GetScore() + 50);
+				g->GetOneUpAudio()->Play();
 				powerInACan->SetDelete(true);
+			}
 		}
 	}
 	for (auto &f : m_Flames)
