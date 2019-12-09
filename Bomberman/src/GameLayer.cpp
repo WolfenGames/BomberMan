@@ -157,6 +157,14 @@ void GameLayer::OnUpdate(Swallow::Timestep ts)
 			{
 				static_cast<BombermanApp &>(Swallow::Application::Get()).UnloadGame();	
 				static_cast<BombermanApp &>(Swallow::Application::Get()).LoadGameOver();
+				std::ofstream out;
+
+				out.open("Scores.txt", std::ios_base::app);
+
+				std::stringstream ss;
+
+				ss << m_Save << " : " << m_Score << std::endl;
+				out.write(ss.str().c_str(), ss.str().length());
 
 				return;
 			}

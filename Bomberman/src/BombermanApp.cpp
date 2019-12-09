@@ -32,7 +32,6 @@ BombermanApp::BombermanApp(Swallow::WindowProps *props)
 	//Enemies
 	Swallow::AssetManager::LoadObject("Enemy", "assets/Models/Characters/Enemies/Enemy.obj");
 	
-
 	//Pickups	
 	Swallow::AssetManager::LoadObject("BombCanBypassWalls", "assets/Models/Pickups/BombCanBypassWalls.obj");
 	Swallow::AssetManager::LoadObject("BombUp", "assets/Models/Pickups/BombUp.obj");
@@ -45,10 +44,6 @@ BombermanApp::BombermanApp(Swallow::WindowProps *props)
 	Swallow::AssetManager::LoadObject("SoftBlock", "assets/Models/Pickups/SoftBlock.obj");
 	Swallow::AssetManager::LoadObject("Door", "assets/Models/Pickups/Door.obj");
 	
-
-	Swallow::AssetManager::ListMeshes("FireIncrease");
-	Swallow::AssetManager::ListMeshes("FireDecrease");
-
 	Swallow::AssetManager::LoadTexture("Background", "assets/Images/Backgrounds/Menu.png", false);
 	Swallow::AssetManager::LoadTexture("HUDBackground", "assets/Images/Backgrounds/GUI.png", false);
 	

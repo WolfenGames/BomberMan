@@ -88,9 +88,15 @@ BombUp::BombUp(){
 	SetVertexArray(Swallow::AssetManager::FetchObject("Cube", "Cube"));
 	*/
 
-	Swallow::Ref<Swallow::TextureMaterialInstance> BombUpMat = Swallow::TextureMaterial::Create();
-	BombUpMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
-	SetMaterial(BombUpMat);
+	// Swallow::Ref<Swallow::TextureMaterialInstance> BombUpMat = Swallow::TextureMaterial::Create();
+	// BombUpMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	// SetMaterial(BombUpMat);
+	// SW_INFO("THAT'S WHAT SHE SAID");
+	// SetVertexArray(Swallow::AssetManager::FetchObject("BombUp", "BombUp"));
+
+	Swallow::Ref<Swallow::TextureMaterialInstance> BombDownMat = Swallow::TextureMaterial::Create();
+	BombDownMat->SetTexture(Swallow::AssetManager::FetchTexture("PickupsTexture"));
+	SetMaterial(BombDownMat);
 
 	SetVertexArray(Swallow::AssetManager::FetchObject("BombUp", "BombUp"));
 	#ifdef SW_DEBUG
@@ -102,6 +108,7 @@ BombUp::BombUp(){
 
 void	BombUp::OnUpdate(Swallow::Timestep& time)
 {
+	SW_INFO("{} {}", GetTransform()->GetPosition().x, GetTransform()->GetPosition().y);
 	this->m_TimeRemaining -= time.GetSeconds();
 	if (m_TimeRemaining <= 0)
 		m_Delete = true;
