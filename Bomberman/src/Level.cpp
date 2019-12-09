@@ -203,26 +203,6 @@ void Level::Generate(float chance)
 			}
 		}
 	}
-	bool hasExit = false;
-	while (!hasExit)
-	{
-		uint source = glm::linearRand(static_cast<unsigned int>(0), m_Width * m_Height - 1);
-		if (m_Map[source]->isDestructable())
-		{
-			hasExit = true;
-			m_Map[source]->SetSecret(PowerUpTypes::eExit);
-		}
-	}
-	hasExit = false;
-	while (!hasExit)
-	{
-		uint source = glm::linearRand(static_cast<unsigned int>(0), m_Width * m_Height - 1);
-		if (m_Map[source]->isDestructable() && m_Map[source]->GetSecret() != PowerUpTypes::eExit)
-		{
-			hasExit = true;
-			m_Map[source]->SetSecret(PowerUpTypes::eKey);
-		}
-	}
 	glm::ivec2 pos;
 
 	glm::ivec2 playerstart = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(m_Width / 2, m_Height / 2));
@@ -244,6 +224,34 @@ void Level::Generate(float chance)
 		pos = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(m_Width / 2, m_Height / 2));
 		pos *= 2;
 		MakeEnemy(pos.x, pos.y);
+	}
+	bool hasExit = false;
+	while (!hasExit)
+	{
+		glm::ivec2 exitloc = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(m_Width / 2, m_Height / 2));
+		exitloc *= 2;
+		glm::ivec2 diff = exitloc - playerstart;
+		if (glm::sqrt(diff.x * diff.x + diff.y * diff.y) < 3)
+			continue;
+		hasExit = true;
+		m_Map[(exitloc.x) * m_Height + (exitloc.y)] = std::make_shared<Wall>();
+		m_Map[(exitloc.x) * m_Height + (exitloc.y)]->GetTransform()->SetPosition(glm::vec3(exitloc.x + 0.5f, 0, exitloc.y + 0.5f));
+		m_Map[(exitloc.x) * m_Height + (exitloc.y)]->GetTransform()->Recalculate();
+		m_Map[(exitloc.x) * m_Height + (exitloc.y)]->SetSecret(PowerUpTypes::eExit);
+	}
+	hasExit = false;
+	while (!hasExit)
+	{
+		glm::ivec2 exitloc = glm::linearRand(glm::ivec2(0, 0), glm::ivec2(m_Width / 2, m_Height / 2));
+		exitloc *= 2;
+		glm::ivec2 diff = exitloc - playerstart;
+		if ((m_Map[(exitloc.x) * m_Height + (exitloc.y)]->isDestructable() && m_Map[(exitloc.x) * m_Height + (exitloc.y)]->GetSecret() == PowerUpTypes::eExit) || glm::sqrt(diff.x * diff.x + diff.y * diff.y) < 3)
+			continue;
+		hasExit = true;
+		m_Map[(exitloc.x) * m_Height + (exitloc.y)] = std::make_shared<Wall>();
+		m_Map[(exitloc.x) * m_Height + (exitloc.y)]->GetTransform()->SetPosition(glm::vec3(exitloc.x + 0.5f, 0, exitloc.y + 0.5f));
+		m_Map[(exitloc.x) * m_Height + (exitloc.y)]->GetTransform()->Recalculate();
+		m_Map[(exitloc.x) * m_Height + (exitloc.y)]->SetSecret(PowerUpTypes::eKey);
 	}
 }
 

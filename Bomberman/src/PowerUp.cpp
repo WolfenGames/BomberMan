@@ -108,7 +108,7 @@ BombUp::BombUp(){
 
 void	BombUp::OnUpdate(Swallow::Timestep& time)
 {
-	SW_INFO("{} {}", GetTransform()->GetPosition().x, GetTransform()->GetPosition().y);
+	SW_INFO("{} {}", GetTransform()->GetPosition().x, GetTransform()->GetPosition().z);
 	this->m_TimeRemaining -= time.GetSeconds();
 	if (m_TimeRemaining <= 0)
 		m_Delete = true;
